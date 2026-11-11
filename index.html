@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Innovate Script Assistant</title>
+<style>
+:root{
+  --navy:#18305E; --navy-dark:#10224a; --yellow:#FFC709; --teal:#2CCCC4;
+  --ink:#111111; --bg:#F5F7FA; --line:#E0E5EB; --white:#fff;
+  --muted:#5b6678; --red:#B3261E; --red-bg:#FDECEA; --green:#16805A; --green-bg:#E5F6EE;
+  --yellow-bg:#FFF7D6; --teal-bg:#E4F8F7;
+  --radius:12px; --shadow:0 1px 2px rgba(16,34,74,.06),0 4px 14px rgba(16,34,74,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;font-size:16px;line-height:1.55}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+[hidden]{display:none!important}
+
+/* ---------- Header ---------- */
+.topbar{background:var(--navy);color:#fff;position:sticky;top:0;z-index:50;border-bottom:4px solid var(--yellow)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;cursor:pointer;background:none;border:0;padding:0}
+.brand svg{height:40px;width:auto;display:block}
+.brand-title{font-weight:700;font-size:15px;letter-spacing:.3px;color:#fff;border-left:2px solid rgba(255,255,255,.3);padding-left:12px;line-height:1.2}
+.brand-title small{display:block;font-weight:400;color:var(--yellow);font-size:12px}
+.tabs{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.tab{background:transparent;border:2px solid transparent;color:#dbe3f3;padding:8px 16px;border-radius:999px;font-weight:600;font-size:15px}
+.tab:hover{background:rgba(255,255,255,.1);color:#fff}
+.tab.active{background:var(--yellow);color:var(--navy);}
+.tab .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--teal);margin-left:6px;vertical-align:middle}
+
+.wrap{max-width:1240px;margin:0 auto;padding:20px}
+h1,h2,h3{color:var(--navy);line-height:1.2;margin:0 0 .4em}
+h1{font-size:30px}
+h2{font-size:24px}
+h3{font-size:18px}
+.lead{color:var(--muted);font-size:17px;max-width:70ch}
+
+/* ---------- Buttons ---------- */
+.btn{border:2px solid var(--navy);background:#fff;color:var(--navy);padding:9px 18px;border-radius:10px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{background:var(--navy);color:#fff}
+.btn.primary{background:var(--yellow);border-color:var(--yellow);color:var(--navy)}
+.btn.primary:hover{background:#ffd43d;border-color:#ffd43d;color:var(--navy)}
+.btn.small{padding:5px 12px;font-size:13px;border-radius:8px}
+.btn.ghost{border-color:var(--line);color:var(--muted);background:#fff}
+.btn.ghost:hover{background:var(--bg);color:var(--navy);border-color:var(--navy)}
+.btn.teal{background:var(--teal);border-color:var(--teal);color:var(--navy)}
+.btn.teal:hover{background:#4fdad3;border-color:#4fdad3}
+
+/* ---------- Home ---------- */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-dark) 100%);color:#fff;border-radius:18px;padding:34px 34px 30px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.hero:after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:rgba(44,204,196,.18)}
+.hero:before{content:"";position:absolute;right:90px;bottom:-90px;width:200px;height:200px;border-radius:50%;background:rgba(255,199,9,.16)}
+.hero h1{color:#fff;font-size:32px;position:relative;z-index:1}
+.hero p{color:#dbe3f3;max-width:62ch;margin:6px 0 18px;position:relative;z-index:1;font-size:17px}
+.namebox{display:flex;align-items:center;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
+.namebox label{font-weight:600;color:var(--yellow)}
+.namebox input{border:2px solid transparent;border-radius:10px;padding:9px 14px;min-width:240px;background:#fff;color:var(--ink)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;margin-top:24px}
+.pcard{background:#fff;border:2px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;transition:.15s}
+.pcard:hover{border-color:var(--teal);transform:translateY(-2px)}
+.pcard .mono{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:20px;background:var(--navy);color:var(--yellow)}
+.pcard.ct .mono{background:var(--teal);color:var(--navy)}
+.pcard h2{margin:0}
+.pcard .by{color:var(--muted);font-size:14px;margin-top:-4px}
+.pcard ul{margin:0;padding-left:20px;color:#2a3447}
+.pcard .meta{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--bg);border:1px solid var(--line);color:var(--navy);padding:3px 10px;border-radius:999px;font-size:13px;font-weight:600}
+.chip.y{background:var(--yellow-bg);border-color:#f0d56b}
+.chip.t{background:var(--teal-bg);border-color:#9fe6e2}
+.pcard .go{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:22px}
+.how div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.how b{color:var(--navy);display:block;margin-bottom:2px}
+.how span{color:var(--muted);font-size:15px}
+.resume{background:var(--yellow-bg);border:2px solid var(--yellow);border-radius:12px;padding:12px 16px;margin-top:20px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+
+/* ---------- Call view ---------- */
+.callbar{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;box-shadow:var(--shadow)}
+.callbar .pname{font-weight:800;color:var(--navy);display:flex;align-items:center;gap:8px}
+.callbar .pname .chip{font-size:12px}
+.cb-field{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}
+.cb-field input{border:2px solid var(--line);border-radius:8px;padding:6px 10px;width:170px;color:var(--ink)}
+.cb-field input:focus{border-color:var(--teal);outline:none}
+.progress{flex:1;min-width:180px}
+.progress .lab{font-size:13px;color:var(--muted);display:flex;justify-content:space-between}
+.bar{height:10px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:3px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--yellow));border-radius:999px;transition:width .25s}
+.layout{display:grid;grid-template-columns:268px 1fr;gap:20px;margin-top:18px;align-items:start}
+.nav{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:10px;position:sticky;top:84px;box-shadow:var(--shadow)}
+.nav h4{margin:6px 8px 8px;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.nav button{width:100%;text-align:left;border:0;background:transparent;padding:9px 10px;border-radius:9px;display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:600;font-size:14.5px}
+.nav button:hover{background:var(--bg)}
+.nav button.cur{background:var(--navy);color:#fff}
+.nav .num{flex:0 0 26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;background:var(--line);color:var(--navy)}
+.nav button.cur .num{background:var(--yellow);color:var(--navy)}
+.nav button.done .num{background:var(--teal);color:var(--navy)}
+.nav button.flag .num{background:var(--red);color:#fff}
+.nav .cnt{margin-left:auto;font-size:11px;font-weight:700;background:var(--yellow-bg);color:#7a5a00;border-radius:999px;padding:1px 8px;border:1px solid #f0d56b}
+.nav button.cur .cnt{background:rgba(255,255,255,.15);color:#fff;border-color:transparent}
+.nav button.done .cnt{display:none}
+
+.main{min-width:0}
+.sec-head{display:flex;align-items:flex-start;gap:12px;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+.sec-head .kick{font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.sec-head h2{margin:2px 0 0;font-size:28px}
+.objbtn{background:var(--red-bg);border:2px solid #f2b8b5;color:var(--red);font-weight:700;border-radius:10px;padding:8px 14px}
+.objbtn:hover{background:var(--red);border-color:var(--red);color:#fff}
+
+.say{background:#fff;border:1px solid var(--line);border-left:7px solid var(--teal);border-radius:var(--radius);padding:16px 18px;margin:14px 0;box-shadow:var(--shadow)}
+.say-h{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:13px;color:var(--muted);font-weight:600}
+.pill{background:var(--navy);color:#fff;border-radius:6px;padding:2px 9px;font-size:11px;font-weight:800;letter-spacing:1.2px}
+.pill.ver{background:var(--yellow);color:var(--navy)}
+.say p{margin:0;font-size:18.5px;line-height:1.7}
+.say.ver{border-left-color:var(--yellow)}
+.say ul{margin:8px 0 0;padding-left:22px;font-size:17.5px}
+.say ul li{margin:3px 0}
+.fill{border:0;border-bottom:2px dashed var(--navy);background:var(--yellow-bg);border-radius:4px 4px 0 0;padding:1px 6px;min-width:6ch;font:inherit;font-weight:700;color:var(--navy);text-align:center}
+.fill:focus{outline:none;background:#fff0a8;border-bottom-style:solid}
+.fill:not(:placeholder-shown){background:var(--teal-bg);border-bottom-color:var(--teal)}
+.comp{background:var(--teal-bg);border-bottom:2px solid var(--teal);padding:0 6px;border-radius:4px 4px 0 0;font-weight:800;color:var(--navy)}
+.comp.empty{background:var(--yellow-bg);border-bottom:2px dashed var(--navy);font-weight:600;color:var(--muted)}
+
+.ctl{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.yn{display:flex;gap:8px;align-items:center}
+.yn .q{font-size:14px;color:var(--muted);font-weight:600;margin-right:2px}
+.yn button{border:2px solid var(--line);background:#fff;font-weight:800;border-radius:9px;padding:6px 20px;color:var(--navy)}
+.yn button:hover{border-color:var(--navy)}
+.yn button[data-b="y"].on{background:var(--green);border-color:var(--green);color:#fff}
+.yn button[data-b="n"].on{background:var(--red);border-color:var(--red);color:#fff}
+.tick{display:inline-flex;align-items:center;gap:9px;font-weight:600;color:var(--navy);cursor:pointer;font-size:15px}
+.tick input{width:20px;height:20px;accent-color:var(--green);cursor:pointer}
+.req{font-size:12px;color:#7a5a00;background:var(--yellow-bg);border:1px solid #f0d56b;border-radius:999px;padding:1px 9px;font-weight:700}
+.req.opt{color:var(--muted);background:var(--bg);border-color:var(--line)}
+.msg{margin-top:10px;border-radius:10px;padding:10px 14px;font-size:15.5px}
+.msg.no{background:var(--red-bg);border:2px solid #f2b8b5;color:#7c1a15}
+.msg.yes{background:var(--green-bg);border:1px solid #a8dcc4;color:#0e5a3d}
+
+.note{border-radius:10px;padding:11px 15px;margin:12px 0;font-size:15.5px;border:1px solid;display:flex;gap:10px}
+.note b.tag{flex:0 0 auto;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:6px;height:fit-content;margin-top:2px}
+.note.agent{background:var(--yellow-bg);border-color:#f0d56b}
+.note.agent b.tag{background:var(--yellow);color:var(--navy)}
+.note.warn{background:var(--red-bg);border-color:#f2b8b5}
+.note.warn b.tag{background:var(--red);color:#fff}
+.note.tip{background:var(--teal-bg);border-color:#9fe6e2}
+.note.tip b.tag{background:var(--teal);color:var(--navy)}
+.step-h{margin:26px 0 -4px;font-size:15px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:8px;letter-spacing:.3px}
+.step-h:before{content:"";width:26px;height:4px;background:var(--yellow);border-radius:2px}
+
+.tbl{width:100%;border-collapse:separate;border-spacing:0;margin:14px 0;background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);font-size:16px}
+.tbl th,.tbl td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl thead th{background:var(--navy);color:#fff;font-size:15px}
+.tbl thead th small{display:block;color:var(--yellow);font-weight:700}
+.tbl td.v,.tbl th.v{text-align:center;font-weight:700;color:var(--navy)}
+.tbl tr.sub td{background:var(--bg);color:var(--muted);font-weight:600;font-size:14px}
+.tbl.sel-classic .c-classic, .tbl.sel-gold .c-gold{background:var(--yellow-bg);box-shadow:inset 0 0 0 0 transparent}
+.tbl.sel-classic thead .c-classic, .tbl.sel-gold thead .c-gold{background:var(--yellow);color:var(--navy)}
+.tbl.sel-classic thead .c-classic small, .tbl.sel-gold thead .c-gold small{color:var(--navy)}
+.tblcap{font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:20px 0 -6px}
+
+.choose{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:14px 0}
+.plan{background:#fff;border:3px solid var(--line);border-radius:16px;padding:20px;text-align:left;box-shadow:var(--shadow);transition:.15s}
+.plan:hover{border-color:var(--teal)}
+.plan.active{border-color:var(--yellow);background:var(--yellow-bg)}
+.plan .pn{font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.plan .pp{font-size:38px;font-weight:800;color:var(--navy);line-height:1.1}
+.plan .pp small{font-size:15px;font-weight:600;color:var(--muted)}
+.plan ul{padding-left:18px;margin:8px 0 0;color:#2a3447}
+.plan .sel{margin-top:10px;display:none;font-weight:800;color:var(--green)}
+.plan.active .sel{display:block}
+
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin:14px 0}
+.fld{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--muted);font-weight:600}
+.fld.wide{grid-column:1/-1}
+.fld input,.fld select{border:2px solid var(--line);border-radius:9px;padding:9px 12px;background:#fff;color:var(--ink);font-size:16px;font-weight:500}
+.fld input:focus,.fld select:focus{border-color:var(--teal);outline:none}
+.fields .hd{grid-column:1/-1;font-weight:800;color:var(--navy);font-size:15px}
+
+.points .pt{display:flex;gap:14px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin:12px 0;box-shadow:var(--shadow);border-left:7px solid var(--yellow)}
+.points .pn{flex:0 0 34px;height:34px;border-radius:50%;background:var(--navy);color:var(--yellow);display:grid;place-items:center;font-weight:800}
+.points .pt p{margin:0 0 8px;font-size:17.5px}
+
+.benefit{display:flex;gap:14px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin:10px 0;box-shadow:var(--shadow);align-items:flex-start}
+.benefit .bn{flex:0 0 36px;height:36px;border-radius:10px;background:var(--teal);color:var(--navy);display:grid;place-items:center;font-weight:800}
+.benefit b{color:var(--navy);font-size:17px}
+
+.inl-obj{background:var(--red-bg);border:2px solid #f2b8b5;border-radius:var(--radius);padding:14px 16px;margin:16px 0}
+.inl-obj .t{font-weight:800;color:var(--red);font-size:14px;letter-spacing:.5px;text-transform:uppercase}
+.inl-obj .q{font-weight:800;color:var(--navy);font-size:18px;margin:2px 0 6px}
+.inl-obj p{margin:0 0 10px;font-size:17px}
+
+.footnav{display:flex;justify-content:space-between;gap:12px;margin:26px 0 8px;align-items:center;flex-wrap:wrap}
+.pendbar{background:var(--yellow-bg);border:1px solid #f0d56b;border-radius:10px;padding:9px 14px;color:#6b4e00;font-weight:600;font-size:14.5px;flex:1;min-width:200px}
+.pendbar.ok{background:var(--green-bg);border-color:#a8dcc4;color:#0e5a3d}
+
+/* summary */
+.sumgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:14px 0}
+.sumcol{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow)}
+.sumcol h4{margin:0 0 6px;color:var(--navy);font-size:15px}
+.sumrow{display:flex;gap:8px;align-items:flex-start;font-size:14.5px;padding:4px 0;cursor:pointer;border-radius:6px}
+.sumrow:hover{background:var(--bg)}
+.sumrow i{flex:0 0 20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800;background:var(--line);color:var(--muted);margin-top:1px}
+.sumrow.ok i{background:var(--green);color:#fff}
+.sumrow.bad i{background:var(--red);color:#fff}
+.verdict{border-radius:var(--radius);padding:16px 18px;margin:14px 0;font-weight:700;font-size:17px}
+.verdict.ok{background:var(--green-bg);border:2px solid #a8dcc4;color:#0e5a3d}
+.verdict.pend{background:var(--yellow-bg);border:2px solid #f0d56b;color:#6b4e00}
+.verdict.bad{background:var(--red-bg);border:2px solid #f2b8b5;color:#7c1a15}
+.notes textarea{width:100%;min-height:90px;border:2px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:6px}
+
+/* ---------- Objections ---------- */
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:14px 0}
+.search{flex:1;min-width:240px;position:relative}
+.search input{width:100%;border:2px solid var(--line);border-radius:999px;padding:11px 18px;background:#fff;font-size:16px}
+.search input:focus{border-color:var(--teal);outline:none}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.fchip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:7px 16px;font-weight:700;color:var(--navy);font-size:14.5px}
+.fchip:hover{border-color:var(--navy)}
+.fchip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.method{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:16px 0}
+.method div{background:#fff;border:1px solid var(--line);border-top:5px solid var(--yellow);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow)}
+.method b{color:var(--navy);display:block}
+.method span{color:var(--muted);font-size:14.5px}
+.tone{background:#fff;border:1px solid var(--line);border-radius:var(--radius);margin:14px 0;box-shadow:var(--shadow)}
+.tone summary{padding:13px 16px;font-weight:800;color:var(--navy);cursor:pointer}
+.tone ul{margin:0;padding:0 20px 14px 38px;color:#2a3447}
+.tone li{margin:5px 0}
+details.obj{background:#fff;border:1px solid var(--line);border-radius:var(--radius);margin:10px 0;box-shadow:var(--shadow);overflow:hidden}
+details.obj[open]{border-color:var(--teal)}
+details.obj summary{list-style:none;padding:14px 16px;display:flex;gap:12px;align-items:center;cursor:pointer;font-weight:700;color:var(--navy);font-size:17px}
+details.obj summary::-webkit-details-marker{display:none}
+details.obj summary:before{content:"+";flex:0 0 28px;height:28px;border-radius:50%;background:var(--navy);color:var(--yellow);display:grid;place-items:center;font-size:20px;font-weight:700;line-height:1}
+details.obj[open] summary:before{content:"\2212";background:var(--yellow);color:var(--navy)}
+details.obj summary:hover{background:var(--bg)}
+details.obj .badges{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.badge{font-size:11.5px;font-weight:800;border-radius:999px;padding:2px 10px;letter-spacing:.3px}
+.badge.ra{background:var(--navy);color:var(--yellow)}
+.badge.ct{background:var(--teal);color:var(--navy)}
+.obj-body{padding:4px 16px 16px;display:grid;gap:10px}
+.ostep{border-radius:10px;padding:10px 14px;background:var(--bg);border-left:5px solid var(--line)}
+.ostep b{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+.ostep p{margin:0;font-size:16.5px}
+.ostep.s1{border-left-color:var(--yellow)}
+.ostep.s2{border-left-color:var(--teal);background:var(--teal-bg)}
+.ostep.s2 p{font-size:17.5px}
+.ostep.s3{border-left-color:var(--navy)}
+.ostep .copy{margin-top:8px}
+.careful{background:var(--red-bg);border:1px solid #f2b8b5;border-radius:10px;padding:10px 14px;color:#7c1a15;font-size:15.5px}
+.empty-state{text-align:center;color:var(--muted);padding:30px}
+.backcall{background:var(--yellow-bg);border:2px solid var(--yellow);border-radius:12px;padding:10px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:6px}
+
+/* ---------- Facts ---------- */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;margin-top:10px}
+.fcard{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.fcard h2{display:flex;align-items:center;gap:10px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:8px 14px;margin:10px 0}
+.kv dt{font-weight:700;color:var(--navy)}
+.kv dd{margin:0}
+.fcard ul{padding-left:20px}
+.fcard li{margin:5px 0}
+
+/* ---------- Price list / info centre ---------- */
+.suite{background:linear-gradient(160deg,#1c3a73,var(--navy-dark));border-radius:18px;padding:22px;color:#fff;box-shadow:var(--shadow)}
+.suite-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.suite-top h2{color:#fff;margin:0;font-size:30px}.suite-top h2 em{color:var(--yellow);font-style:normal}
+.suite-top .tagp{background:var(--yellow);color:var(--navy);font-weight:800;border-radius:8px;padding:6px 12px;font-size:13px;text-transform:uppercase;text-align:center;line-height:1.2}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.pbox{border-radius:14px;padding:16px;color:#fff;border:1px solid rgba(255,255,255,.25)}
+.pbox.ns{background:#2a4a8f}.pbox.ctp{background:#17795a}.pbox.mdp{background:#6a2a86}
+.pbox h3{color:var(--yellow);letter-spacing:1px;margin:0 0 10px;font-size:18px;text-transform:uppercase}
+.pbox .sub{font-weight:700;font-size:16px}
+.pbox ul{margin:8px 0 0;padding:0;list-style:none;font-size:14.5px}
+.pbox li{margin:3px 0}.pbox li:before{content:"\2713 ";color:var(--yellow);font-weight:800}
+.opt{background:var(--yellow);color:var(--navy);border-radius:10px;padding:10px 12px;margin:8px 0}
+.opt b{display:block;font-size:15px}.opt .pr{font-size:30px;font-weight:800;line-height:1.1}.opt .pr small{font-size:13px;font-weight:600}
+.opt span{font-size:13px;font-weight:700}
+.why{background:rgba(255,255,255,.14);border-left:4px solid var(--yellow);border-radius:8px;padding:8px 12px;font-size:14px;margin-top:10px}
+.pbox .big{font-size:36px;font-weight:800;line-height:1.1}.pbox .big small{font-size:14px;font-weight:600}
+.badge-no{display:inline-block;background:#fff;color:#111;border-radius:6px;padding:2px 8px;font-size:12px;font-weight:800;margin-top:8px}
+.also{background:#fff;color:var(--ink);border-radius:14px;padding:14px 18px;margin-top:16px}
+.also h3{font-size:14px;letter-spacing:1px;text-transform:uppercase;margin:0 0 6px}
+.also .rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2px 28px}
+.also .r{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding:4px 0;font-size:15px}
+.also .r b{color:var(--navy)}
+.suite .foot{background:var(--yellow);color:var(--navy);font-weight:800;border-radius:10px;padding:8px 14px;margin-top:16px;display:flex;justify-content:space-between;font-size:14px}
+.pcard.soon{opacity:.92;border-style:dashed}
+.pcard .mono.ns{background:#2a4a8f;color:var(--yellow)}
+details.info{background:#fff;border:1px solid var(--line);border-radius:var(--radius);margin:10px 0;box-shadow:var(--shadow);overflow:hidden}
+details.info[open]{border-color:var(--teal)}
+details.info summary{list-style:none;padding:13px 16px;display:flex;gap:12px;align-items:center;cursor:pointer;font-weight:700;color:var(--navy);font-size:17px}
+details.info summary::-webkit-details-marker{display:none}
+details.info summary:before{content:"+";flex:0 0 26px;height:26px;border-radius:50%;background:var(--navy);color:var(--yellow);display:grid;place-items:center;font-size:19px;line-height:1}
+details.info[open] summary:before{content:"\2212";background:var(--yellow);color:var(--navy)}
+details.info summary:hover{background:var(--bg)}
+details.info .badges{margin-left:auto;display:flex;gap:6px}
+.badge.ns{background:#2a4a8f;color:var(--yellow)}.badge.all{background:var(--line);color:var(--navy)}
+.info-body{padding:2px 18px 16px;font-size:16px}
+.info-body p{margin:6px 0}
+.info-body ul{margin:6px 0;padding-left:22px}.info-body li{margin:3px 0}
+.info-body .tbl{box-shadow:none}
+.mini{width:100%;border-collapse:collapse;font-size:14.5px;margin:8px 0}
+.mini td,.mini th{border-bottom:1px solid var(--line);padding:5px 8px;text-align:left}
+.mini th{background:var(--bg);color:var(--navy)}
+.mini td:last-child{text-align:right;font-weight:700;color:var(--navy);white-space:nowrap}
+.flagbox{background:var(--yellow-bg);border:2px solid #f0d56b;border-radius:12px;padding:10px 14px;margin:12px 0;font-size:15px}
+
+/* ---------- Reader (plain script view) ---------- */
+.rtop{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.rtitle h1{margin:0}.rtitle .by{color:var(--muted);font-size:14.5px}
+.rtools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.jump{position:sticky;top:72px;z-index:20;background:rgba(245,247,250,.96);backdrop-filter:blur(4px);display:flex;gap:6px;overflow-x:auto;padding:8px 0;margin-bottom:6px;border-bottom:1px solid var(--line)}
+.jump button{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:999px;padding:6px 14px;font-weight:600;font-size:14px;white-space:nowrap}
+.jump button:hover{background:var(--navy);color:#fff}
+.jump button.upsell{background:var(--yellow);border-color:var(--yellow);font-weight:800}
+.upcall{background:var(--yellow-bg);border:2px solid var(--yellow);border-radius:12px;padding:14px 18px;margin:22px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:17px}
+.reader{max-width:860px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px 36px 36px;box-shadow:var(--shadow)}
+.rsec{padding-top:26px;border-top:1px solid var(--line);margin-top:18px}
+.rsec:first-child{border-top:0;margin-top:0}
+.rsec h2{font-size:24px;display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.rsec h2 span{flex:0 0 34px;height:34px;border-radius:50%;background:var(--yellow);color:var(--navy);display:grid;place-items:center;font-size:16px}
+.rline{margin:14px 0}
+.rline p{margin:0;font-size:19px;line-height:1.75}
+.rline.ver{border-left:5px solid var(--yellow);padding-left:16px;background:var(--yellow-bg);border-radius:0 10px 10px 0;padding-top:8px;padding-bottom:8px}
+.vtag{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#7a5a00;margin-bottom:2px}
+.rline ul{margin:6px 0 0;padding-left:24px;font-size:18px}
+.cue{font-size:14.5px;color:var(--muted);font-style:italic;margin-top:4px}
+.rnote{background:var(--bg);border-left:4px solid var(--teal);padding:8px 14px;border-radius:0 8px 8px 0;font-size:15px;margin:12px 0;color:#2a3447}
+.rnote.warn{border-left-color:var(--red);background:var(--red-bg);color:#7c1a15}
+.rnote.agent{border-left-color:var(--yellow)}
+h3.rh{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:22px 0 -4px}
+.rpoints{padding-left:26px;font-size:18px;line-height:1.7}.rpoints li{margin:10px 0}
+.fields.flat{box-shadow:none;border:1px dashed var(--line);background:var(--bg);padding:12px}
+.choose.small .plan{padding:12px 16px;text-align:center}.choose.small .pp{font-size:28px}
+.reader .tbl{box-shadow:none}
+.rend{margin-top:30px;text-align:center}
+@media (max-width:700px){.reader{padding:6px 16px 24px}.rline p{font-size:17.5px}.jump{top:64px}}
+
+/* ---------- Notepad ---------- */
+.npbtn{position:fixed;right:18px;bottom:18px;z-index:60;background:var(--yellow);color:var(--navy);border:2px solid var(--navy);border-radius:999px;padding:11px 20px;font-weight:800;box-shadow:0 4px 16px rgba(16,34,74,.3);display:flex;align-items:center;gap:8px}
+.npbtn:hover{background:#ffd43d}
+.npbtn.has:after{content:"";width:9px;height:9px;border-radius:50%;background:var(--teal);border:2px solid var(--navy)}
+.np{position:fixed;right:18px;bottom:76px;z-index:61;width:min(380px,calc(100vw - 36px));background:#fff;border:2px solid var(--navy);border-radius:16px;box-shadow:0 10px 36px rgba(16,34,74,.35);display:flex;flex-direction:column;overflow:hidden}
+.np-h{background:var(--navy);color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.np-h b{font-size:15px}.np-h b small{color:var(--yellow);font-weight:600;margin-left:6px}
+.np-h button{background:transparent;border:0;color:#fff;font-size:22px;line-height:1;padding:0 4px}
+.np textarea{border:0;resize:vertical;min-height:240px;max-height:60vh;padding:12px 14px;font-size:16px;line-height:1.5;font-family:inherit;color:var(--ink);background:#fffdf0;background-image:repeating-linear-gradient(transparent,transparent 23px,#f0e6b4 24px)}
+.np textarea:focus{outline:none}
+.np-f{display:flex;gap:8px;align-items:center;padding:8px 12px;border-top:1px solid var(--line);flex-wrap:wrap}
+.np-f span{font-size:12px;color:var(--muted);margin-left:auto}
+@media print{.npbtn,.np{display:none}}
+.footer{max-width:1240px;margin:20px auto 40px;padding:0 20px;color:var(--muted);font-size:13.5px;text-align:center}
+.footer b{color:var(--navy)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:10px 20px;border-radius:999px;font-weight:700;opacity:0;pointer-events:none;transition:.2s;z-index:100;border:2px solid var(--yellow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .nav{position:static;display:flex;overflow-x:auto;gap:4px;padding:8px}
+  .nav h4{display:none}
+  .nav button{width:auto;white-space:nowrap;flex:0 0 auto}
+  .tabs{margin-left:0;width:100%}
+  .brand-title{display:none}
+  .say p{font-size:17px}
+  .kv{grid-template-columns:1fr}
+  .cb-field input{width:130px}
+}
+@media print{.topbar,.nav,.footnav,.callbar{display:none}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <button class="brand" data-act="home" aria-label="Innovate Script Assistant home">
+      <svg aria-label="Innovate" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2406.2 558.06">
+  <defs>
+    <style>
+      .lg1 {
+        fill: #fff;
+      }
+
+      .lg2 {
+        fill: #ffc709;
+      }
+    </style>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <g>
+        <path class="lg1" d="M255.52,208.67c0-13.2-10.7-23.9-23.9-23.9h-64.55c-13.2,0-23.9,10.7-23.9,23.9v116.94c31.11-1.05,69.77-6.73,112.35-16.26v-100.68Z"/>
+        <path class="lg1" d="M540.52,353.47l22.13,26.58v-143.12c-32.29,19.04-70.34,37.96-112.35,55.69v20.34l55.79,86.12,34.42-45.62Z"/>
+        <path class="lg1" d="M143.17,377.26v61.45h8.76l56.66-71.48c-22.93,4.44-44.88,7.82-65.42,10.03Z"/>
+        <path class="lg1" d="M249.76,358.35c-12.98,3.07-25.76,5.87-38.23,8.32l27.96,10.92,10.27-19.24Z"/>
+        <path class="lg1" d="M392.02,324.86l5.44-11.37c-2.76,1.02-5.53,2.03-8.32,3.04l2.88,8.32Z"/>
+        <path class="lg1" d="M374.98,275.59c.86-.29,1.73-.57,2.59-.87,10.32-3.51,20.36-7.07,30.16-10.67v-105.28h-19.76l19.76-25.45v-6.32c0-12.3-9.97-22.27-22.27-22.27h-67.81c-12.3,0-22.27,9.97-22.27,22.27v145.87l47.72-89.41,31.88,92.13Z"/>
+        <path class="lg1" d="M562.66,28.71c0-15.86-12.85-28.71-28.71-28.71h-54.93c-15.86,0-28.71,12.85-28.71,28.71v102.29l21.57,27.78h-21.57v88.75c44.8-18.39,82.65-37.26,112.35-54.91V28.71Z"/>
+        <path class="lg2" d="M655.45,144.61l17.6,22.82-.1-71.33-61.93,44.8,32.01-.04c-21.34,35.81-107.33,86.81-220.31,129.54l11.02,17.01c113.52-46.45,198.25-101.26,221.7-142.8Z"/>
+        <path class="lg2" d="M404.4,298.97l12.65-26.45c-11.7,4.36-23.68,8.63-35.89,12.78-.84.29-1.69.57-2.53.85l6.86,19.83c6.38-2.31,12.68-4.65,18.91-7.02Z"/>
+        <path class="lg2" d="M69.05,315.91c-6.07-17.88,18.04-44.19,62.29-72.73v-31.54C43.38,258.84-9.32,307.49,1.37,338.92c13.23,38.94,119.68,39.59,255.41,6.27l15.01-28.12c-109.72,26.14-193.06,27.3-202.74-1.16Z"/>
+        <polygon class="lg1" points="540.9 369.23 505.49 416.15 421.33 286.26 405.22 319.95 539.92 532.1 544.98 408.7 674.57 529.78 540.9 369.23"/>
+        <polygon class="lg1" points="404.45 321.55 390.57 350.6 341.18 207.85 244.03 389.88 212.8 377.68 79.35 546.03 204.46 437.86 213.36 558.06 313.73 309.08 304.62 369.73 330.62 301.73 358.12 380.52 332.49 268.57 359.48 326.3 462.54 546.97 404.45 321.55"/>
+      </g>
+      <g>
+        <g>
+          <rect class="lg1" x="755.01" y="145.71" width="49.87" height="215.5"/>
+          <polygon class="lg1" points="1004.36 276.55 897.22 145.71 855.97 145.71 855.97 361.21 905.23 361.21 905.23 230.37 1012.67 361.21 1053.62 361.21 1053.62 145.71 1004.36 145.71 1004.36 276.55"/>
+          <polygon class="lg1" points="1153.95 230.37 1261.39 361.21 1302.34 361.21 1302.34 145.71 1253.08 145.71 1253.08 276.55 1145.95 145.71 1104.7 145.71 1104.7 361.21 1153.95 361.21 1153.95 230.37"/>
+          <path class="lg1" d="M1575.69,253.46c0-64.34-50.18-111.44-117.91-111.44s-117.91,47.41-117.91,111.44,49.87,111.44,117.91,111.44,117.91-47.1,117.91-111.44ZM1457.78,322.42c-38.48,0-67.42-28.02-67.42-68.96s28.94-68.96,67.42-68.96,67.42,28.01,67.42,68.96-28.94,68.96-67.42,68.96Z"/>
+          <polygon class="lg1" points="1813.33 145.71 1763.77 145.71 1697.27 299.64 1631.7 145.71 1577.83 145.71 1670.8 361.21 1720.05 361.21 1813.33 145.71"/>
+          <path class="lg1" d="M1891.81,145.71l-96.05,215.5h51.1l19.09-46.18h100.06l19.09,46.18h52.33l-96.36-215.5h-49.26ZM1881.96,277.17l34.17-82.5,34.17,82.5h-68.34Z"/>
+          <polygon class="lg1" points="2024.79 186.35 2093.75 186.35 2093.75 361.21 2143.62 361.21 2143.62 186.35 2212.58 186.35 2212.58 145.71 2024.79 145.71 2024.79 186.35"/>
+          <polygon class="lg1" points="2402.2 185.73 2402.2 146.92 2402.2 145.71 2400.91 145.71 2239.34 145.71 2239.34 361.21 2406.2 361.21 2406.2 321.19 2288.91 321.19 2288.91 271.31 2388.96 271.31 2388.96 232.53 2288.91 232.53 2288.91 185.73 2402.2 185.73"/>
+        </g>
+        <g>
+          <path class="lg1" d="M797.43,455.49c4.62-2.48,7.7-7.01,7.7-13.17,0-9.49-7.7-15.57-22.07-15.57h-28.05v59.87h29.76c15.39,0,23.43-5.99,23.43-16.25,0-7.78-4.36-12.83-10.78-14.88ZM766.13,435.48h15.74c7.7,0,12.06,2.74,12.06,8.3s-4.36,8.21-12.06,8.21h-15.74v-16.51ZM784.09,477.9h-17.96v-17.28h17.96c8.38,0,12.91,2.65,12.91,8.64s-4.53,8.64-12.91,8.64Z"/>
+          <path class="lg1" d="M860.82,464.04c0,9.15-5.05,13.77-12.49,13.77-6.75,0-10.69-3.93-10.69-12.23v-24.63h-10.69v26.09c0,13.77,7.95,20.18,19.67,20.18,5.9,0,11.29-2.23,14.71-6.41v5.82h10.18v-45.67h-10.69v23.09Z"/>
+          <path class="lg1" d="M900.33,454.21c0-2.99,3.08-5.13,9.58-5.13,4.36,0,8.72.86,13.08,3.42l4.11-8.12c-4.11-2.48-11.03-3.94-17.1-3.94-12.32,0-20.1,5.65-20.1,14.28,0,18.22,28.22,10.01,28.22,18.73,0,3.16-2.82,5.05-9.58,5.05-5.73,0-11.89-1.88-15.91-4.53l-4.11,8.12c4.11,2.91,11.72,5.13,19.33,5.13,12.83,0,20.7-5.56,20.7-14.11,0-17.87-28.22-9.66-28.22-18.9Z"/>
+          <rect class="lg1" x="946.01" y="440.95" width="10.69" height="45.67"/>
+          <path class="lg1" d="M951.4,420.6c-3.93,0-6.84,2.82-6.84,6.41s2.91,6.41,6.84,6.41,6.84-2.91,6.84-6.67c0-3.51-2.91-6.16-6.84-6.16Z"/>
+          <path class="lg1" d="M1004.86,440.44c-6.67,0-12.23,2.23-15.74,6.41v-5.9h-10.18v45.67h10.69v-23.09c0-9.15,5.13-13.77,12.74-13.77,6.84,0,10.86,3.93,10.86,12.06v24.8h10.69v-26.17c0-13.77-8.12-20.01-19.07-20.01Z"/>
+          <path class="lg1" d="M1066.02,440.44c-13.6,0-23.61,9.75-23.61,23.35s9.92,23.43,25.23,23.43c7.87,0,14.28-2.57,18.39-7.44l-5.73-6.59c-3.25,3.34-7.27,4.96-12.4,4.96-7.96,0-13.52-4.28-14.8-10.95h35.83c.09-1.03.17-2.31.17-3.17,0-14.28-9.75-23.6-23.09-23.6ZM1053.02,460.11c1.03-6.67,6.07-11.12,13-11.12s12.06,4.53,12.91,11.12h-25.91Z"/>
+          <path class="lg1" d="M1114.17,454.21c0-2.99,3.08-5.13,9.58-5.13,4.36,0,8.72.86,13.08,3.42l4.11-8.12c-4.11-2.48-11.03-3.94-17.11-3.94-12.31,0-20.09,5.65-20.09,14.28,0,18.22,28.22,10.01,28.22,18.73,0,3.16-2.82,5.05-9.58,5.05-5.73,0-11.89-1.88-15.91-4.53l-4.11,8.12c4.11,2.91,11.72,5.13,19.33,5.13,12.83,0,20.7-5.56,20.7-14.11,0-17.87-28.22-9.66-28.22-18.9Z"/>
+          <path class="lg1" d="M1166.43,454.21c0-2.99,3.08-5.13,9.58-5.13,4.36,0,8.72.86,13.08,3.42l4.11-8.12c-4.11-2.48-11.03-3.94-17.1-3.94-12.32,0-20.1,5.65-20.1,14.28,0,18.22,28.22,10.01,28.22,18.73,0,3.16-2.82,5.05-9.58,5.05-5.73,0-11.89-1.88-15.91-4.53l-4.11,8.12c4.11,2.91,11.72,5.13,19.33,5.13,12.83,0,20.7-5.56,20.7-14.11,0-17.87-28.22-9.66-28.22-18.9Z"/>
+          <path class="lg1" d="M1273.27,435.65c6.24,0,11.63,2.31,16,7.01l7.18-6.76c-5.56-6.5-13.94-10.01-23.69-10.01-18.39,0-32.07,12.91-32.07,30.79s13.68,30.79,31.99,30.79c9.83,0,18.22-3.51,23.78-10.01l-7.18-6.84c-4.36,4.79-9.75,7.1-16,7.1-12.4,0-21.38-8.72-21.38-21.04s8.98-21.04,21.38-21.04Z"/>
+          <path class="lg1" d="M1333.14,440.44c-14.03,0-24.29,9.66-24.29,23.35s10.26,23.43,24.29,23.43,24.37-9.75,24.37-23.43-10.18-23.35-24.37-23.35ZM1333.14,478.07c-7.7,0-13.51-5.56-13.51-14.28s5.81-14.28,13.51-14.28,13.6,5.56,13.6,14.28-5.82,14.28-13.6,14.28Z"/>
+          <path class="lg1" d="M1401.91,440.44c-6.67,0-12.23,2.23-15.74,6.41v-5.9h-10.18v45.67h10.69v-23.09c0-9.15,5.13-13.77,12.74-13.77,6.84,0,10.86,3.93,10.86,12.06v24.8h10.69v-26.17c0-13.77-8.12-20.01-19.07-20.01Z"/>
+          <path class="lg1" d="M1449.38,454.21c0-2.99,3.08-5.13,9.58-5.13,4.36,0,8.72.86,13.08,3.42l4.11-8.12c-4.11-2.48-11.03-3.94-17.11-3.94-12.31,0-20.09,5.65-20.09,14.28,0,18.22,28.22,10.01,28.22,18.73,0,3.16-2.82,5.05-9.58,5.05-5.73,0-11.89-1.88-15.91-4.53l-4.11,8.12c4.11,2.91,11.72,5.13,19.33,5.13,12.83,0,20.7-5.56,20.7-14.11,0-17.87-28.22-9.66-28.22-18.9Z"/>
+          <path class="lg1" d="M1528.59,464.04c0,9.15-5.05,13.77-12.49,13.77-6.75,0-10.69-3.93-10.69-12.23v-24.63h-10.69v26.09c0,13.77,7.95,20.18,19.67,20.18,5.9,0,11.29-2.23,14.71-6.41v5.82h10.18v-45.67h-10.69v23.09Z"/>
+          <rect class="lg1" x="1561.52" y="423.16" width="10.69" height="63.46"/>
+          <path class="lg1" d="M1615.15,478.41c-4.1,0-6.33-2.4-6.33-6.84v-21.72h12.23v-8.55h-12.23v-10.43h-10.69v10.43h-7.53v8.55h7.53v21.98c0,10.09,5.73,15.39,15.73,15.39,3.85,0,7.7-1.03,10.26-3.08l-2.99-7.61c-1.62,1.28-3.76,1.88-5.99,1.88Z"/>
+          <path class="lg1" d="M1646.54,420.6c-3.93,0-6.84,2.82-6.84,6.41s2.91,6.41,6.84,6.41,6.84-2.91,6.84-6.67c0-3.51-2.91-6.16-6.84-6.16Z"/>
+          <rect class="lg1" x="1641.15" y="440.95" width="10.69" height="45.67"/>
+          <path class="lg1" d="M1700,440.44c-6.67,0-12.23,2.23-15.74,6.41v-5.9h-10.18v45.67h10.69v-23.09c0-9.15,5.13-13.77,12.74-13.77,6.84,0,10.86,3.93,10.86,12.06v24.8h10.69v-26.17c0-13.77-8.12-20.01-19.07-20.01Z"/>
+          <path class="lg1" d="M1776.46,447.03c-3.76-4.53-9.41-6.59-15.82-6.59-13.09,0-23.09,8.72-23.09,21.98s10.01,22.15,23.09,22.15c6.16,0,11.54-1.97,15.31-6.07v2.4c0,9.24-4.45,13.85-14.54,13.85-6.33,0-12.83-2.14-16.85-5.47l-4.79,8.04c5.22,4.28,13.68,6.5,22.24,6.5,15.99,0,24.63-7.53,24.63-24.12v-38.74h-10.18v6.07ZM1762.27,475.51c-8.12,0-13.94-5.3-13.94-13.09s5.81-12.91,13.94-12.91,13.86,5.22,13.86,12.91-5.81,13.09-13.86,13.09Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
+      <span class="brand-title">Script Assistant<small>Sales agent call guide</small></span>
+    </button>
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="scripts" role="tab">Scripts<span class="dot" id="liveDot" hidden></span></button>
+      <button class="tab" data-tab="objections" role="tab">Objection Help</button>
+      <button class="tab" data-tab="facts" role="tab">Info Centre</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<footer class="footer"><b>Innovate</b> &middot; Where Strategy Meets People And Growth. &middot; Always follow the latest approved script. Nothing typed here is saved or sent anywhere.</footer>
+<button class="npbtn" id="npBtn" aria-expanded="false" aria-controls="np">Notepad</button>
+<section class="np" id="np" hidden aria-label="Notepad">
+  <div class="np-h"><b>Notepad<small>for this call</small></b><button id="npClose" aria-label="Close notepad">&times;</button></div>
+  <textarea id="npText" placeholder="Type notes here: callback times, client requests, answers to remember..." spellcheck="true"></textarea>
+  <div class="np-f"><button class="btn small" id="npCopy">Copy</button><button class="btn small ghost" id="npClear">Clear</button><span>Cleared when you close this page</span></div>
+</section>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+"use strict";
+/* =====================================================================
+   DATA: plans
+===================================================================== */
+const NSPLANS = { ew:{name:"Early Warning",price:239}, ewst:{name:"Early Warning + StarTag",price:259} };
+const PLANS = { classic:{name:"Classic",price:99}, gold:{name:"Gold",price:149} };
+
+const CORE = [
+  ["Engine","R 5 000","R 10 000"],
+  ["Gearbox","R 4 000","R 8 000"],
+  ["Differential","R 4 000","R 8 000"],
+  ["Turbo assembly (factory fitted)","R 2 500","R 5 000"]
+];
+const EXTRAS = [
+  ["Instalment payment protection","R 500","R 1 000"],
+  ["Insurance excess payment","R 500","R 1 000"],
+  ["Towing benefit","R 500","R 1 000"],
+  ["Hotel accommodation","R 500","R 1 000"],
+  ["Car rental","R 500","R 1 000"],
+  ["Uber benefit","R 200","R 300"],
+  ["Pothole Guru","R 1 000","R 1 500"],
+  ["Battery Guru","R 500","R 1 000"]
+];
+
+/* =====================================================================
+   DATA: scripts
+===================================================================== */
+const S    = (text,o={}) => ({t:"say",text,...o});
+const NOTE = (text,kind="agent") => ({t:"note",text,kind});
+const H    = text => ({t:"h",text});
+const LIST = items => ({t:"list",items});
+const FIELDS = (fields,title) => ({t:"fields",fields,title});
+
+const SCRIPTS = {
+/* ---------------------------- REPAIR ASSIST ---------------------------- */
+ra: {
+  id:"ra", short:"RA", name:"Repair Assist", label:"Repair Assist (on its own)", by:"Innovate, on behalf of Repair Assist",
+  version:"Updated October 2026",
+  blurb:"Mechanical and electrical breakdown assistance. Two plans: Classic R99 and Gold R149 per month (incl. VAT).",
+  bullets:["Month-to-month plan, not a fixed contract","Choose Classic or Gold on the call","A short, friendly debit order confirmation"],
+  sections:[
+  { title:"Introduction", blocks:[
+    S("Hello! You are speaking to [[agent|your name]], I am calling you from **Innovate** on behalf of **Repair Assist**."),
+    S("For quality and verification purposes, this call is recorded.",{read:"ra_rec",label:"Told the client the call is recorded",tick:"Said to client"}),
+    S("I would like to tell you about an exciting product designed to give you peace-of-mind motoring at a very affordable monthly price."),
+    NOTE("Smile, slow down and use the client's name. If they sound rushed, ask if now is a good time. If they push back, tap the red Objection Help button at the top right.","tip")
+  ]},
+  { title:"Create Need", blocks:[
+    S("Mr/Mrs [[client|client's surname]], if your car broke down today, would you have the cash in hand to repair it? Many South Africans struggle to find money for an unexpected mechanical repair, and it often happens at the worst possible time."),
+    NOTE("Ask the question, then stop talking. Let the client answer. Listen for budget worries or a past breakdown story and use it later when you close.","tip"),
+    {t:"obj",id:"ra_warranty"}
+  ]},
+  { title:"The Solution", blocks:[
+    S("Repair Assist provides repair assistance if your vehicle experiences a qualifying mechanical or electrical failure. Each listed component has a Rand Value Benefit Limit."),
+    S("There are now **two options**, so you can choose the level that best suits your budget."),
+    {t:"plans"},
+    S("Classic is only **R99 per month** (incl. VAT). Gold is **R149 per month** (incl. VAT) and provides the higher component limits."),
+    S("Just so you know, these amounts are the **most Repair Assist can contribute per approved request** for that component. Everything is subject to the plan wording."),
+    {t:"extras"},
+    S("Both options also include **Pothole Guru**, which assists where a tyre, mag or rim is damaged by a pothole, subject to its terms and the applicable benefit limit."),
+    S("There's no set limit on how many requests you can make. To keep things fair, a new request isn't taken within **2 000 km** of your previous one."),
+  ]},
+  { title:"Offer the Choice", blocks:[
+    NOTE("Closing technique: offer a choice between two options, not a yes or no. Say it, then be quiet and let the client choose.","tip"),
+    S("Mr/Mrs [[client|client's surname]], you can choose the lower-cost Classic option at **R99 per month**, or the higher-limit Gold option at **R149 per month**. Which option would suit you better?"),
+    {t:"choose"},
+    {t:"plans"}
+  ]},
+  { title:"Vehicle Details", blocks:[
+    S("Please confirm and capture the following vehicle details:"),
+    FIELDS([
+      {k:"make",l:"Vehicle make"},{k:"model",l:"Model"},{k:"year",l:"Year"},{k:"reg",l:"Registration number"},
+      {k:"vin",l:"VIN / chassis number",wide:1},{k:"km",l:"Current kilometre reading"},
+      {k:"mwarranty",l:"Currently under manufacturer warranty?",type:"select",opts:["","Yes","No"]}
+    ]),
+    S("Do you prefer the **1st, 15th, 25th or last day** of the month as the debit date? Any other day is acceptable."),
+    NOTE("Confirm the first debit date for the current month and the monthly debit date for future months.","agent"),
+    FIELDS([
+      {k:"debitdate",l:"Monthly debit date (e.g. 25th)"},{k:"firstmonth",l:"First debit month"}
+    ])
+  ]},
+  { title:"A Few Simple Things", blocks:[
+    S("Before we set things up, [[client|client's name]], there are just a few simple things to keep your plan in good shape:"),
+    {t:"points",items:[
+      {k:"ra_p1",l:"Keep your service up to date",text:"**Keep your service up to date.** If your last service was late, no problem: just get it done within **30 days** and send us the proof and your km reading within **45 days**."},
+      {k:"ra_p2",l:"Use an approved workshop",text:"**Service at a manufacturer-approved dealer or an RMI-registered workshop.** If you'd like to use another workshop, just check with us first."},
+      {k:"ra_p3",l:"Contact us before any repair",text:"**If something goes wrong, stop driving and WhatsApp us before any repair starts**, so we can approve it. That way we can pay the workshop directly."},
+      {k:"ra_p4",l:"Plan starts after 90 days",text:"**Your plan becomes active 90 days after your first successful debit.** So it's best to join while your car is running well."},
+      {k:"ra_p5",l:"Month-to-month",text:"**There's no long contract.** The plan simply carries on month to month while your monthly debit is paid, and you can cancel in writing with 31 days' notice."}
+    ]},
+    S("Does all of that sound fair to you?")
+  ]},
+  { title:"Banking Details", blocks:[
+    S("Wonderful, [[client|client's name]], now to seal the deal, let's take down your banking details. Who do you bank with… Capitec, FNB…?"),
+    NOTE("Probing for an answer helps to overcome objections at banking. Capture the answers on the client portal or application form.","agent"),
+    S("Super, and is this a cheque or savings account?"),
+    S("Great! And is this [[bank|bank name]] account in your name?"),
+    S("May I have the account number and the branch code?"),
+    S("For convenience, debit orders are normally run on your salary date. Which date works best for you: the 1st, 15th, 25th or the last day of the month, or another day?"),
+    S("Perfect, and shall we start this month or from next month?")
+  ]},
+  { title:"Debit Order Confirmation", blocks:[
+    NOTE("Keep it friendly and in your own words, but cover every point and get a clear **YES** where marked. The call must be recorded.","agent"),
+    S("[[client|client's name]], for the record, this call is recorded. I'm now going to confirm your monthly debit order with you, and your answers here are your agreement for the debit."),
+    H("1. WHO IS PAYING"),
+    S("Let me confirm the details of the person paying for the plan. Your ID number is [[idno|ID number]], your name is [[payername|initials, name & surname]] and your cell number is [[cell|cell number]]. Is that all correct?",{yn:"ra_d1",label:"Payer details confirmed (YES)",no:"Correct the details before continuing."}),
+    H("2. THE DEBIT ORDER"),
+    S("Do you agree that **Motordrive SA** may collect **{{price}} a month** from your bank account for your Repair Assist **{{plan}}** plan? It will never be more than what we've agreed. Yes?",{yn:"ra_d2",label:"Debit authorisation (clear YES)",no:"Without a clear YES there is no debit order. Don't continue the sale. Explain again, or end the call politely."}),
+    H("3. THE DETAILS"),
+    S("The money will come from the account in the name of [[holder|account holder name]], ending in [[acc4in|last 4 digits]], at [[bank|bank name]]."),
+    S("It will be taken on the [[debitdate|e.g. 25th]] of each month, starting in [[firstmonth|month]]. If that day is a weekend or public holiday, it's taken on the next business day. And if your salary comes in later in December, we can move that month's date to your pay day."),
+    S("On your bank statement, you'll see [[inscription|statement inscription]]."),
+    S("Your Repair Assist {{plan}} reference number is [[refno|reference number]]. (If it isn't ready yet: “It will be sent to you and linked to this debit order.”)"),
+    S("One more thing: if there isn't enough money in the account on the day, we may try again until the funds are available."),
+    H("4. FINAL CONFIRMATION"),
+    S("Do you understand and are you happy with this debit order arrangement?",{yn:"ra_d11",label:"Final confirmation (second clear YES)",no:"A second clear YES is needed. Don't close the sale without it."}),
+    S("Thank you, your debit order is all set. If you have any questions or need to reach us, please call [[ccnumber|call centre number]].")
+  ]},
+  { title:"Close & Consents", blocks:[
+    S("Are you happy with everything that was explained to you?",{yn:"ra_happy",label:"Client happy with explanation",req:false,no:"Find out what is still unclear and explain it again before ending the call."}),
+    H("OPT-IN STATEMENT"),
+    S("Mr/Mrs [[client|client's surname]], may we contact you from time to time to let you know about special new offers that may benefit you?",{yn:"ra_optin",label:"Marketing opt-in",req:false,yes:"Record the opt-in on the system.",no:"Record that the client declined marketing contact."}),
+    H("REFERRAL STATEMENT"),
+    S("Mr/Mrs [[client|client's surname]], please refer us to a few people whom you think may benefit from Repair Assist and stand a chance to win a **tank of fuel** in our monthly draw."),
+    H("REVIEW REQUEST"),
+    NOTE("If the client wishes to leave a positive review, ask them to email it to **helpme@repairassist.co.za** for possible publication on the Repair Assist website.","tip"),
+    S("Mr/Mrs [[client|client's surname]], we are delighted to welcome you to the Repair Assist family. Thank you for trusting us to help take care of your vehicle needs. We wish you many kilometres of peace-of-mind motoring!"),
+    {t:"summary"}
+  ]}
+  ]
+},
+
+/* ------------------------------ CARTRACK ------------------------------ */
+ct: {
+  id:"ct", short:"CT", name:"Cartrack", label:"Cartrack", by:"Motordrive SA, on behalf of Cartrack",
+  version:"Verification script with contract terms",
+  blurb:"Vehicle tracking and recovery. Campaign product: Quick Gold with Cartrack Tag at R239 per month incl. VAT.",
+  bullets:["36 month rental contract, free installation","Verbal contract, every YES must be audible","DebiCheck mandate sent to the client's phone"],
+  sections:[
+  { title:"Introduction", blocks:[
+    S("Good day, is this Mr./Mrs. [[client|client's name]]?"),
+    S("[[client|client's name]], you're speaking to [[agent|your name]], calling you from **Motordrive SA** on behalf of **Cartrack**."),
+    S("How are you doing today?"),
+    NOTE("Opportunity to engage the client, and ask any questions necessary. If it is not a convenient time, ask for a better time, capture the callback and end politely.","agent"),
+    S("[[client|client's name]], our records show that you are driving a [[vehicle|vehicle make and model]]. Is that correct?"),
+    S("**If \"Yes\":** That's great. Do you currently have a tracking device fitted? (Move to the Pitch.)"),
+    S("**If \"No\":** Not a problem, [[client|client's name]]. Can you confirm if you own a vehicle? If the client doesn't own a vehicle: “Thank you for confirming. Would you know of anyone who might be interested that I can call?” Capture any referral and end the call politely."),
+    S("[[client|client's name]], please note, this call is recorded for security purposes.")
+  ]},
+  { title:"Pitch Landing & Pitch", blocks:[
+    H("PITCH LANDING"),
+    S("[[client|client's name]], many people don't realise how vulnerable their vehicles are until it's too late. I'm sure you've heard about car thefts and hijackings in your area. And while you may think it won't happen to you, it only takes one time. Not to mention, the rising cost of insurance premiums can hit your wallet hard if you don't have a way to protect your car."),
+    H("PITCH"),
+    S("So, [[client|client's name]], that's where Cartrack comes in. Their vehicle tracker gives you live tracking, so you can locate your car in real time from your phone. Even if the worst happens, Cartrack's own recovery teams, on the ground and in the air, can be dispatched to track and recover your vehicle."),
+    S("Not only does this give you peace of mind, but if your car is ever involved in an accident, the unit can alert the control room automatically, which can help you get help faster."),
+    S("Before we proceed, is your vehicle in full working order, with no issues with battery, wiring, mechanical function, or starting?",{yn:"ct_order",label:"Vehicle in full working order (clear YES)",no:"STOP. A clear YES must be received to continue. Do not tick Yes to get past this. Thank the client and end the call politely."}),
+    NOTE("A clear YES must be received to continue.","warn")
+  ]},
+  { title:"Product, Price & Benefits", blocks:[
+    S("Based on your vehicle, I would like to offer you a product called the **Quick Gold with Cartrack Tag**. This device has the following benefits, amongst many more features that you can enjoy:"),
+    {t:"benefits",items:[
+      {n:1,h:"Live tracking and recovery",d:"Live tracking online and on the mobile app (trip history, route replay, geofences, logbook), plus **stolen vehicle recovery** through the Quick Gold unit, with 24/7 vehicle location through the control room."},
+      {n:2,h:"Cartrack Tag wireless backup",d:"A small wireless tag that **does not rely on GPS**, so it can still help find the vehicle if the GPS is jammed. Battery lasts up to **5 years**, no cables.",hint:"The Tag on its own shows rough location through the control room only. It has no speed, trip or driver data and no recovery by itself. Never promise recovery from the Tag alone."},
+      {n:3,h:"Alerts, crash detection and backup battery",d:"Automated alerts (idling, over speeding, harsh braking/turning), power event notifications, crash detection, CarWatch, and a back-up battery that runs the unit for up to **72 hours** if the vehicle battery is disconnected.",hint:"Protector is NOT part of Quick Gold (it is a separate R75 per month add-on). Don't offer it as included."}
+    ]},
+    NOTE("Your November price list shows a \"NO recovery warranty\" badge on this product, while the training manual lists stolen vehicle recovery under Quick Gold. Until your team leader confirms the exact wording, say recovery is provided through the Quick Gold unit and do not promise a result.","warn"),
+    H("PRICE"),
+    S("So, [[client|client's name]], we can have the **Quick Gold with Cartrack Tag** installed in your [[vehicle|vehicle make and model]] for only **R239 incl VAT** a month, with free installation."),
+    S("With this option your prized possession will be protected. There's no better time to secure your car than now. Vehicle thefts are on the rise, and the sooner you're protected, the better."),
+    {t:"obj",id:"ct_price"}
+  ]},
+  { title:"Close", blocks:[
+    S("[[client|client's name]], Cartrack can have your unit installed at work, or at home, are you usually at work in the day? We can arrange for fitment there."),
+    NOTE("The client may object: objection handle, and ask the close question again. Remember to take their answer down, so you do not have to ask again when capturing. A safe, private space is needed for a mobile fitment.","agent"),
+    S("[[client|client's name]], would you like to go ahead with the Quick Gold with Cartrack Tag at R239 a month?",{yn:"ct_choice",label:"Client wants to proceed",no:"Handle the objection using Objection Help. If the client still declines, thank them and end the call politely."}),
+    S("Wonderful! [[client|client's name]], let's go ahead and finalise your details. I will require some information like vehicle details, personal and banking information, as well as emergency contacts. Now, before we continue…")
+  ]},
+  { title:"Capturing", blocks:[
+    NOTE("Capture the answers on the third-party client portal or client application form. The verification call later repeats this information back to the client.","agent"),
+    H("PERSONAL"),
+    S("[[client|client's name]], please will you confirm your first and last name for me."),
+    S("May I ask, [[client|client's name]], your title, are you Miss, Mr, maybe Doctor?"),
+    S("Wonderful, and your ID number is…?"),
+    S("Superb, may I use this cell number or another?"),
+    S("Great; and will you please let me know an email address to send your documents to? And would you prefer to receive messages by email or SMS?"),
+    H("RESIDENTIAL"),
+    S("[[client|client's name]], may I please have your street address."),
+    S("And is your residential address the same as your postal?"),
+    H("VEHICLE"),
+    S("[[client|client's name]], please may I have the registration number for your [[vehicle|vehicle make and model]]?"),
+    S("Confirm the make of the vehicle."),
+    S("Confirm the vehicle model."),
+    S("What colour is your [[vehicle|vehicle make and model]]?"),
+    S("And may I have the VIN or chassis number? You'll find it on your licence disc or your registration papers."),
+    H("EMERGENCY CONTACTS"),
+    S("[[client|client's name]], who are the two people you would like contacted if you are in an emergency?"),
+    S("And please choose a password that you will remember for emergencies.")
+  ]},
+  { title:"Premium & Banking", blocks:[
+    H("PREMIUM"),
+    S("Superb, so we are about rounding up now. I just want to tell you about the costs involved."),
+    S("You have opted for the **Quick Gold with Cartrack Tag** for your [[vehicle|vehicle make]]. This is at **R239 incl VAT** a month, with free installation. You did say you want cover to start [[startdate|date from the Close question]]. Please confirm that this is correct?",{yn:"ct_prem",label:"Premium confirmed (clear YES)",no:"By selecting No to this question, this sale cannot be completed. Objection handle, and ask again."}),
+    NOTE("Get a clear \"Yes\".","warn"),
+    H("BANKING"),
+    S("Wonderful, now to seal the deal, let's take down your banking details. Who do you bank with… Capitec, FNB…?"),
+    NOTE("Probing for an answer helps to overcome the objections you could get at banking.","agent"),
+    S("Super, and is this a cheque or savings account?"),
+    S("Great! And is this [[bank|bank name]] account in your name? It needs to be a private account in your name."),
+    S("For convenience, debit orders are normally run on your salary date. Please confirm the date, and which day of the month you'd prefer the debit to go off?"),
+    H("SALE CONFIRMATION"),
+    S("[[client|client's name]], thank you for taking the time to talk to me. Please confirm you have agreed to have the **Quick Gold with Cartrack Tag** installed in your [[vehicle|vehicle make and model]] for **R239** a month?",{yn:"ct_sale",label:"Sale confirmation (clear YES)",no:"By selecting No to this question, this sale cannot be completed. Objection handle and ask again."}),
+    NOTE("Get a clear \"Yes\". Now move to the verification: the information you just captured is confirmed back to the client.","warn")
+  ]},
+  { title:"Verification & Contract Terms", blocks:[
+    S("We will now deal with the Cartrack portion of the contract for your tracking unit. This call is recorded for security and quality purposes and will form the basis of your contract should you proceed. Motordrive SA is a registered financial services provider, and a copy of this call can be made available to you upon request.",{ver:1}),
+    H("CONTRACT TERMS"),
+    S("The contract duration is **36 months** (free installation). The monthly fee is **R239.00 incl VAT** for the first year. A **10% escalation** applies in Year 2 and a further **10%** in Year 3. Thereafter, any increase will be aligned with the **CPI** (Consumer Price Index).",{ver:1,read:"ct_terms",label:"Contract duration, fee and escalation read",tick:"Read to client"}),
+    S("**Early cancellation fee:**\nIndividual clients: **R2,650 incl. VAT** or the balance of the contract (whichever is lesser).\nBusiness clients: the **full balance** of the contract is payable.",{ver:1,read:"ct_cancel",label:"Early cancellation fee read",tick:"Read to client"}),
+    NOTE("Be upfront about the 36 months, the escalations and the cancellation fee. Your training manual says Year 3 is a further 10% on the Year 2 rate; the script adds that later increases follow CPI. Read the script as written.","agent"),
+    NOTE("**Business clients:** do NOT voice log. Send the Commercial Subscriber Form, Business Verification Form, CK document, directors' ID and a bank confirmation letter (under 3 months old). This verification script is for individual clients.","warn"),
+    H("AUTHORITY CONFIRMATION"),
+    S("Can I continue?"),
+    S("Please answer YES or NO to the following: “I confirm that I have the necessary right and authority to enter into this agreement and indemnify Cartrack from any claim arising from misrepresentation of my authority.”",{ver:1,yn:"ct_auth",label:"Authority confirmation (YES)",no:"STOP. If NO, end the call. Do not continue."}),
+    NOTE("If NO, end the call. If YES, continue.","warn")
+  ]},
+  { title:"Verify: Client Details", blocks:[
+    S("Please confirm: is your full name as per your ID **[[fullname|full name]]**?",{yn:"ct_name",label:"Full name confirmed"}),
+    S("Please confirm: is your ID number **[[idno|ID number]]**?",{yn:"ct_id",label:"ID number confirmed"}),
+    S("Is your email **[[email|email address]]** and cellphone number **[[cell|cell number]]**?",{yn:"ct_contact",label:"Email and cell confirmed"}),
+    S("Is your physical address **[[address|physical address]]**?",{yn:"ct_addr",label:"Physical address confirmed"}),
+    S("Preferred communication method: **Email or SMS?**"),
+    FIELDS([{k:"comm",l:"Preferred communication",type:"select",opts:["","Email","SMS"]}])
+  ]},
+  { title:"Verify: Banking & DebiCheck", blocks:[
+    S("Please confirm: will the debit come from the account ending in **[[accend|last 4 digits]]**?",{ver:1,yn:"ct_acc",label:"Debit account confirmed"}),
+    S("**Banking requirements.** The account:",{ver:1,read:"ct_bankreq",label:"Banking requirements explained",tick:"Read to client",list:["Must be a private account (not business)","Must allow debit orders","Must be linked to your ID","Must be active within the last month"]}),
+    S("Confirm your salary date is **[[salary|salary date]]**.",{yn:"ct_salary",label:"Salary date confirmed"}),
+    S("Preferred debit date is **[[debitdate|debit date]]**.",{yn:"ct_debit",label:"Debit date confirmed"}),
+    S("In order to debit your account, the banks require Cartrack to send you a **DebiCheck mandate** via a notification (pop-up). This notification will be sent to the smartphone registered with your bank when your application is being processed.\nPlease ensure your mobile banking app or SMS notifications are active to receive and approve the mandate promptly.\nThere is a **once-off DebiCheck administration fee of R19**, which will be charged with your first subscription payment.",{ver:1,read:"ct_debicheck",label:"DebiCheck and R19 fee explained",tick:"Read to client"})
+  ]},
+  { title:"Verify: Vehicle & Contacts", blocks:[
+    S("Let's confirm your vehicle details."),
+    S("Registration: **[[reg|registration]]**",{yn:"ct_reg",label:"Registration confirmed"}),
+    S("Make / model / description: **[[makemodel|make and model]]**",{yn:"ct_make",label:"Make and model confirmed"}),
+    S("VIN / chassis number: please state the VIN for accuracy. **[[vin|VIN]]**",{yn:"ct_vin",label:"VIN stated and captured"}),
+    NOTE("If the client sends the VIN by message, you must call back and verify it on a recorded line.","agent"),
+    S("Please confirm your two emergency contacts are **[[ec1|contact 1]]** and **[[ec2|contact 2]]**.",{yn:"ct_ec",label:"Emergency contacts confirmed"}),
+    S("Please provide a password you will remember for emergencies.",{read:"ct_pw",label:"Emergency password recorded",tick:"Password recorded"}),
+    NOTE("Record the password on the client portal or application form. Don't repeat it out loud.","agent")
+  ]},
+  { title:"Verify: Final Declaration", blocks:[
+    S("I will now continue to read you the declaration. Please note that I refer to you as the client. Please audibly answer Yes or No to each of the following:",{ver:1}),
+    NOTE("Each answer must be audible on the recording. A No on any item means do not proceed with the sale as it stands.","warn"),
+    ...[
+      ["ct_f1","Debit order collection","I agree that Cartrack may collect all charges via debit order monthly."],
+      ["ct_f2","Fees payable in advance","I agree that fees are payable in advance and a pro-rata fee will be debited after installation to cover the rest of the month and thereafter the full subscriptions will then be debited in advance on my selected date each month."],
+      ["ct_f3","Vehicle available for installation","I agree the onus is on me to ensure my vehicle is available for unit installation."],
+      ["ct_f4","24 hours' notice / R600 call-out","I agree that cancelling a fitment requires 24 hours' notice, or I will be liable for a R600 callout fee."],
+      ["ct_f5","Terms and Conditions on website","I acknowledge that Cartrack's full Terms and Conditions are on their website and will be shared after this agreement."],
+      ["ct_f6","Installation proof shared with insurer","I allow Cartrack to share installation proof with my insurer or any relevant party."],
+      ["ct_f7","Verbal agreement accepted","I hereby accept this verbal agreement and confirm the Cartrack Terms and Conditions will be contractually binding on me."]
+    ].map((a,i)=>S(`**${i+1}.** ${a[2]}`,{ver:1,yn:a[0],label:a[1],no:"Client said No. Do not proceed with the sale as it stands. Find out the concern, or end the call politely."}))
+  ]},
+  { title:"Fitment & Close", blocks:[
+    S("Thank you for your patience, Mr./Mrs. [[client|client's name]]. This concludes our verbal agreement."),
+    H("FITMENT"),
+    S("You will receive both an **SMS and an email** from Cartrack with a link to confirm the installation location. Please ensure the written address and map location are correct to avoid any delays.",{read:"ct_install",label:"Installation SMS/email link explained",tick:"Read to client"}),
+    S("**Cartrack will call you within 3 days** to schedule your installation."),
+    NOTE("Say it exactly like this. Earlier fitments may be available but don't overpromise. Scheduling can change during the day.","agent"),
+    H("CLOSE"),
+    S("Do you have any questions?"),
+    S("Thank you again for choosing Cartrack. Have a wonderful day! You have been speaking to [[agent|your name]] from Motordrive SA.")
+  ]}
+  ]
+}
+};
+
+SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assist Upsell", by:"Innovate, on behalf of Netstar",
+  version:"Approved script V004 (29.04.2026)",
+  blurb:"Early Warning with StarTag back-up at R259 per month (or standard Early Warning at R239). Based on the approved Netstar script.",
+  bullets:["Sales pitch, capturing, banking and fitment booking","Premium objection answer built in","36 month rental, debit order on salary date"],
+  sections:[
+  { title:"Introduction", blocks:[
+    NOTE("Approved Netstar script V004 (TRACKME Early Warning System with StarTag Backup). The script says calling \"from Cubix\": it is changed to **Innovate** here.","agent"),
+    S("Good day, is this [[client|client's name]]?"),
+    S("[[client|client's name]], you're speaking to [[agent|your name]], calling you from **Innovate** on behalf of **Netstar**."),
+    S("How are you doing today?"),
+    NOTE("Opportunity to engage the client, and ask any questions necessary.","agent"),
+    S("[[client|client's name]], our records show that you are driving a [[vehicle|vehicle make and model]] for more than 3 years, and that you have a tracking device. Is that correct?"),
+    S("**If \"Yes\":** That's great, I'm glad you are aware of the need for a tracking device. (Move to the Pitch.)"),
+    S("**If \"No\":** Not a problem, [[client|client's name]]. I am calling to assist going forward by making sure the car you have worked so hard for is protected. (Move to the Pitch.)"),
+    S("[[client|client's name]], please note, this call is recorded for security purposes.",{read:"ns_rec",label:"Recording statement",tick:"Said to client"})
+  ]},
+  { title:"Pitch Landing & Pitch", blocks:[
+    H("PITCH LANDING"),
+    S("[[client|client's name]], now you are currently out of contract, meaning your equipment is more than 3 years old. It also means you are on a month-to-month contract, paying a current price for an older model of unit. Many people don't realise how vulnerable their vehicles are until it's too late."),
+    S("I'm sure you've heard about car thefts in your area. And while you may think it won't happen to you, a recent survey showed that one in ten vehicles will be stolen in their lifetime. Not to mention, the rising cost of insurance premiums can hit your wallet hard if you don't have a way to protect your car."),
+    H("PITCH"),
+    S("So, [[client|client's name]], that's where Netstar comes in. Their vehicle tracker gives you 24/7 tracking and recovery, so you can locate your car in real time from your phone or computer. Even if the worst happens, we can dispatch our recovery teams to track and recover your vehicle."),
+    S("Not only does this give you peace of mind, but it can also lower your insurance premiums as many insurers offer discounts for having a tracking device installed. Plus, if your car is ever involved in an accident or is stolen, we can assist with minimising the stress and hassle you are already going through.")
+  ]},
+  { title:"The Product & Price", blocks:[
+    H("NETSTAR EARLY WARNING"),
+    S("Their **Early Warning** is the top of the range product."),
+    S("You will receive a **tag** with this unit which must be kept with your keys as it will arm and disarm the unit automatically. If the tag is not present, the unit will send out a “Theft” signal."),
+    S("There is also a **panic button** for hijacking situations."),
+    S("**Jamming Resist** technology notifies Netstar if the unit signals are tampered with, this includes Car Park Jamming Alerts if the unit detects remote locking jamming. You are thus reminded to ensure that your vehicle is locked."),
+    S("The unit also transmits driving behaviour data such as location, speed, harsh acceleration, and harsh braking."),
+    H("STARTAG BACK-UP"),
+    S("This offer comes standard with an additional **back-up device** for added safety. This back-up device has a battery that lasts a maximum of three years, and you **MUST replace this unit after 3 years**."),
+    NOTE("Read the back-up device lines only for the Early Warning + StarTag option (R259). The standard Early Warning without the StarTag is R239.","agent"),
+    H("PRICE"),
+    {t:"nschoose"},
+    S("So, [[client|client's name]], we can have the **{{nsname}}** installed in your [[vehicle|vehicle make and model]], for only **{{nsprice}}**."),
+    NOTE("Price taken from the Innovate November price list. The approved script shows R199.00 as an example only. Check with your team leader if the price you are told to quote is different.","warn"),
+    S("With this option your prized possession will be protected. There's no better time to secure your car than now. Vehicle thefts are on the rise, and the sooner you're protected, the better.")
+  ]},
+  { title:"Benefits", blocks:[
+    S("**Vehicle Recovery:** If your car is stolen, Netstar can help track and recover it to get it back as quick as possible."),
+    S("**Peace of Mind:** You'll always know where your vehicle is, whether you're at home or away."),
+    S("**Insurance Savings:** Many insurance companies offer discounts for vehicles with a tracking device installed, so you could save on premiums."),
+    S("**24/7 Monitoring:** Netstar provides round-the-clock tracking, giving you constant protection no matter the time of day."),
+    S("**Emergency Assistance:** In case of an accident or emergency, Netstar can help by locating your car, which can be crucial for getting help fast."),
+    S("**Preventative Alerts:** You get alerts for things like unauthorised movements helping you prevent theft or misuse before it happens."),
+    S("**Convenient Access:** You can track your vehicle from your phone or computer anytime, anywhere."),
+    S("You can view your trip reports, location, fitment certificates and more on the website **my.netstar.co.za** or by downloading and registering on the **MyNetstar app**. You will also be able to view your account details and functionality of your unit."),
+    {t:"obj",id:"ns_premium"}
+  ]},
+  { title:"Close", blocks:[
+    S("[[client|client's name]], Netstar technicians can have your unit installed at work, or at home, are you usually at work in the day? We can arrange for fitment there."),
+    NOTE("The client may object: objection handle, and ask the close question again. Remember to take their answer down, so you do not have to ask again when capturing.","agent"),
+    S("Wonderful! [[client|client's name]], let's go ahead and finalise your details. Now, before we continue…")
+  ]},
+  { title:"Capturing", blocks:[
+    NOTE("Capture the answers on the third-party client portal or client application form.","agent"),
+    H("PERSONAL"),
+    S("[[client|client's name]], please will you confirm your first and last name for me."),
+    S("May I ask, [[client|client's name]], your title, are you Miss, Mr, maybe Doctor?"),
+    S("Wonderful, and your ID number is…?"),
+    S("Superb, may I use this cell number or another?"),
+    S("Great; and will you please let me know an email address to send your documents to?"),
+    H("RESIDENTIAL"),
+    S("[[client|client's name]], may I please have your street address."),
+    S("And is your residential address the same as your postal?"),
+    H("VEHICLE"),
+    S("[[client|client's name]], please may I have the registration number for your [[vehicle|vehicle make and model]]?"),
+    S("Confirm the make of the vehicle."),
+    S("Confirm the vehicle model."),
+    S("[[client|client's name]], what colour is your [[vehicle|vehicle make and model]]?"),
+    H("EMERGENCY CONTACT"),
+    S("[[client|client's name]], who is the person you would like contacted if you are in an emergency?")
+  ]},
+  { title:"Premium & Banking", blocks:[
+    H("PREMIUM"),
+    S("Superb, so we are about rounding up now. I just want to tell you about the costs involved."),
+    S("You have opted for the **{{nsname}}** for your [[vehicle|vehicle make]]. This is at a standard cost of **{{nsprice}}**. You did say you want cover to start [[startdate|date from the Close question]]. Please confirm that this is correct?",{ver:1,yn:"ns_prem",label:"Premium confirmed (clear YES)",no:"By selecting No to this question, this quotation cannot be completed. Objection handle, and ask again."}),
+    NOTE("Get a clear \"Yes\".","warn"),
+    H("BANKING"),
+    S("Wonderful, now to seal the deal, let's take down your banking details. Who do you bank with… Capitec, FNB…?"),
+    NOTE("Probing for an answer helps to overcome the objections you could get at banking.","agent"),
+    S("Super, and this is a cheque or savings account?"),
+    S("Great! And this [[bank|bank name]] account is in your name?"),
+    S("For convenience, debit order runs are normally on your salary date. Please confirm the date?"),
+    H("BANKING CLAUSES (READ ONCE BANKING DETAILS HAVE BEEN RECEIVED)"),
+    S("Are these your own banking details? If not, we require written authority from the account holder to debit the account.",{ver:1,yn:"ns_own",label:"Own banking details",no:"We require written authority from the account holder to debit the account."}),
+    S("Do you authorise **Netstar** to debit your account monthly from the banking details supplied?",{ver:1,yn:"ns_auth",label:"Debit authorisation (YES)"}),
+    S("Your first debit order will be higher as it will include your monthly premium for [[firstmonth|month]] and a pro rata amount for the remainder of this month. (Advise client if applicable.)",{ver:1}),
+    S("You will receive an email which will include your first invoice together with an invoice for the pro-rata amount which is calculated from the date of installation. (Advise client if applicable.)",{ver:1}),
+    S("Your account will be debited on [[debitdate|debit date]].",{ver:1})
+  ]},
+  { title:"Rental Terms & Sale Confirmation", blocks:[
+    H("RENTAL TERMS AND CONDITIONS"),
+    S("The rental option is a **36-month contract**.",{ver:1}),
+    S("If you wish to cancel your contract for any reason, you may do so upon **20 (twenty) working days written notice** to us and by payment of a **reasonable settlement fee**.",{ver:1}),
+    S("Netstar will make every reasonable effort to recover your vehicle, however **recovery is not guaranteed**.",{ver:1}),
+    S("Please download the MyNetstar app to view the functionality of your unit or call us every 6 months to test.",{ver:1}),
+    S("If you do need any additional information, you can call Netstar's Customer Support Centre on **0860 12 24 36** or directly from your APP.",{ver:1}),
+    S("Full terms and conditions are available on the Netstar website, and they will also mail you a link, please read and let us know of any queries prior to fitment.",{ver:1}),
+    S("Please note that by having the unit installed, you agree to all the Terms and Conditions. **This call forms the basis of your contract with Netstar.**",{ver:1}),
+    H("SALE CONFIRMATION"),
+    S("[[client|client's name]], thank you for taking the time to talk to me. Please confirm you have agreed to have the **{{nsname}}** installed in your [[vehicle|vehicle make and model]] for **{{nsprice}}** a month?",{ver:1,yn:"ns_sale",label:"Sale confirmation (clear YES)",no:"By selecting No to this question, this quotation cannot be completed. Objection handle and ask again."}),
+    NOTE("Get a clear \"Yes\".","warn")
+  ]},
+  { title:"Booking & Fitment", blocks:[
+    S("You mentioned you would like installation done at [[fitplace|work or home, from the Close question]]. Netstar can install **Monday to Friday from 8am to 5pm**. Please will you give me the street address for [[fitplace|work or home]]?"),
+    H("BOOKING TOOL"),
+    NOTE("• Confirm the correct address is on the fitment case.\n• Insert the case number into the booking tool to check available fitment slots.\n• If no availability, inform the client that the Netstar fitment team will contact them to schedule the fitment.\n• When slots are available, offer two options.\n• If neither option works, offer the next closest time slot.","agent"),
+    S("“Netstar can fit the device on [[slot1|e.g. Thursday at 08:00]] or [[slot2|e.g. Friday at 10:00]]. Which do you prefer?”"),
+    H("REQUIREMENTS TO STATE"),
+    S("“Netstar need a safe, private area for the fitment. Do you have a secure area?”"),
+    S("“The vehicle must be in working condition for activation and testing. Can you confirm this?”"),
+    S("“If in a basement, ensure there's enough space to open the door and adequate lighting.”"),
+    S("“Fitment will take approximately [[hours|hours]] hours.” (Obtain from the booking tool.)"),
+    S("Wonderful, so that has been confirmed for the [[fitdate|date]], at [[fitaddress|address]]. A scheduler will contact you if the need arises."),
+    {t:"upcall"}
+  ]},
+  { title:"Repair Assist Upsell (optional)", blocks:[
+    NOTE("**Optional upsell.** Use your own words. This is a talking guide, not a word for word script: cover the key points, then get a clear YES on the debit order. If the client says no, thank them and go to the Conclusion.","agent"),
+    H("INTRODUCE IT"),
+    S("[[client|client's name]], before I let you go, may I quickly tell you about one more product that goes well with your tracker? It's called **Repair Assist**, and it helps you pay for mechanical repairs if your car breaks down."),
+    H("CREATE THE NEED"),
+    S("If your car broke down today, would you have the cash in hand to repair it? Many South Africans struggle to find money for an unexpected mechanical repair, and it often happens at the worst possible time."),
+    {t:"obj",id:"ra_warranty"},
+    H("KEY POINTS (SAY IT IN YOUR OWN WORDS)"),
+    {t:"list",items:["Helps pay for repairs after an **unforeseen mechanical or electrical breakdown** of the **engine, gearbox, differential and factory-fitted turbo**.","Two options: **Classic R99** a month or **Gold R149** a month (incl. VAT). Gold has higher limits.","Extras included: towing, hotel or car rental, Uber, Pothole Guru, Battery Guru and more.","**Any age and any mileage** qualifies. It is a **month-to-month** plan, not a fixed contract.","The limits are the **maximum per approved request**, not a cash pool."]},
+    {t:"plans"},
+    H("A FEW SIMPLE THINGS TO MENTION"),
+    {t:"list",items:["Keep the service up to date. If the last service was late, just get it done **within 30 days** and send proof and the km reading **within 45 days**.","Service at a manufacturer-approved dealer or an **RMI-registered** workshop.","If something goes wrong, **WhatsApp Repair Assist before any repair starts** so it can be approved.","The plan becomes active **90 days after the first successful debit**, so it is best to join while the car is running well.","It isn't a warranty or insurance, and it doesn't cover faults that were already there, or normal servicing and wear and tear.","Check the vehicle is eligible (taxis, hire, modified vehicles and certain luxury makes are excluded). The list is in the Info Centre."]},
+    H("THE CHOICE"),
+    S("You can choose the lower-cost **Classic at R99 a month**, or the higher-limit **Gold at R149 a month**. Which one would suit you better?"),
+    {t:"choose"},
+    H("DEBIT ORDER (COVER EACH POINT AND GET A CLEAR YES)"),
+    NOTE("Your own words are fine, but every point below must be covered on the recorded call. The Repair Assist debit order is separate from the Netstar one.","warn"),
+    {t:"list",items:["Confirm the payer's ID number, full name and cell number.","The client authorises **Motordrive SA** to debit **{{price}} a month** for the Repair Assist **{{plan}}** plan, and the amount will never exceed what was agreed.","Confirm the bank account (the same one as the Netstar debit, or another one in the client's name).","The debit date, the month of the first payment, and that a weekend or public holiday debit goes on the next business day.","The reference that will show on the bank statement.","If there are insufficient funds, the account may be tracked until the funds are available.","Ask for a final confirmation that the client understands and agrees."]},
+    S("Do you authorise **Motordrive SA** to debit your account **{{price}}** a month for your Repair Assist **{{plan}}** plan? Yes or no?",{yn:"ns_ra_auth",label:"Repair Assist debit authorisation (YES)",no:"No clear YES means no Repair Assist sale. Thank the client and continue to the Conclusion."}),
+    S("Do you confirm that you understand and agree to this debit order authorisation?",{yn:"ns_ra_final",label:"Repair Assist final confirmation (YES)",no:"A second clear YES is needed. Don't close this sale without it."})
+  ]},
+  { title:"Conclusion", blocks:[
+    S("[[client|client's name]], congratulations on officially becoming the newest member of the Netstar family! We are glad to have you on board! Stay safe!"),
+    S("As a new client, you'll also get access to **Help Me**, South Africa's largest emergency crisis management app. It gives you a panic button on your phone: press it in any emergency and the crisis centre will call you back, locate you, and send help like an ambulance, breakdown services, police, or even armed response."),
+    S("A Help Me agent will contact you in the next few days to get you set up… Ok?")
+  ]}
+  ]
+};
+
+/* =====================================================================
+   DATA: objections (South African terms)
+   prods: ra = Repair Assist, ct = Cartrack
+===================================================================== */
+const OBJ = [
+/* ---------- both products ---------- */
+{id:"ns_premium",prods:["ns"],title:"Price uncertainty / premium (approved script answer)",tags:"price premium expensive cost value uncertain",
+ ack:"I understand that price is always an important consideration, and it's great that you're thinking about the investment.",
+ say:"But when you look at the long-term benefits, it's less about the upfront cost and more about the value Netstar can provide. Think of the loss if your car is stolen: how much would that impact your pocket? Not to mention the time and frustration of dealing with insurance? Netstar is designed to give you 24/7 peace of mind. Plus, it could even lower your car insurance premiums, saving you money in the long run.\n\nWith Netstar, you're not just paying for a service, you're buying the security of your vehicle and the protection of your assets. The cost of replacing a stolen vehicle, or the stress of dealing with it, could be much higher than the price of our tracker. And if your car is recovered, the tracker essentially pays for itself.",
+ back:"Ask the close question after addressing the objection.",
+ avoid:"Use only when there is uncertainty about the price. Don't promise a premium discount: say insurers may offer one."},
+{id:"ns_tag",prods:["ns"],title:"Why must I keep the tag with my keys?",tags:"tag keys arm disarm theft signal early warning",
+ ack:"Good question, it's what makes Early Warning work.",
+ say:"With **Early Warning** you get a tag that must be kept with your keys. It **arms and disarms the unit automatically**. If the tag isn't present, the unit sends out a **\"Theft\" signal**. Just keep it on your key ring.",
+ back:"Go back to the Early Warning description, then the price.",
+ avoid:"Don't promise the vehicle will be recovered. Recovery is not guaranteed."},
+{id:"ns_recovery",prods:["ns"],title:"Will you definitely recover my car if it's stolen?",tags:"recovery guaranteed stolen hijack theft",
+ ack:"With crime the way it is, I understand why you want to be sure.",
+ say:"I'll be honest with you: Netstar will make every reasonable effort to recover your vehicle, but **recovery is not guaranteed**. What the unit does is give early warning and the information to act fast.",
+ back:"Return to the product and the benefits.",
+ avoid:"Never guarantee recovery."},
+{id:"ns_36",prods:["ns"],title:"36 months is too long / what if I cancel?",tags:"36 months contract cancel settlement fee notice 20 working days",
+ ack:"That's a fair concern, and I'd rather you hear it now.",
+ say:"The rental option is a **36 month contract**. If you wish to cancel for any reason, you can do so on **20 working days written notice** and by paying a **reasonable settlement fee**. The full terms are on the Netstar website and they'll mail you a link before the fitment.",
+ back:"Move on to the banking details if they're comfortable.",
+ avoid:"Don't quote a settlement amount: it isn't in the script. Say the full terms are on the Netstar website, or ask your team leader."},
+{id:"ns_why259",prods:["ns"],title:"Why should I pay R259 and not R239?",tags:"startag r259 r239 difference backup jam removed",
+ ack:"Good question, let me explain the difference.",
+ say:"Both options have the full Early Warning protection. The extra R20 a month adds the **StarTag back-up device**, a second wireless tracker for added safety. Its battery lasts a maximum of three years and the unit must be replaced after 3 years.",
+ back:"Ask which option suits them.",
+ avoid:"Don't say the StarTag battery lasts longer than three years."},
+{id:"ns_insurer",prods:["ns"],title:"Will it lower my insurance? Does my insurer need it?",tags:"insurance insurer discount premium policy compliance",
+ ack:"That's a good thing to check.",
+ say:"Many insurers offer discounts for having a tracking device installed, so it could lower your premiums. I'd suggest you confirm with your insurer exactly what they offer. Netstar will also give you a fitment certificate that you can see on my.netstar.co.za or the MyNetstar app.",
+ back:"Return to the benefits and the close question.",
+ avoid:"Don't promise a discount or tell the client what their policy says."},
+{id:"g_notint",prods:["ra","ct","ns"],title:"I'm not interested",tags:"no not interested hang up",
+ ack:"No problem at all, Sir/Ma'am, I appreciate you being straight with me.",
+ say:"Can I ask, is it that you've already got this sorted, or is it just that the timing is off? Most people tell me that until they hear what it works out to per day. Give me 30 seconds, and if it's still not for you, I'll leave you in peace.",
+ back:"One polite attempt only. If they agree, return to the Create Need question (Repair Assist) or the vehicle question (Cartrack).",
+ avoid:"Don't argue or repeat the whole pitch. If the second \"no\" is clear, thank them and end the call. Record the outcome."},
+{id:"g_busy",prods:["ra","ct","ns"],title:"I'm busy right now / call me later",tags:"busy later callback driving work",
+ ack:"Eish, I hear you, and I'm sorry for catching you at a bad time.",
+ say:"When is a better time, today or tomorrow? I'll call you then, it only takes a few minutes. What time suits you, and is this the best number to reach you on?",
+ back:"Capture the exact day and time on the system, confirm it back to the client, and end warmly.",
+ avoid:"Don't say \"I'll call you just now\". In South Africa that can mean five minutes or next week. Always give a real time. Never carry on if the client is driving."},
+{id:"g_number",prods:["ra","ct","ns"],title:"How did you get my number?",tags:"popia privacy number data where",
+ ack:"That's a fair question and you have every right to ask it.",
+ say:"I'm calling from Innovate on behalf of Repair Assist (or Motordrive SA on behalf of Cartrack). I'd rather not guess where your details came from. What I can do is note your preference right now, and if you'd like to know more about the source, I'll pass the question to my team leader so someone can follow up with you properly.",
+ back:"If the client is comfortable, carry on. If they don't want calls, record a do-not-contact request and end politely.",
+ avoid:"Never make up a source for the number. Be honest or escalate to your team leader."},
+{id:"g_scam",prods:["ra","ct","ns"],title:"Is this a scam?",tags:"scam fraud trust legit real company",
+ ack:"I'm glad you asked. With so many scams going around in South Africa, you must be careful.",
+ say:"This call is recorded, and I'll tell you exactly who we are and what you'd be signing up for before anything is agreed. I will never ask for your card PIN or your online banking password. You don't have to agree to anything on this call, and you can ask me to slow down or repeat anything. For Cartrack: Motordrive SA is a registered financial services provider, and a copy of the call is available on request.",
+ back:"Offer to repeat the company details, then go back to where you were in the script.",
+ avoid:"Don't pressure anyone who feels unsafe. If they want to check you out first, let them."},
+{id:"g_think",prods:["ra","ct","ns"],title:"Let me think about it",tags:"think later decide not sure",
+ ack:"Absolutely, it's a decision worth thinking about.",
+ say:"So I can help you properly, what is the one thing you'd still want to think over? Is it the price, how it works, or something I haven't explained well enough? Let me answer that now so you don't have to chase me for the answer later.",
+ back:"Isolate the real concern, handle it, then ask the closing question again (Classic or Gold for Repair Assist, vehicle details for Cartrack). If they still need time, agree a specific callback day and time.",
+ avoid:"Don't accept an open-ended \"I'll call you back\". Agree a date and time that you will call them."},
+{id:"g_partner",prods:["ra","ct","ns"],title:"I need to speak to my wife / husband / partner first",tags:"wife husband spouse partner permission authority decide",
+ ack:"Ja, that makes sense. It's a decision for the household.",
+ say:"Is your wife/husband available now? I'm happy to explain it again to both of you, it only takes a few minutes. If not, when are you both home so I can call back and do it properly?",
+ back:"Either speak to both of them now, or book a callback with a day and time. The person who owns the bank account must be the one who authorises the debit on the recorded call.",
+ avoid:"Don't sign anyone up who says they don't have the authority. The Cartrack authority confirmation must be a clear YES, otherwise end the call."},
+{id:"g_email",prods:["ra","ct","ns"],title:"Just send me an email / WhatsApp the details",tags:"email whatsapp send info details brochure",
+ ack:"Sure, happy to help with that.",
+ say:"I'm happy to share more. The one thing is that the debit order authorisation has to be recorded on this call, it can't be done by email. So let me answer any questions you have right now, and if you're comfortable, we can take it from there.",
+ back:"Answer their questions, then return to the choice or the next step in the script.",
+ avoid:"Don't say you'll \"send a quote\" and drop the lead. If they really want it in writing, agree a callback time before you hang up."},
+{id:"g_bank",prods:["ra","ct","ns"],title:"I don't give my banking details over the phone",tags:"bank details debit order safe fraud account otp",
+ ack:"That's very sensible. I'd say the same, there's so much fraud out there.",
+ say:"This line is recorded for your protection and mine, and the debit authorisation is read to you word for word so nothing is hidden. You're free to stop at any point. With Cartrack, your bank also sends a DebiCheck request to your phone, so nothing is taken unless you approve it in your banking app.",
+ back:"If they are comfortable, continue with the banking details step. If not, offer a callback so they can have the details to hand.",
+ avoid:"Never ask for a card PIN, an online banking password or an OTP. Only the details the script asks for."},
+
+/* ---------- Repair Assist ---------- */
+{id:"ra_warranty",prods:["ra"],title:"But I already have a warranty",tags:"warranty already have covered plan",
+ ack:"That's good, Sir/Ma'am, it shows you're already thinking ahead.",
+ say:"Repair Assist can **complement** an existing warranty. If there is a shortfall on an underlying warranty claim, you may submit a Repair Assist Benefit Access Request for a component covered by Repair Assist, subject to the applicable benefit limit and the plan terms and conditions.",
+ back:"Return to the plan options: \"Let me show you what the two options cover, and you can see how it fits with what you already have.\"",
+ avoid:"Don't say it replaces or doubles their warranty. It only complements it, within the benefit limits and plan terms."},
+{id:"ra_price",prods:["ra"],title:"It's too expensive / I can't afford it",tags:"expensive price cost afford money budget tight cheap",
+ ack:"I hear you, boss. Everything has gone up, fuel, groceries, rates, so I won't pretend money isn't tight.",
+ say:"That's exactly why Classic is only **R99 a month**, which is about **R3.30 a day**. One unexpected engine or gearbox repair can run into thousands, and Classic can contribute **up to R5 000 towards the engine** and **R4 000 towards the gearbox** per approved request, subject to the plan terms. And if R99 is still a stretch, there's no shame in that. Shall we start with Classic?",
+ back:"Go back to the choice: \"Classic at R99, or Gold at R149?\" Only two prices exist, so don't invent a third.",
+ avoid:"Don't offer discounts or a custom price. Don't say the limits are a cash pool: they are maximums per approved request."},
+{id:"ra_reliable",prods:["ra"],title:"My car is reliable / I never have breakdowns",tags:"reliable never breakdown good car new",
+ ack:"That's great, and I hope it stays that way for you.",
+ say:"The thing about breakdowns is they never send a warning. It's usually on a Friday afternoon, or when you're far from home. It works like insurance: you hope you never use it, but if a big component fails, you're not left with the whole bill. For R99 a month you have that peace of mind.",
+ back:"Return to Create Need: \"If it did happen tomorrow, would you have the cash in hand to fix it?\"",
+ avoid:"Don't scare the client or suggest their car will definitely fail. Keep it friendly and honest."},
+{id:"ra_mechanic",prods:["ra"],title:"My mechanic is cheap / I'll fix it myself",tags:"mechanic garage cheap diy fix myself workshop",
+ ack:"A good mechanic is gold, Sir/Ma'am, keep him.",
+ say:"Even with a good price from your mechanic, a major repair on an engine or gearbox runs into thousands. Repair Assist is there to take the sting out of that, within the plan limits. One thing to know: services must be done at a **manufacturer approved dealer or an RMI-registered workshop**. Is your mechanic RMI-registered? If not, we'd need to get administrator approval first.",
+ back:"Return to the plan options and the benefit limits table.",
+ avoid:"Don't say the workshop doesn't matter. Services by a relative or friend are generally NOT acceptable: a formal technical qualification must be supplied and approved, and oil and parts receipts kept. A non-RMI workshop needs approval first, and authorisation is needed before any repair starts."},
+{id:"ra_insured",prods:["ra"],title:"I've got insurance, I'm covered",tags:"insurance insured covered comprehensive short term",
+ ack:"Good, it's important to have insurance in South Africa.",
+ say:"Most motor insurance is there for accidents, theft and damage. Mechanical breakdown is a different risk, so it's worth checking your policy for that. Repair Assist is aimed at qualifying mechanical and electrical failures of the big components. It also includes benefits like an **insurance excess payment** (R500 Classic, R1 000 Gold), subject to the plan terms.",
+ back:"Return to the Solution step and walk through the additional benefits table.",
+ avoid:"Don't tell the client what their own policy covers. Suggest they check it."},
+{id:"ra_wait",prods:["ra"],title:"Why must I wait 90 days? / What's the waiting period?",tags:"waiting period 90 days wait active start",
+ ack:"Good question, I want you to know this before you decide.",
+ say:"The plan becomes active for Benefit Access **90 days after your first successful debit order**, unless the manufacturer-warranty provision in the plan wording applies. Repairs that arise before then are for your own account. That's why it's best to join while the car is running well, not after something goes wrong.",
+ back:"Make sure you also read Important Point 4 (waiting period) when you get to that step.",
+ avoid:"Don't promise the waiting period will be waived. Only say the manufacturer-warranty provision may apply under the plan wording."},
+{id:"ra_service",prods:["ra"],title:"My service is not up to date / I missed a service",tags:"service records overdue missed logbook proof 30 days 45 days",
+ ack:"No stress, it happens to many of us, and it's good that you're telling me.",
+ say:"If your last service wasn't done on time, you have **30 days from purchase** to get the vehicle serviced. Then proof of the service and your kilometre reading must reach Repair Assist within **45 days** of purchase. So it's still possible to join, you just need to get that service done.",
+ back:"Go back to the choice, then make sure Important Points 1 and 2 are read out.",
+ avoid:"Don't say the service doesn't matter. Service records must be up to date to qualify."},
+{id:"ra_cancel",prods:["ra"],title:"Is it a contract? Can I cancel?",tags:"contract cancel month to month lock in notice",
+ ack:"Fair question, nobody likes being locked in.",
+ say:"It's a **month-to-month plan**, not a fixed-duration contract. It stays active while the monthly debits are successfully paid and the plan terms and conditions are complied with. If you ever want to cancel, you do it **in writing with 31 days' calendar notice** (an email to helpme@repairassist.co.za works). It's a monthly product, so there are no refunds of debits already paid.",
+ back:"Return to the choice: Classic at R99 or Gold at R149.",
+ avoid:"Don't promise cancellation with immediate effect or refunds. If a claim was pre-funded, the amount can be recovered from later debits or from the client if the plan is cancelled, so don't hide that."},
+{id:"ra_limit",prods:["ra"],title:"What if the repair costs more than the limit?",tags:"limit cap maximum more expensive shortfall cash pool",
+ ack:"Good question, and I'd rather you understand it properly now.",
+ say:"The limit is the **maximum per approved Benefit Access Request** for that component. It is not a cash pool, and anything above the limit is for your own account. That's why Gold exists: for R50 more per month the core component limits are **double** (for example engine R10 000 instead of R5 000).",
+ back:"Ask which option suits them: Classic at R99 or Gold at R149.",
+ avoid:"Never say \"everything is covered\". All requests are subject to the plan wording."},
+{id:"ra_covered",prods:["ra"],title:"What exactly is covered?",tags:"covered what covers exclusions components engine gearbox turbo",
+ ack:"Let me give you the short and honest answer.",
+ say:"Repair Assist gives repair assistance for a qualifying mechanical or electrical failure on the listed components: **engine, gearbox, differential and the factory-fitted turbo**. Each has a Rand limit, and there are extras like towing, hotel accommodation, car rental, Uber, Pothole Guru and Battery Guru. Everything is subject to the plan wording.",
+ back:"Show the benefit limits tables in The Solution step, then go to the choice.",
+ avoid:"Don't say it covers everything on the car. Stick to the listed components and benefits."},
+{id:"ra_claim",prods:["ra"],title:"How does a claim work? / Do I just go to my garage?",tags:"claim process authorisation approval repair garage 2000 km",
+ ack:"Great question, this is the most important thing to know.",
+ say:"**Authorisation must be obtained from the Administrator before any repair work starts.** Work done without prior approval will not qualify for Repair Assist pre-funded assistance. Also, a Benefit Access Request will not be entertained for a breakdown within **2 000 km** of a previously reported request.",
+ back:"Make sure Important Point 3 is read in full, then continue.",
+ avoid:"Don't tell the client to just go ahead and fix it first. Approval must come before the work."},
+{id:"ra_choose",prods:["ra"],title:"I can't decide between Classic and Gold",tags:"classic gold choose which better decide difference",
+ ack:"Fair enough, both are good options, so let me help you.",
+ say:"If budget is the priority, **Classic at R99** still gives you cover on the big four components. If you'd like more cover when something big goes wrong, **Gold at R149** gives you double the core limits and higher extras for only R50 more. Which is more important to you, the lowest monthly amount or the higher limits?",
+ back:"Let them choose, then record the plan and continue to Vehicle Details.",
+ avoid:"Don't push Gold on someone who has said money is tight. A client who can't afford the plan will cancel."},
+{id:"ra_burnt",prods:["ra"],title:"I've been burnt by plans like this before",tags:"burnt scam before bad experience trust claim rejected",
+ ack:"I'm sorry to hear that. Thank you for telling me, it helps me explain this properly.",
+ say:"I'd rather you know the rules now than be surprised later. The plan has a **90 day waiting period**, your **service records must be up to date**, you must service at an approved dealer or RMI-registered workshop, and **authorisation is needed before any repair starts**. If all of that works for you, then Repair Assist can really help. What happened last time, if you don't mind me asking?",
+ back:"Make sure all five Important Points are read and ticked. Honesty here protects the sale.",
+ avoid:"Don't badmouth other companies, and don't promise that claims will always be approved."},
+
+/* ---------- Cartrack ---------- */
+{id:"ct_price",prods:["ct"],title:"It's too expensive / I can't afford it",tags:"expensive price cost afford money budget tight R219",
+ ack:"I hear you, boss. Everything has gone up, so I understand watching every rand.",
+ say:"It's **R239 a month**, about **R8 a day**, and the installation is free. For that you get live tracking online and on the app, stolen vehicle recovery through the Quick Gold unit, **plus the Cartrack Tag**, a wireless backup that can still help find your vehicle if the GPS is jammed. Compared to what losing your vehicle would cost you, that's a small price for peace of mind. I'd also rather be upfront: the price goes up by 10% in Year 2 and a further 10% in Year 3, so you know exactly what you're signing up for.",
+ back:"Return to the offer: \"Does that sound like something that makes sense for your vehicle?\" Then move to the contract terms.",
+ avoid:"Don't hide the escalations or the 36 month term to make the price sound lower. No discounts exist in the script."},
+{id:"ct_tracker",prods:["ct"],title:"I already have a tracker",tags:"already tracker have other netstar competitor current",
+ ack:"Good on you for already protecting your vehicle.",
+ say:"Good, and you don't have to change anything. The **Cartrack Tag** can act as a **backup next to your existing tracker**. It's a small wireless device that doesn't rely on GPS, so it can still help locate the vehicle if your main tracker is jammed or fails. The Quick Gold with Cartrack Tag option is R239 a month. May I ask what you have now and whether you're happy with it?",
+ back:"If they are interested in extra protection, return to the offer. If not, thank them and ask if you can call back in future.",
+ avoid:"Poaching is strictly prohibited: never tell a client to cancel an existing tracker or switch provider. Don't badmouth other trackers. The Tag alone has no recovery, so don't sell it as a full replacement."},
+{id:"ct_insurance",prods:["ct"],title:"I've got insurance, why do I need a tracker?",tags:"insurance insured insurer premium why need tracker",
+ ack:"Good, having insurance is important.",
+ say:"Insurance helps you after something has happened. A tracker helps you try to find the vehicle. I'd suggest you ask your insurer whether they require or recognise a tracker, as some give better terms for one. And with your permission, Cartrack can share your installation proof with your insurer, which is part of the declaration.",
+ back:"Return to the offer and the benefits: live tracking and recovery.",
+ avoid:"Don't promise a lower premium or tell the client what their insurer will do. Suggest they ask."},
+{id:"ct_36",prods:["ct"],title:"36 months is too long",tags:"36 months long contract term lock in cancel fee",
+ ack:"I appreciate you raising it, it is a long time, and I'd rather you hear it now.",
+ say:"It's a **36 month contract** with **free installation**. If you ever need to cancel early, an individual client pays **R2,650 incl. VAT or the balance of the contract, whichever is lesser**. For business clients it's the full balance of the contract. I'd rather you know that now than get a surprise later. Does that work for you?",
+ back:"If they are comfortable, continue to the authority confirmation. If not, thank them and respect the decision.",
+ avoid:"Don't shorten the term or hide the fee. The contract terms must be read as scripted."},
+{id:"ct_escalation",prods:["ct"],title:"Why does the price go up every year?",tags:"escalation increase 10% cpi price year 2 year 3 annual",
+ ack:"That's a very fair question.",
+ say:"The first year is **R239 incl. VAT**. In Year 2 there's a **10% increase**, and a further **10% in Year 3**. After that, any increase is aligned with the **CPI**. As a rough guide, on R239 that works out to about R263 in Year 2 and about R289 in Year 3. I'd rather you know that upfront.",
+ back:"Ask if that is fine and carry on to the early cancellation fee and the authority question.",
+ avoid:"The Rand amounts are an indication only. Say \"about\" and don't present them as exact. Never say the price will stay the same."},
+{id:"ct_debicheck",prods:["ct"],title:"What is DebiCheck? / What's the R19 for?",tags:"debicheck mandate r19 fee notification banking app pop-up",
+ ack:"Good question, it confuses many people.",
+ say:"DebiCheck is the banks' way of making sure only debits you've approved go through. Your bank sends a **notification (pop-up)** to the smartphone registered with your bank. You approve the mandate in your banking app or via SMS. There's also a **once-off R19 administration fee**, charged with your first subscription payment.",
+ back:"Make sure the client knows to keep the banking app or SMS notifications active and approve the mandate promptly.",
+ avoid:"Don't say the R19 is monthly. It is once-off. Don't ask for their banking app password."},
+{id:"ct_working",prods:["ct"],title:"My vehicle has a few issues (battery, wiring, starting)",tags:"working order issues battery wiring mechanical starting broken faulty",
+ ack:"Thank you for being honest with me.",
+ say:"The vehicle needs to be in full working order, with no issues with the battery, wiring, mechanical function or starting, before we can go ahead. So I can't continue today. Once it's sorted, we'd be glad to help you. Can I call you again in a few weeks?",
+ back:"Thank them, book a callback if they agree, and end the call.",
+ avoid:"Never tick YES to get past this question. A false answer causes installation problems and disputes later."},
+{id:"ct_install",prods:["ct"],title:"How does the installation work?",tags:"installation fit fitment where location when appointment r600 24 hours",
+ ack:"Let me tell you how it works.",
+ say:"Installation is **free**. After this call you'll get an **SMS and an email** from Cartrack with a link to confirm the installation location. Please check that the written address and map location are right so there are no delays. **Cartrack will call you within 3 days** to schedule the fitment. A technician can come to you if there is a safe, private space, or you can go to a Cartrack branch (by appointment). Your vehicle must be available on the day. If you need to cancel a fitment, please give **24 hours' notice**, otherwise there's a R600 call-out fee.",
+ back:"Move on to the final declaration, which repeats these terms.",
+ avoid:"Don't promise a specific installation date or time: say Cartrack will call within 3 days. Scheduling can change during the day (stock and technician availability). Don't say the call-out fee doesn't apply."},
+{id:"ct_sell",prods:["ct"],title:"What if I sell the car or change vehicles?",tags:"sell car change vehicle new car transfer move",
+ ack:"That's a sensible thing to ask.",
+ say:"Good question. If you change vehicles, the unit can be **de-installed and re-installed** in the new vehicle for a **once-off R870**, and your contract term does not restart. If you sell the vehicle to someone else, a **change of ownership** is a once-off **R350**, the contract moves to the new owner and restarts for them. Either way, it's arranged through Cartrack client services. Cartrack's full Terms and Conditions are on their website and will be shared after this agreement.",
+ back:"If they're comfortable, continue with the script. If it is a deal breaker, escalate to your team leader before going further.",
+ avoid:"Don't promise the contract can be cancelled for free. Don't quote fees for anything not in the training manual."},
+{id:"ct_recovery",prods:["ct"],title:"Will it really help if my car gets stolen or hijacked?",tags:"stolen theft hijack recovery help safe crime",
+ ack:"With crime the way it is, I understand why you're asking.",
+ say:"With Quick Gold you get **live tracking** online and on the mobile app, and Cartrack's stolen vehicle recovery with armed ground and air recovery teams. On top of that, the **Cartrack Tag** is a wireless backup that doesn't rely on GPS, so it still works if someone uses a jammer. It doesn't make theft impossible, but it gives you the best chance of locating the vehicle quickly.",
+ back:"Return to the offer, then to the contract terms.",
+ avoid:"Never guarantee that the vehicle will be recovered. The Tag on its own does not provide recovery. Follow the exact recovery wording your team leader confirms."},
+{id:"ra_old",prods:["ra"],title:"My car is old / has high mileage",tags:"old mileage age high km eligible qualify",
+ ack:"That's exactly why many people look at a plan like this, Sir/Ma'am.",
+ say:"Good news: there is **no age or mileage restriction** on Repair Assist. If the vehicle is eligible and the service history is up to date, it qualifies. I'll just capture your kilometre reading and we'll confirm the last service.",
+ back:"Go back to the vehicle details or the choice between Classic and Gold.",
+ avoid:"Don't say every vehicle qualifies: taxis, hire, modified, rebuilt (code 3), security, courier and motorsport vehicles are excluded, and some makes are not covered. Check the Info Centre."},
+{id:"ra_noise",prods:["ra"],title:"My car is making a noise / already has a problem",tags:"noise problem pre-existing fault already broken warning light",
+ ack:"Thanks for being upfront with me, that's important.",
+ say:"Repair Assist only helps with **unforeseen** breakdowns. Pre-existing problems are not covered, and a service would pick it up. It's the owner's responsibility to have it repaired so the vehicle stays eligible. Once it's sorted and serviced, we'd be happy to help.",
+ back:"If the car is fine, continue with vehicle details. If not, offer a callback after the repair.",
+ avoid:"Never let a client buy to cover a known fault."},
+{id:"ra_eligible",prods:["ra"],title:"Is my car eligible? (make, taxi, modified, bakkie)",tags:"eligible vehicle taxi uber modified bakkie suv bmw audi land rover porsche excluded not covered gvm",
+ ack:"Good question, let me check it properly with you.",
+ say:"Passenger cars, SUVs, 4x4s and light commercial vehicles up to **3 600 kg GVM** qualify, so that's basically every car on the road except trucks. Taxis, hire vehicles, modified vehicles, turbo conversions, rebuilt vehicles (code 3), security or armed-response vehicles, courier vehicles and motorsport vehicles are excluded. Some high-performance and luxury makes are also not covered. What vehicle do you drive?",
+ back:"Check the make against the Vehicles Not Covered list in the Info Centre before you go any further.",
+ avoid:"Don't guess about a make. If it is on the not-covered list, tell the client honestly and end the sale."},
+{id:"ra_prefund",prods:["ra"],title:"So do I get the money in cash? How does the payout work?",tags:"payout cash prefund pre-funded paid workshop invoice recover debits balance",
+ ack:"Good question, and I'd like you to know exactly how it works.",
+ say:"Repair Assist is **pre-funding assistance**. Once your request is approved, Repair Assist pays the **repairing workshop directly**, up to the benefit limit or the repair cost, whichever is less. You pay any balance to the workshop. The workshop's invoice must be complete and from an RMI-registered workshop unless approved otherwise. Please also know that Repair Assist can recover the pre-funded amount from your later monthly debits, or from you directly if the plan is cancelled.",
+ back:"Return to the benefit limits and the Important Points.",
+ avoid:"Don't say the money is a free gift or that nothing needs to be repaid. Approval can take up to 5 working days, and the client must WhatsApp within 7 days of becoming aware of the problem."},
+{id:"ra_insurance",prods:["ra"],title:"Is this a warranty or insurance? Who underwrites it?",tags:"insurance underwritten warranty motorplan maintenance plan what is",
+ ack:"Fair question, and it's important to understand what you're buying.",
+ say:"Repair Assist is **not a warranty and not an insurance product**, and it isn't underwritten by an insurer. It helps you pay for repairs to covered components after an unforeseen mechanical breakdown. It's also **not a motorplan**: servicing and wear and tear like brake pads are for your own account. The product is owned and administered by Repair Assist (Pty) Ltd, and you can email helpme@repairassist.co.za for more.",
+ back:"Return to the benefit table and the choice.",
+ avoid:"Don't call it a warranty or insurance. Don't say it covers servicing."},
+{id:"ct_tag",prods:["ct"],title:"What is the Cartrack Tag? Why do I need it?",tags:"tag backup jam jammer wireless gps battery",
+ ack:"Good question, it's the part that sets this option apart.",
+ say:"Criminals sometimes use a **jammer** to block GPS. The Cartrack Tag is a small **wireless backup that doesn't rely on GPS**, it uses Cartrack's own radio signal network. It has no cables, and the battery lasts up to **5 years**. So if the main unit is jammed, the Tag can still help locate the vehicle. It's included in the Quick Gold with Cartrack Tag option at R239 a month.",
+ back:"Return to the benefits, then the contract terms.",
+ avoid:"The Tag shows rough location through the control room only: no speed, trips or driver data, and no recovery on its own. Don't say it gives live tracking."},
+{id:"ct_warranty",prods:["ct"],title:"What if the unit stops working? Is there a warranty?",tags:"warranty fault faulty unit repair r600 lifetime maintenance",
+ ack:"Good to ask before you commit.",
+ say:"Every unit comes with a **12 month warranty** on the unit and fitment. It doesn't cover third-party interference, for example a repair shop. After 12 months, a repair is R600 as it's treated as wear and tear. A technician call-out is also R600 if the fault turns out not to be Cartrack related. If you have a battery issue, please test the battery at a battery centre first.",
+ back:"Return to the contract terms.",
+ avoid:"Don't promise free repairs after 12 months. There is an optional lifetime maintenance warranty: check the Info Centre for the price before you quote it."},
+{id:"ct_details",prods:["ct"],title:"Why do you need my ID, address, bank and emergency contacts?",tags:"id number address details emergency contacts password why privacy",
+ ack:"Fair question, you should always ask why someone needs your personal details.",
+ say:"Everything we confirm is on a recorded call, and it's what's needed to set up your account, debit order and installation correctly. The emergency contacts and password are for emergency situations, so choose something you'll remember. And your details are only confirmed with you, I'm not asking for anything beyond what's in the script.",
+ back:"Continue with the details step.",
+ avoid:"Never ask for card PINs, banking passwords or OTPs. Don't repeat the emergency password out loud."}
+];
+
+const TONE = [
+ "**Listen, Acknowledge, Answer, Ask.** Let the client finish, show you heard them, give a short honest answer, then ask a question that moves the call on.",
+ "**Greet properly.** \"Good day\" or \"Good morning\" and Sir/Ma'am or the client's surname. If you speak their home language, a short greeting goes a long way.",
+ "**Light local touches work in the sales conversation if natural:** \"Ja, I hear you\", \"Eish, that's tough\", \"No problem at all\". Don't overdo slang or you'll sound scripted.",
+ "**No slang on the verification / debit declaration.** Read it in clear English, use the client's name more than three times, let them ask questions without interrupting, and repeat a clause if you were interrupted so you get a clear Yes. You can explain it again in the client's preferred language afterwards.",
+ "**Use everyday South African realities:** the price of fuel, groceries, load shedding, potholes, the rand. They land better than jargon.",
+ "**Never say \"just now\" or \"now now\" for a callback.** Give a real day and time.",
+ "**Speak slowly on recorded sections.** Every YES must be clear and audible. Never ask for PINs, passwords or OTPs.",
+ "**If you don't know, say \"let me check\".** A wrong promise costs more than a short delay. Respect a clear \"no\" and record it."
+];
+
+/* =====================================================================
+   STATE
+===================================================================== */
+const state = { tab:"scripts", product:null, sec:0, fills:{}, yn:{}, ticks:{}, plan:null, filter:"all", query:"", openObj:null, fromCall:false, infoTab:"price", infoQ:"", nsplan:"ewst" };
+try{ const a=localStorage.getItem("innovate_agent"); if(a) state.fills.agent=a; }catch(e){}
+
+const $app = document.getElementById("app");
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+function rich(s){ return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\n/g,"<br>"); }
+function fmt(s){
+  s = esc(s);
+  s = s.replace(/\[\[(\w+)\|([^\]]+)\]\]/g,(m,k,p)=>`<input class="fill" data-fill="${k}" placeholder="${p}" aria-label="${p}" autocomplete="off" spellcheck="false">`);
+  s = s.replace(/\{\{(\w+)\}\}/g,(m,k)=>`<span class="comp" data-comp="${k}"></span>`);
+  s = s.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\n/g,"<br>");
+  return s;
+}
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),1800); }
+
+/* required items, per product */
+function reqsFor(pid){
+  const out=[]; const sc=SCRIPTS[pid];
+  sc.sections.forEach((sec,si)=>sec.blocks.forEach(b=>{
+    if(b.t==="say"){
+      if(b.yn && b.req!==false) out.push({k:b.yn,type:"yn",label:b.label||b.yn,sec:si});
+      if(b.read) out.push({k:b.read,type:"tick",label:b.label||b.read,sec:si});
+    }
+    if(b.t==="points") b.items.forEach(p=>out.push({k:p.k,type:"tick",label:p.l,sec:si}));
+    if(b.t==="choose") out.push({k:"plan",type:"plan",label:"Plan chosen (Classic or Gold)",sec:si});
+  }));
+  return out;
+}
+const REQS = { ra:reqsFor("ra"), ct:reqsFor("ct") };
+function isDone(r){ return r.type==="yn" ? state.yn[r.k]==="y" : r.type==="tick" ? !!state.ticks[r.k] : !!state.plan; }
+function isBad(r){ return r.type==="yn" && state.yn[r.k]==="n"; }
+
+/* =====================================================================
+   RENDER: shell
+===================================================================== */
+function setTab(t){
+  state.tab=t;
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===t));
+  render(); window.scrollTo({top:0});
+}
+function render(){
+  document.getElementById("liveDot").hidden = !state.product;
+  if(state.tab==="scripts") (state.product? renderCall() : renderHome());
+  else if(state.tab==="objections") renderObjections();
+  else renderFacts();
+}
+
+/* =====================================================================
+   HOME
+===================================================================== */
+function renderHome(){
+  const card = s => `
+  <article class="pcard ${s.id} ${s.soon?"soon":""}">
+    <div class="mono ${s.id}">${s.short}</div>
+    <div><h2>${s.label}</h2><div class="by">${esc(s.by)}</div></div>
+    <p style="margin:0">${esc(s.blurb)}</p>
+    <ul>${s.bullets.map(b=>`<li>${esc(b)}</li>`).join("")}</ul>
+    <div class="meta">${s.soon?"":`<span class="chip y">${s.sections.length} steps</span>`}<span class="chip t">${esc(s.version)}</span></div>
+    <div class="go">${s.soon? `<button class="btn" data-infogo="ns">See Netstar prices</button>` : `<button class="btn primary" data-start="${s.id}">Start script</button>`}</div>
+  </article>`;
+  $app.innerHTML = `
+  <section class="hero">
+    <h1>Which script are you using today?</h1>
+    <p>Pick your product and read it top to bottom. If the client pushes back, Objection Help is one click away.</p>
+    <div class="namebox"><label for="agentName">Your name</label><input id="agentName" data-fill="agent" placeholder="Type your name" autocomplete="off"></div>
+  </section>
+  ${state.product? `<div class="resume"><div><b>Call in progress:</b> ${SCRIPTS[state.product].name}</div><div><button class="btn primary small" data-tab-go="scripts">Resume call</button></div></div>`:""}
+  <div class="cards">${card(SCRIPTS.ra)}${card(SCRIPTS.ct)}${card(SCRIPTS.ns)}</div>
+  <div class="resume" style="background:#fff;border-color:var(--line)"><div><b>November agent price list</b> &middot; Netstar from R239, Cartrack Quick Gold + Tag R239, Repair Assist Gold R149</div><div><button class="btn small" data-infogo="price">Open price list</button></div></div>
+  <div class="how">
+    <div><b>1. Read it</b><span>The whole script is on one page. Scroll down, or use the step buttons at the top to jump.</span></div>
+    <div><b>2. Fill the blanks</b><span>Type the client's name once in a yellow blank and it fills in everywhere.</span></div>
+    <div><b>3. Handle it</b><span>Press Objection Help for answers you can say word for word.</span></div>
+  </div>`;
+  syncInputs();
+}
+
+/* =====================================================================
+   CALL VIEW
+===================================================================== */
+function renderCall(){
+  const sc = SCRIPTS[state.product];
+  $app.innerHTML = `
+  <div class="rtop">
+    <div class="rtitle"><h1>${sc.label}</h1><div class="by">${esc(sc.by)}</div>
+      <div class="filters" style="margin-top:8px">${["ra","ct","ns"].map(id=>`<button class="fchip ${state.product===id?"on":""}" data-switch="${id}">${SCRIPTS[id].label}</button>`).join("")}</div></div>
+    <div class="rtools">
+      <label class="cb-field">Your name <input data-fill="agent" placeholder="Your name" autocomplete="off"></label>
+      <button class="btn small ghost" data-act="home">Change script</button>
+    </div>
+  </div>
+  <div class="jump" id="jump">${sc.sections.map((s,i)=>`<button data-sec="${i}" class="${/Upsell/.test(s.title)?"upsell":""}">${i+1}. ${esc(s.title)}</button>`).join("")}</div>
+  <article class="reader">
+    ${sc.sections.map((sec,i)=>`<section class="rsec" id="sec-${i}"><h2><span>${i+1}</span>${esc(sec.title)}</h2>${sec.blocks.map(renderBlock).join("")}</section>`).join("")}
+    <div class="rend"><button class="btn" data-act="objections">Client objecting? Open Objection Help</button></div>
+  </article>`;
+  syncInputs(); paintAll();
+}
+function renderSection(){ renderCall(); }
+
+function renderBlock(b){
+  switch(b.t){
+  case "say": {
+    let cue="";
+    if(b.yn && b.req!==false) cue = `<div class="cue">Wait for a clear YES.${b.no?` If NO: ${esc(b.no.replace(/^STOP\.\s*/,""))}`:""}</div>`;
+    else if(b.yn && b.no) cue = `<div class="cue">If NO: ${esc(b.no)}</div>`;
+    const list = b.list? `<ul>${b.list.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"";
+    return `<div class="rline ${b.ver?"ver":""}">${b.ver?'<div class="vtag">Read word for word</div>':""}<p>${fmt(b.text)}</p>${list}${cue}</div>`;
+  }
+  case "note": return b.kind==="tip" ? "" : `<div class="rnote ${b.kind}">${rich(b.text)}</div>`;
+  case "h": return `<h3 class="rh">${esc(b.text)}</h3>`;
+  case "list": return `<ul>${b.items.map(i=>`<li>${rich(i)}</li>`).join("")}</ul>`;
+  case "fields": { const ls=b.fields.filter(f=>f.type!=="password").map(f=>f.l.replace(/ \(.*\)$/,"")); return ls.length? `<div class="rnote agent"><b>Capture on the client portal or application form:</b> ${esc(ls.join(", "))}.</div>`:""; }
+  case "plans": return plansHtml();
+  case "extras": return extrasHtml();
+  case "choose": return `<div class="choose small">
+      <button class="plan" data-plan="classic"><div class="pn">Classic</div><div class="pp">R99 <small>per month</small></div><div class="sel">&#10003; Chosen</div></button>
+      <button class="plan" data-plan="gold"><div class="pn">Gold</div><div class="pp">R149 <small>per month</small></div><div class="sel">&#10003; Chosen</div></button>
+    </div><div class="cue">Tap the plan the client chooses. It fills the price in the debit declaration.</div>`;
+  case "points": return `<ol class="rpoints">${b.items.map(p=>`<li>${rich(p.text)}</li>`).join("")}</ol>`;
+  case "benefits": return `<ol class="rpoints">${b.items.map(i=>`<li><b>${esc(i.h)}.</b> ${rich(i.d)}${i.hint?`<div class="cue">${esc(i.hint)}</div>`:""}</li>`).join("")}</ol>`;
+  case "obj": { const o=OBJ.find(x=>x.id===b.id); return `<div class="inl-obj"><div class="t">If the client says</div><div class="q">“${esc(o.title)}”</div><p>${rich(o.say)}</p><button class="btn small" data-objgo="${o.id}">More objection help</button></div>`; }
+  case "nsbenefits": return `<div class="rnote agent"><b>Both options include:</b> stolen vehicle recovery, insurance fitment certificate, SARS logbook, tow-away alerts, early warning theft alerts, live tracking (app), battery disconnect alerts, panic button and auto-arm.</div>`;
+  case "nschoose": return `<div class="choose small">
+      <button class="plan" data-nsplan="ew"><div class="pn">Early Warning</div><div class="pp">R239 <small>per month</small></div><div class="sel">&#10003; Chosen</div></button>
+      <button class="plan" data-nsplan="ewst"><div class="pn">Early Warning + StarTag</div><div class="pp">R259 <small>per month</small></div><div class="sel">&#10003; Chosen</div></button>
+    </div><div class="cue">Tap the option the client chooses. It fills the package and price in the banking clauses.</div>`;
+  case "upcall": return `<div class="upcall"><div><b>Optional upsell:</b> offer the client <b>Repair Assist</b> (motor repair plan) before you close.</div><button class="btn primary small" data-sec="${SCRIPTS.ns.sections.findIndex(x=>/Upsell/.test(x.title))}">Go to Repair Assist upsell</button></div>`;
+  case "summary": return "";
+  }
+  return "";
+}
+function fieldHtml(f){
+  const id=`f_${f.k}`;
+  let input;
+  if(f.type==="select") input=`<select id="${id}" data-fill="${f.k}">${f.opts.map(o=>`<option value="${esc(o)}">${o||"Select"}</option>`).join("")}</select>`;
+  else input=`<input id="${id}" data-fill="${f.k}" type="${f.type==="password"?"password":"text"}" autocomplete="off" spellcheck="false">`;
+  return `<label class="fld ${f.wide?"wide":""}" for="${id}">${esc(f.l)}${input}</label>`;
+}
+function plansHtml(){
+  return `<div class="tblcap">Core component benefit limits (maximum per approved request)</div>
+  <table class="tbl" data-plantbl><thead><tr><th>Component</th><th class="v c-classic">Classic<small>R99 p.m.</small></th><th class="v c-gold">Gold<small>R149 p.m.</small></th></tr></thead><tbody>
+  <tr class="sub"><td>Plan positioning</td><td class="v c-classic">Lower monthly price</td><td class="v c-gold">Higher benefit limits</td></tr>
+  ${CORE.map(r=>`<tr><td>${r[0]}</td><td class="v c-classic">${r[1]}</td><td class="v c-gold">${r[2]}</td></tr>`).join("")}
+  </tbody></table>`;
+}
+function extrasHtml(){
+  return `<div class="tblcap">Additional benefits (both options)</div>
+  <table class="tbl" data-plantbl><thead><tr><th>Benefit</th><th class="v c-classic">Classic</th><th class="v c-gold">Gold</th></tr></thead><tbody>
+  ${EXTRAS.map(r=>`<tr><td>${r[0]}</td><td class="v c-classic">${r[1]}</td><td class="v c-gold">${r[2]}</td></tr>`).join("")}
+  </tbody></table>`;
+}
+
+/* summary */
+function summaryHtml(){
+  const pid=state.product, rq=REQS[pid], sc=SCRIPTS[pid];
+  const bySec = sc.sections.map((s,i)=>({title:s.title,i,items:rq.filter(r=>r.sec===i)})).filter(x=>x.items.length);
+  const done=rq.filter(isDone).length, bad=rq.filter(isBad).length, pend=rq.length-done;
+  let v;
+  if(bad) v=`<div class="verdict bad">${bad} confirmation${bad>1?"s":""} answered No. Do not complete this sale until that is resolved.</div>`;
+  else if(pend) v=`<div class="verdict pend">${pend} required confirmation${pend>1?"s are":" is"} still open. Click any item below to jump back to it.</div>`;
+  else v=`<div class="verdict ok">All ${rq.length} required confirmations are done. Capture the sale on the system.</div>`;
+  const cols = bySec.map(s=>`<div class="sumcol"><h4>${s.i+1}. ${esc(s.title)}</h4>${s.items.map(r=>`<div class="sumrow ${isDone(r)?"ok":isBad(r)?"bad":""}" data-goto="${r.sec}"><i>${isDone(r)?"&#10003;":isBad(r)?"&#10005;":"&bull;"}</i><span>${esc(r.label)}</span></div>`).join("")}</div>`).join("");
+  return `<div class="step-h">CALL CHECKLIST</div><div id="summaryLive">${v}<div class="sumgrid">${cols}</div></div>
+   <div class="notes"><label for="callNotes"><b>Call notes</b> (for your own use, not saved)</label><textarea id="callNotes" placeholder="Anything to remember for the system..."></textarea></div>
+   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="btn teal" data-act="copysum">Copy call summary</button><button class="btn" data-act="newcall">Start a new call</button></div>`;
+}
+function refreshSummary(){
+  const el=document.getElementById("summaryLive"); if(!el) return;
+  const tmp=document.createElement("div"); tmp.innerHTML=summaryHtml();
+  el.innerHTML=tmp.querySelector("#summaryLive").innerHTML;
+}
+function summaryText(){
+  const pid=state.product, sc=SCRIPTS[pid], rq=REQS[pid], f=state.fills;
+  const L=[]; const add=(k,v)=>{ if(v) L.push(`${k}: ${v}`); };
+  L.push(`${sc.name} call summary`);
+  add("Agent",f.agent); add("Client",f.client);
+  if(pid==="ra"){ add("Plan",state.plan?`${PLANS[state.plan].name} R${PLANS[state.plan].price} p.m.`:""); add("Vehicle",[f.make,f.model,f.year].filter(Boolean).join(" ")); add("Registration",f.reg); add("KM",f.km); add("Under manufacturer warranty",f.mwarranty); add("Debit date",f.debitdate); add("First debit month",f.firstmonth); }
+  else { add("Product","Quick Gold with Cartrack Tag R239 p.m. incl. VAT, 36 months"); add("Vehicle",f.makemodel); add("Registration",f.reg); add("Debit date",f.debitdate); add("Communication",f.comm); }
+  const open=rq.filter(r=>!isDone(r)); const bad=rq.filter(isBad);
+  L.push(`Confirmations: ${rq.length-open.length} of ${rq.length} done`);
+  if(bad.length) L.push("Answered NO: "+bad.map(r=>r.label).join("; "));
+  if(open.length) L.push("Still open: "+open.map(r=>r.label).join("; "));
+  const n=document.getElementById("callNotes"); if(n&&n.value.trim()) L.push("Notes: "+n.value.trim());
+  L.push("(ID, bank account and password details are deliberately not included.)");
+  return L.join("\n");
+}
+
+/* =====================================================================
+   OBJECTIONS
+===================================================================== */
+function renderObjections(){
+  if(state.filter==="auto"){ state.filter = state.product||"all"; }
+  $app.innerHTML = `
+  ${state.product && state.fromCall? `<div class="backcall"><div><b>You are on a ${SCRIPTS[state.product].name} call.</b> Handle the objection, then go back to where you were.</div><button class="btn primary small" data-act="backtocall">&larr; Back to call</button></div>`:""}
+  <h1>Objection Help</h1>
+  <p class="lead">Common pushbacks from South African clients, with a short answer you can say out loud. Tap one to open it.</p>
+  <div class="method">
+    <div><b>1. Listen</b><span>Let them finish. Don't interrupt.</span></div>
+    <div><b>2. Acknowledge</b><span>Show you heard them.</span></div>
+    <div><b>3. Answer</b><span>Short, honest and in plain language.</span></div>
+    <div><b>4. Ask</b><span>Go back to the close and ask the next question.</span></div>
+  </div>
+  <div class="tools">
+    <div class="search"><input id="objSearch" type="search" placeholder="Search, e.g. expensive, warranty, insurance, 36 months" value="${esc(state.query)}" aria-label="Search objections"></div>
+    <div class="filters" id="objFilters"></div>
+  </div>
+  <details class="tone"><summary>South African tone and rapport tips</summary><ul>${TONE.map(t=>`<li>${rich(t)}</li>`).join("")}</ul></details>
+  <div id="objList"></div>
+  <div class="note agent"><b class="tag">Agent</b><div>These answers are a guide and use only what is in your approved scripts. Never promise anything that isn't in the plan terms. If you are not sure, say you will check and ask your team leader.</div></div>`;
+  paintFilters(); paintObjList();
+}
+function paintFilters(){
+  const f=[["all","All"],["ra","Repair Assist"],["ct","Cartrack"],["ns","Netstar"]];
+  document.getElementById("objFilters").innerHTML = f.map(x=>`<button class="fchip ${state.filter===x[0]?"on":""}" data-filter="${x[0]}">${x[1]}</button>`).join("");
+}
+function paintObjList(){
+  const q=state.query.trim().toLowerCase();
+  const list = OBJ.filter(o=>(state.filter==="all"||o.prods.includes(state.filter)) && (!q || (o.title+" "+o.tags+" "+o.say+" "+o.ack).toLowerCase().includes(q)));
+  const el=document.getElementById("objList");
+  const nsNote = "";
+  if(!list.length){ el.innerHTML=nsNote+`<div class="empty-state">No matches. Try a different word, or clear the filter.</div>`; return; }
+  el.innerHTML = nsNote + list.map(o=>{
+    const badges = o.prods.length>=3 ? `<span class="badge all">All products</span>` : o.prods[0]==="ra"?`<span class="badge ra">Repair Assist</span>`:`<span class="badge ct">Cartrack</span>`;
+    return `<details class="obj" id="o_${o.id}" ${state.openObj===o.id?"open":""}><summary><span>“${esc(o.title)}”</span><span class="badges">${badges}</span></summary>
+    <div class="obj-body">
+      <div class="ostep s1"><b>1. Acknowledge</b><p>${rich(o.ack)}</p></div>
+      <div class="ostep s2"><b>2. Say this</b><p>${rich(o.say)}</p><button class="btn small" data-copy="${o.id}">Copy answer</button></div>
+      <div class="ostep s3"><b>3. Back to the close</b><p>${rich(o.back)}</p></div>
+      <div class="careful"><b>Careful:</b> ${rich(o.avoid)}</div>
+    </div></details>`;
+  }).join("");
+  if(state.openObj){ const e=document.getElementById("o_"+state.openObj); if(e){ e.scrollIntoView({block:"center"}); } state.openObj=null; }
+}
+
+/* =====================================================================
+   INFO CENTRE
+   To add campaign information: add an entry to INFO below.
+   p = ra | ct | ns, c = category label, t = title, text = rich text (**bold**, new lines, bullets with a leading dot),
+   or html = function returning HTML. tags = extra search words.
+===================================================================== */
+const rows = (arr) => `<table class="mini">${arr.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</table>`;
+const NOT_COVERED = ["Abarth","Aston Martin","Audi Q-series","Audi SQ-series","Audi RS-series","Audi R-series","Audi S & SQ-series","Audi TT-series","Bentley","BMW 7-series","BMW 850-series","BMW X6","BMW Z-series","BMW M-series","Chrysler SRT","Ferrari","Jaguar F-type","Jeep SRT","Infiniti QX-range","Lamborghini","Land Rover (all models)","Lexus LX-range","Maserati","McLaren","Mercedes-Benz AMG","Mercedes-Benz C63","Mercedes-Benz S-class","Mercedes-Benz G-class","Nissan 370Z","Nissan GT-R","Noble","Porsche","Rolls-Royce"];
+const INFO = [
+/* ------------------------- Repair Assist ------------------------- */
+{p:"ra",c:"Basics",t:"What Repair Assist is, and is not",tags:"warranty insurance service plan maintenance wear tear pre-existing",
+ text:"Repair Assist helps pay for repairs to listed components after an **unforeseen mechanical or electrical breakdown**. It gives peace of mind motoring much like a warranty does, but:\n• It is **not a warranty**, **not insurance** and not underwritten by an insurer.\n• It is **not a service or maintenance plan**. Servicing and wear and tear items (e.g. brake pads) are the client's cost.\n• **Pre-existing conditions are not covered.**\n• The client must service the vehicle per the manufacturer's specifications and intervals to keep the plan valid.\n• Benefit limits are the maximum per approved Benefit Access Request, not a cash pool. Everything is subject to the plan wording."},
+{p:"ra",c:"Eligibility",t:"Eligible vehicles and exclusions",tags:"eligible taxi hire modified code 3 courier gvm age mileage turbo conversion",
+ text:"**Eligible:** all passenger, SUV, 4x4 or light commercial vehicles with a GVM of **3 600 kg or less**. Basically every car on the road except trucks. **Any age and any mileage** qualifies.\n**Service history:** must be up to date. If the last service was missed or late, the client can still join but must have the vehicle serviced within 30 days of purchase and keep the receipts.\n**Excluded vehicles:** taxis, hire vehicles, modified vehicles, turbo conversions, rebuilt vehicles (code 3), security / armed response vehicles, courier vehicles and vehicles used in motorsport.\nAlso check the makes and models list in the next item.\nThe vehicle must be roadworthy and registered and licensed in South Africa. Within 45 days of purchase the client must email proof of last service (or proof of a service done within 30 days of purchase) and the km reading to helpme@repairassist.co.za, otherwise the product is invalid and no benefits can be accessed.\n**Check:** the plan wording's eligibility paragraph says GVM not exceeding 3 500 kg, but its benefit tables and the training say 3 600 kg. Ask your team leader about vehicles between the two."},
+{p:"ra",c:"Eligibility",t:"Vehicles NOT covered (makes and models)",tags:"not covered bmw audi mercedes porsche land rover lexus nissan jeep ferrari amg m-series",
+ html:()=>`<p>Check the make and model <b>before</b> selling. These are not covered under the Repair Assist plan:</p><ul>${NOT_COVERED.map(x=>`<li>${x}</li>`).join("")}</ul>`},
+{p:"ra",c:"Benefits",t:"Benefit limits: Classic vs Gold",tags:"classic gold engine gearbox differential turbo limits table price r99 r149",
+ html:()=>`<p>Prices include VAT. Amounts are the maximum per approved Benefit Access Request.</p>${plansHtml()}${extrasHtml()}`},
+{p:"ra",c:"Benefits",t:"Components covered: what is inside each",tags:"engine gearbox differential turbo components internally lubricated overheating",
+ text:"**Engine:** all internally lubricated components, excluding decarbonisation, blown cylinder head gaskets and burnt valves. Applies to internal combustion and electric engines. **Overheating is not covered**, but Repair Assist may at its sole discretion allow a request of up to one third of the engine benefit.\n**Gearbox:** all internally lubricated components, plus torque converter, including gear levers and linkages.\n**Differential:** all internally lubricated components.\n**Turbo assembly (factory fitted):** original manufacturer-fitted unit only, including impellers, shafts, bushes, bearings, casing and boost control valve (excludes hoses and pipes). Also applies to bi- and twin-turbo factory units.\nAnything not listed is not covered. You don't have to be a technical expert: refer detailed questions to helpme@repairassist.co.za."},
+{p:"ra",c:"Benefits",t:"Multiple parts failing, and repeat requests",tags:"multi component failure 2000 km repeat claims same component incident",
+ text:"**Multi-component failure:** any number of failures that occur or are reported together are treated as **one incident**. Each component is paid at the lesser of the actual repair cost or its benefit limit, and the **total will not exceed the highest component limit**.\n• Example 1: engine R5 000, gearbox R2 000, diff R2 000 on a Classic plan: all paid in full.\n• Example 2: engine R10 000, gearbox R2 000, diff R2 000 on a Gold plan: only the engine claim is paid.\n**Repeat requests:** there is no limit on the number of requests, but each is subject to the plan terms. **No request is entertained within 2 000 km of a previously reported request.** If the same component fails soon after a repair, the client may need to return to the repairing workshop, which may carry its own workmanship guarantee."},
+{p:"ra",c:"Benefits",t:"Additional benefits explained",tags:"instalment excess towing hotel car rental uber pothole guru battery guru fines guru",
+ text:"**Instalment payment protection:** if repairs are delayed 14 working days or more after approval because parts are unavailable, a pro-rata amount of the monthly finance instalment is refunded for the time the vehicle is inoperative.\n**Insurance excess payment:** if the vehicle is a total loss (damaged beyond viable repair, or stolen and not recovered) and the excess can't be recovered elsewhere, the excess is paid up to the limit.\n**Towing:** use a tow service of your choice to a destination of your choice, send proof of payment, reimbursed up to the plan limit or actual cost, whichever is less.\n**Hotel OR car rental:** if the failure happens more than 100 km from home, the client gets either hotel accommodation or car rental, reimbursed with proof of payment. Subject to a successful request for the same incident.\n**Uber benefit:** reimbursed for the actual Uber cost up to the limit (Classic R200, Gold R300), with receipt, subject to a successful request for the same incident.\n**Pothole Guru:** pays up front for a tyre, mag or rim damaged by a pothole (irreparable damage), up to Classic R1 000 / Gold R1 500. One claim per year, no excess, tread depth irrelevant. **12 month waiting period** from the first successful debit. South Africa only, member and immediate family at home.\n**Battery Guru:** helps replace a battery that permanently can't hold a charge. A battery report from an approved fitment centre is needed, and a photo with the battery's unique identifier up front. One request per 24 months, **none in the first 12 months**. Classic R500 / Gold R1 000.\n**Fines Guru:** shown as included on the Gold plan in the November price list. Details are not in your training material yet, so don't explain it beyond that."},
+{p:"ra",c:"Terms",t:"Start date, payments, cancellation and missed debits",tags:"start date 90 days waiting month to month debit refund transfer missed rejected suspended",
+ text:"• **Start date:** 90 days after the first successful debit. If the vehicle is still under manufacturer warranty with an up-to-date service history, the plan starts immediately when that warranty expires.\n• **Duration:** month-to-month. Active for as long as the correct monthly amounts are successfully debited. No expiry.\n• **Payments:** monthly in advance by debit order. The client must make sure funds are available on the debit date.\n• **Missed or rejected debit:** the plan is suspended for that month. After **2 unsuccessful debits** it is cancelled from the first date of non-payment. If the 2nd attempt succeeds, a **60 day waiting period** applies.\n• **Refunds:** none, it is a monthly product. Client must give written notice of changed banking details at least 10 days before the next debit. The client is responsible for admin costs on missed debits until the deficit is paid.\n• **Transfer:** the plan can't be moved to another vehicle or a new owner.\n• **Valid in:** South Africa, Namibia, Botswana, Lesotho, Swaziland, Mozambique and Zimbabwe. If a valid request arises outside SA, the cost of transport back to SA is covered up to the towing limit. Repairs are only permitted at facilities in South Africa."},
+{p:"ra",c:"Terms",t:"Service requirements",tags:"service history rmi dealer mechanic cousin brother invoices receipts runover",
+ text:"• Service per the manufacturer's specifications and intervals, at a workshop with **full service and repair facilities**: a franchised dealer or RMI-registered workshop. A non-RMI workshop must be verified first.\n• The cost of servicing is the client's. A service runover within the manufacturer-permitted time and mileage is allowed.\n• **Keep all service invoices and receipts.** Proof of servicing is always requested and a request may be rejected without it.\n• Services by a relative or friend are generally **not acceptable**. A formal technical qualification must be provided and approved, and oil and parts receipts retained.\n• If a service uncovers a fault, that is normal maintenance and is for the owner's account."},
+{p:"ra",c:"Claims",t:"Pre-funding, invoices and recovery of paid amounts",tags:"prefund pre-funded invoice recover debits vat number rmi sole discretion total value purchase price",
+ text:"• Repair Assist is **pre-funding assistance**. If approved, the Administrator pays the **repairing dealer directly**, up to the benefit limit or repair cost, whichever is less. The client pays any balance to the workshop.\n• The invoice must be valid and fully completed: show the workshop is RMI-registered (unless approved otherwise) and its VAT number, list parts and labour, and describe the failure and its cause. Parts-supplier receipts are not acceptable unless authorised before purchase. Without a proper invoice the pre-funded benefit isn't paid.\n• The Administrator can **recover the pre-funded amount from later debits**, or from the client directly if the plan is cancelled.\n• All requests are authorised and paid at the Administrator's sole discretion. Total benefits over the life of the plan won't exceed the purchase price of the car."},
+{p:"ra",c:"Terms",t:"What is NOT covered (exclusions)",tags:"exclusions not covered wiring corrosion oil leaks hoses pipes accident diagnostic betterment resultant damage manufacturer warranty overheating negligence",
+ text:"• Any component or cause not listed as covered, and items not listed that are needed in the repair.\n• **Pre-existing** faults, and unauthorised repairs (no order number from the Administrator first).\n• Incorrect or faulty workmanship, and components still under warranty after being repaired.\n• **Electrical wiring**, corrosion, **oil leaks**, **hoses and pipes**, fluids and lubricants, diagnostic and storage costs.\n• **Resultant damage**, defective design or manufacture, and betterment (the client may have to contribute if new parts leave the car better than before).\n• Accident damage or anything recoverable from comprehensive motor insurance.\n• Any breakdown within 2 000 km of a previous request, or **while the vehicle is still under manufacturer warranty**.\n• Negligence or abuse: driving on after noticing a problem, over-revving, overloading, unsuitable use.\n• Irregular, missed or improper servicing, incorrect fuel or lubricants, non-approved parts or modifications, loss of coolant, contamination.\n• Damage to drive shafts or steering racks from torn CV joints or boots, frost or rust damage to casings.\n• Overheating (the Administrator may at its discretion allow up to one third of the engine benefit).\n• Gearbox mechatronics are not part of the gearbox benefit.\n• Fraud, dishonesty or false information voids the benefits."},
+{p:"ra",c:"Terms",t:"Cancellation, cooling-off and termination",tags:"cancel cancellation notice 31 days cooling off terminate popia fraud",
+ text:"• **Client cancellation:** in writing with **31 days' calendar notice**. Email helpme@repairassist.co.za. No refunds on monthly debits. On cancellation all obligations under the plan cease (but see recovery of pre-funded amounts).\n• **Cooling-off:** only applies where the plan duration is less than 31 days and no request has been made: 7 days from receiving the documents.\n• **Repair Assist may change benefits or cancel with 31 days' notice**, and may terminate at its sole discretion, for example if the client doesn't rectify the vehicle within 14 working days when asked, doesn't fix a breach within 7 working days, or is deemed a disproportionate risk.\n• The client must keep contact details up to date and give accurate information. Misrepresentation can cancel the plan.\n• Personal information is handled under POPIA and may be shared with payment processors, fraud agencies, regulators, credit bureaus and service providers."},
+{p:"ra",c:"Basics",t:"Naming and wording differences to be aware of",tags:"pothole assist battery assist guru wording differences uber r200 r300",
+ text:"• The plan wording calls the extras **Pothole Assist** and **Battery Assist**. The sales material calls them **Pothole Guru** and **Battery Guru**. They are the same benefits.\n• The wording's benefit tables are the reference: Pothole Classic R1 000 / Gold R1 500, Battery Classic R500 / Gold R1 000, Uber Classic R200 / Gold R300. (Some text paragraphs in the wording quote the Gold figure only.)\n• **Pothole Assist** is not available if the client is claiming or has claimed from their insurer, or doesn't report within 5 working days. Up to one tyre, mag or rim per incident.\n• **Battery Assist**: the client should photograph the battery with its unique identifier at purchase and WhatsApp it to 072 853 6393. A battery report may be needed showing the battery was fine at inception."},
+{p:"ra",c:"Claims",t:"How to make a claim",tags:"claim whatsapp authorisation approval repair process stop driving workshop used parts",
+ text:"• Client **WhatsApps 072 853 6393** (WhatsApp only, for record keeping) **within 7 days** of becoming aware of a potential problem and follows the prompts. Stop driving as soon as a problem is suspected, as continued driving can cause further damage.\n• The vehicle goes to a workshop with full facilities, registered with the RMI (or Administrator-approved). The workshop finds the cause and sends a quote. **Allow up to 5 working days** for approval.\n• **Authorisation first:** no repair work may start before the Administrator approves, otherwise the client pays. The Administrator may inspect the car or component first.\n• Repair is preferred over replacement where viable. Fitting used parts (not fully reconditioned or manufacturer approved) without asking first can void the benefit.\n• The client chooses the workshop. A short list of reputable repair centres is available on request.\n• The client must take reasonable steps to prevent further damage."},
+{p:"ra",c:"Company",t:"Company details and contacts",tags:"contact email phone registration ncr website hellopeter",
+ html:()=>rows([["Owner and administrator","Repair Assist (Pty) Ltd"],["Registration number","2024/574625/07"],["NCR registration","NCRCP22618"],["Email","helpme@repairassist.co.za"],["Telephone","087 711 4376"],["Claims WhatsApp","072 853 6393"],["Website","www.repairassist.co.za"]])+`<p style="margin-top:6px">Reviews can be emailed to helpme@repairassist.co.za for possible publication on the website.</p>`},
+
+/* ------------------------------ Cartrack ------------------------------ */
+{p:"ct",c:"Campaign product",t:"Campaign product: Quick Gold with Cartrack Tag (R239)",tags:"quick gold tag r239 campaign product features",
+ html:()=>`<div class="flagbox"><b>Focus product.</b> R239 per month incl. VAT, 36 month rental, 10% escalation. Free installation.</div>
+ <p><b>Quick Gold unit:</b></p><ul><li>Stolen vehicle recovery, 24/7 vehicle location via the control room</li><li>Local and international recovery, ground and air recovery teams</li><li>Back-up battery up to 72 hours, 12 month warranty on unit and fitment</li><li>Real-time location on the mobile app, trip history and route replay, geofences, logbook, odometer, ignition sensor, power event notifications</li><li>Automated driver alerts, crash detection, management reports, CarWatch</li></ul>
+ <p><b>Cartrack Tag (wireless backup):</b> doesn't use GPS, finds the vehicle if GPS is jammed, no cables, battery up to 5 years.</p>
+ <div class="flagbox">The November price list shows a <b>"NO recovery warranty"</b> badge on this product. The training manual lists stolen vehicle recovery under Quick Gold, and says the Tag alone has no recovery. Ask your team leader for the exact wording and don't promise recovery.</div>`},
+{p:"ct",c:"Campaign product",t:"Cartrack Tag explained",tags:"tag backup jam gps trailers asset battery",
+ text:"A small **wireless** tracking device on Cartrack's own radio signal network, **not GPS**. It helps find a vehicle or asset even if someone tries to block GPS or jam signals.\n• It **does not show live location, routes or driving info**. In a jam it shows only a rough location through the Cartrack control room, with no speed, trip or driver data. **No recovery on its own.**\n• No cables, small, battery lasts 3 to 5 years (price list says up to 5 years).\n• Works well as a backup for an existing Cartrack unit, or next to a tracker from another company, or for trailers and assets with no battery.\n• Cartrack Tag on its own is R89 per month on a 36 month rental."},
+{p:"ct",c:"Features",t:"Feature breakdown: what each feature means",tags:"features control room carwatch geofence logbook route replay crash detection protector backup battery",
+ html:()=>`<table class="mini"><tr><th>Feature</th><th style="text-align:left">What it does</th></tr>${[
+ ["Stolen vehicle and recovery","Armed recovery team dispatched in the event of theft."],
+ ["Vehicle location via control room","24/7 access to the vehicle's location by calling the control room."],
+ ["Local and international recovery","Recovery in South Africa and across borders. The vehicle is not brought back once recovered abroad."],
+ ["Ground and air recovery teams","In-house teams include ground vehicles and helicopters."],
+ ["12 month unit warranty","Covers the unit. Does not cover third-party interference, e.g. a repair shop."],
+ ["Back-up battery","Device keeps working up to 72 hours after the vehicle battery is disconnected."],
+ ["Mobile app with full history","Real-time location and trip history in the Cartrack app."],
+ ["Logbook","Categorise trips as business or private."],
+ ["Odometer reading","Mileage tracking to support the logbook and reports."],
+ ["Route replay","Review route history and spot unusual routes."],
+ ["Geofences","Zones on the map. Get notified when the vehicle enters or leaves."],
+ ["Management reports","Movement and driver behaviour reports."],
+ ["Power event notification","Alerts when the vehicle battery is low or disconnected."],
+ ["Ignition sensor","Tracks when the vehicle is switched on or off, with optional alerts."],
+ ["Automated alerts","Idling, over speeding, harsh braking and turning."],
+ ["Crash detection","Control room is alerted automatically in an accident."],
+ ["CarWatch","Once activated in the app, the control room calls you if the car is started and moved."],
+ ["Protector","Roadside, legal and medical assistance via client services (separate R75 add-on, not in Quick Gold)."]
+ ].map(r=>`<tr><td><b>${r[0]}</b></td><td style="text-align:left;font-weight:400;white-space:normal">${r[1]}</td></tr>`).join("")}</table>`},
+{p:"ct",c:"Selling points",t:"What sets Cartrack apart",tags:"recovery rate cross border fitment mobile in-house saps",
+ text:"• **Cross-border recoveries:** the only tracking company in SA doing recoveries across borders. The vehicle is recovered in the foreign country but not returned across the border.\n• **No upfront cost** for new installations. **Mobile fitment** (a safe, private space is needed) or **in-office fitment** at Cartrack offices in every province (appointment needed).\n• **Recovery rate:** Cartrack describes itself as having the highest recovery rate in South Africa, over 90% (as stated in the training manual).\n• Technicians, recovery teams and tracking units are all in-house.\n• No case number is needed to start a recovery, but one must be logged with SAPS within 24 hours.\n• Core focus is stolen vehicle recovery. Everything else is an add-on.\n• Cartrack does not watch clients on a monitor, and it is not personal security. Be ready for questions about this."},
+{p:"ct",c:"Contract rules",t:"Strict sales protocol: contract rules",tags:"36 months escalation pro-rata debicheck cancellation poaching business voice log vin intro broker lead sourcing",
+ text:"• **36 month fixed rental term**, nothing shorter. The client is liable for the unit during the 3 years.\n• **Escalation:** Year 1 normal fee, Year 2 +10%, Year 3 a further 10% on the Year 2 rate. (The verbatim script also says increases after that follow CPI: read the script as written.)\n• **Pro-rata and debit orders:** in the fitment month there are two debits: the day after fitment (pro-rata for the rest of the month) and the full next month on the chosen debit date. Each debit pays the **following** month in advance.\n• **DebiCheck is mandatory.** R19 admin fee. Approval via banking app, online banking, USSD, ATM or branch. No fitment without approval. Urgent cases: bank confirmation letter or proof of banking, **no bank statements**.\n• **Banking:** private account linked to the client's ID, allows debits, active this month. No business accounts unless full documentation is completed.\n• **Early cancellation:** private clients R2 650 (a penalty for breaking the term). Business clients: remainder of the contract.\n• **Introduction on every call:** \"I'm calling from [broker name] on behalf of Cartrack.\" **Never pose as Cartrack.**\n• **VIN / chassis number is mandatory.** Confirm it before processing. Licence disc photo by WhatsApp after verification.\n• **Vehicle must be fully operational**, otherwise the sale is on hold.\n• **Business clients:** do NOT voice log. Send and collect the Commercial Subscriber Form, Business Verification Form, CK document, director's ID (front and back for a smart ID) and a bank confirmation letter under 3 months old.\n• **Fitment scheduling:** say \"Cartrack will call you within 3 days.\" Earlier slots may exist but don't overpromise.\n• **Never disclose** unit design or location. **Never use Cartrack's own web or social media** for leads.\n• **Poaching is strictly prohibited.** Never cancel existing Cartrack units or switch clients to another provider.\n• **Existing clients:** no upgrades or downgrades (refer to head office). Add-on vehicles allowed: confirm if the old vehicle is kept, otherwise refer for de-install / re-install.\n• Always be honest and transparent."},
+{p:"ct",c:"Contract rules",t:"Fees at a glance",tags:"fees r19 r2650 r870 r350 r600 r25 r30 deinstall change of ownership lifetime maintenance",
+ html:()=>rows([["DebiCheck admin fee (once-off)","R19"],["Early cancellation, private client","R2 650 (or the balance, whichever is lesser, per script)"],["De-install / re-install (once-off)","R870"],["Change of ownership (once-off)","R350"],["Repair after 12 month warranty","R600"],["Technician call-out if fault is not Cartrack related","R600"],["Fitment cancelled with less than 24 hours' notice","R600"],["Lifetime maintenance warranty (optional)","R25 per month on the call, R30 after the 11th month"],["Protector (add-on)","R75 per month"]])+`<p style="margin-top:6px">De-install / re-install: the term does not reset. Change of ownership: the contract restarts for the new owner.</p>`},
+{p:"ct",c:"Pricing",t:"Full price list (training manual 2025/2026)",tags:"price list quick silver gold plus management camera bike trailer vision",
+ html:()=>`<div class="flagbox">Campaign focus is <b>Quick Gold with Cartrack Tag R239</b>. All prices include VAT, 36 month rental, 10% escalation. Only these combinations may be sold.</div>
+ <p><b>Tracking units</b></p>${rows([["Cartrack Tag","R89"],["Quick 2020","R99"],["Quick Plus 2020","R149"],["Quick Silver","R179"],["Quick Gold","R189"],["Quick Management Plus 2021","R219"]])}
+ <p><b>With add-on feature</b></p>${rows([["Quick Silver with Wired Panic","R200"],["Quick Gold with Wired Panic","R210"],["Quick Silver with Fuel","R215"],["Quick Gold with Fuel","R225"],["Quick Silver with Remote Immobilization","R225"],["Quick Gold with Remote Immobilization","R235"]])}
+ <p><b>With wireless backup</b></p>${rows([["Quick Silver with Cartrack Tag","R229"],["<b>Quick Gold with Cartrack Tag</b>","<b>R239</b>"]])}
+ <p><b>Camera only</b></p>${rows([["Road Vision 1","R189"],["Dual Vision 2","R289"]])}
+ <p><b>Tracking unit with camera</b></p>${rows([["Quick Silver Vision 1","R289"],["Quick Gold Vision 1","R299"],["Quick Silver Vision 2","R329"],["Quick Gold Vision 2","R339"],["Quick Management Vision 1","R289"],["Quick Management Vision 2","R389"],["Quick Silver Vision 1 + Panic","R310"],["Quick Silver Vision 2 + Panic","R350"],["Quick Gold Vision 1 + Panic","R320"],["Quick Gold Vision 2 + Panic","R360"],["Quick Management Vision 1 with Cartrack Tag","R328"],["Quick Management Vision 2 with Cartrack Tag","R379"]])}
+ <p><b>Motorbike</b></p>${rows([["Bike Track Silver","R89"],["Bike Track Gold","R99"],["Bike Track Platinum","R169"]])}
+ <p><b>Trailers</b> (welder's box adds R150)</p>${rows([["Quick Trailer Track","R199"],["Trailermatics","R229"]])}`},
+{p:"ct",c:"Pricing",t:"Optional add-ons (Quick Gold and Quick Silver only)",tags:"wired panic remote immobilization immobiliser fuel protector add on",
+ text:"No extra commission is paid on add-ons. Use them only to help close a sale if the client wants or asks about them.\n• **Wired Panic, R21 per month:** driver sends a distress signal to the control room. Must be requested by email to Admin for activation.\n• **Remote Immobilization, R46 per month:** the client uses the app to stop the car being started (start prevent). It doesn't affect a moving car or one already on. The client enters the code from the app to switch it off again.\n• **Hardwire Fuel, R36 per month:** fuel sensors give fuel level and consumption data. Calibration after the 3rd fill-up with 3 fuel slips sent to the fleet department.\n• **Protector, R75 per month:** roadside, legal and medical assistance via client services."},
+{p:"ct",c:"Pricing",t:"Vision cameras",tags:"vision camera road dual footage data ignition",
+ text:"Vision 1 (Road Vision): road-facing, 128GB, about 14 days of footage, R189. Vision 2 (Dual Vision): road and cabin facing, about 7 days of footage, R289. You must offer both and let the client choose.\n• Not a spy camera and not CCTV. **The camera does not stay on after the ignition is turned off.** It is visible on the windscreen and is used to prove what happened for insurance.\n• Live streaming and platform data are limited to 2GB. The client must buy more if used up, and needs their own data or WiFi for the app.\n• Can be sold alone or fitted to cars with other trackers. Replacement cost: Vision 1 R725, Vision 2 R1 160."},
+{p:"ct",c:"QA",t:"What QA checks on the verification call",tags:"qa score card verification script behaviour slang name tone",
+ text:"**Verification items:** agent name, calling from the brokerage, on behalf of Cartrack, package confirmed, 3 benefits mentioned, vehicle in full working order (clear YES), correct price, contract length and price increases, cancellation process and cost, DebiCheck explained, R19 fee, customer details recapped, business or personal account confirmed, VIN confirmed, declaration read with a clear YES for each point, pro-rata explained if needed, asked if the client has questions.\n**Behaviour items:** matched the client's tone and pace, active listening, verification in English then explained in the client's preferred language, used the client's name more than 3 times, **avoided slang**, let the client ask questions without interrupting, repeated a clause if interrupted, noted specific requests."},
+{p:"ct",c:"Process",t:"After the sale: QA, submission and fitment",tags:"submit leads email debicheck error scheduling fitment dynamic branch",
+ text:"1. Complete the sale and verification call. 2. Internal QA listens to the call and checks the sales sheet. 3. After approval, send the sales sheet and call recording to Cartrack leads (one email per client, subject: Broker Name / Broker Code / Client Surname / Client ID). 4. A voice logger captures the sale and you receive a username (e.g. CART00001), the client's account number.\n**If it fails:** a client in debt with Cartrack means a lost sale until they settle (send proof of payment and resubmit). Wrong ID or bank details: re-listen to the call and correct the sheet. An active unit from a previous owner needs the client's licence document and ID.\n**DebiCheck errors:** get a bank confirmation letter or proof of banking, or a screenshot of the Cartrack debit order from the client's banking app.\n**Fitment:** scheduling is dynamic. Technicians get one job at a time, stock can run out, and delays can happen. Tell clients scheduling may change. For missed appointments, send the reschedule request to the branch scheduling mailbox. If a client can't be reached by scheduling, you may do a three-way call to Cartrack scheduling and only facilitate the connection."},
+
+/* ------------------------------- Netstar ------------------------------- */
+{p:"ns",c:"Products",t:"Netstar product suite (November)",tags:"netstar early warning startag r239 r259 jam backup",
+ text:"**Early Warning, R239 per month:** standard tracking unit.\n**Early Warning + StarTag, R259 per month:** adds a StarTag back-up tracker.\n**Both include:** stolen vehicle recovery, insurance fitment certificate, SARS logbook, tow-away alerts, early warning theft alerts, live tracking (app), battery disconnect alerts, panic button and auto-arm.\n**Why R259?** It adds a StarTag back-up: a second, wireless tracker that still finds the car if the main unit is jammed or removed."},
+{p:"ns",c:"Products",t:"Early Warning and StarTag explained",tags:"tag keys arm disarm jamming resist car park panic startag battery three years mynetstar app",
+ text:"**Early Warning:**\n• Comes with a **tag kept with the keys**. It arms and disarms the unit automatically. No tag present means a \"Theft\" signal is sent.\n• **Panic button** for hijacking situations.\n• **Jamming Resist** tells Netstar if the unit's signals are tampered with, including **Car Park Jamming Alerts** if remote locking is jammed. Remind the client to make sure the vehicle is locked.\n• Transmits driving behaviour: location, speed, harsh acceleration and harsh braking.\n• Trip reports, location and fitment certificates on my.netstar.co.za or the MyNetstar app.\n**StarTag (back-up):** gives a general area location on the app but **no trip information**. Battery lasts a **maximum of 3 years** and the unit **must be replaced after 3 years**. In case of theft or hijacking the client contacts Netstar."},
+{p:"ns",c:"Terms",t:"Netstar rental terms, banking and fitment",tags:"36 months settlement fee cancel 20 working days recovery not guaranteed banking debit salary date pro rata fitment monday friday customer support help me",
+ text:"• **36 month rental contract.** Cancel for any reason on **20 working days written notice** and payment of a **reasonable settlement fee**.\n• **Recovery is not guaranteed**, but every reasonable effort is made.\n• The client should download the MyNetstar app to check the unit, or call Netstar every 6 months to test it.\n• **Netstar Customer Support Centre: 0860 12 24 36**, or directly from the app.\n• Full terms are on the Netstar website and a link is mailed. By having the unit installed the client agrees to them, and the call forms the basis of the contract.\n• **Banking:** if the account isn't the client's own, written authority from the account holder is needed. Debit orders run on the client's salary date. The first debit is higher: it includes the monthly premium plus a pro rata amount for the rest of the month. An email follows with the first invoice and a pro rata invoice from the installation date.\n• **Fitment:** Monday to Friday, 8am to 5pm. Needs a safe, private area, a vehicle in working condition, and enough space and light if in a basement. Booked with the booking tool (two slot options). A scheduler contacts the client if needed.\n• **After the sale:** the client gets access to Help Me, and a Help Me agent contacts them in the next few days."},
+];
+
+function priceSuiteHtml(){
+  return `<div class="suite">
+  <div class="suite-top"><h2>Product <em>Suite.</em></h2><div class="tagp">New customers<br>per month</div></div>
+  <div class="pgrid">
+   <div class="pbox ns"><h3>Netstar</h3>
+     <div class="opt"><b>Early Warning</b><div class="pr">R239 <small>p/m</small></div><span>Standard tracking unit</span></div>
+     <div class="opt"><b>Early Warning + StarTag</b><div class="pr">R259 <small>p/m</small></div><span>+ StarTag back-up tracker</span></div>
+     <b style="color:var(--yellow);font-size:12px;letter-spacing:1px">BOTH INCLUDE</b>
+     <ul><li>Stolen vehicle recovery</li><li>Insurance fitment cert</li><li>SARS logbook</li><li>Tow-away alerts</li><li>Early warning theft alerts</li><li>Live tracking (app)</li><li>Battery disconnect alerts</li><li>Panic button &amp; auto-arm</li></ul>
+     <div class="why"><b style="color:var(--yellow)">WHY R259?</b> It adds a StarTag back-up: a second, wireless tracker that still finds the car if the main unit is jammed or removed.</div></div>
+   <div class="pbox ctp"><h3>Cartrack</h3><div class="sub">Quick Gold + Cartrack Tag</div><div class="big">R239 <small>p/m</small></div>
+     <ul><li>GPS tracking</li><li>Cartrack Tag wireless backup</li><li>Finds car if GPS jammed</li><li>Tag battery up to 5 years</li><li>36-month rental</li></ul><span class="badge-no">NO recovery warranty</span></div>
+   <div class="pbox mdp"><h3>Motordrive SA</h3><div class="sub">Repair Assist Gold</div><div class="big">R149 <small>p/m</small></div>
+     <ul><li>Engine up to R10,000</li><li>Gearbox &amp; diff up to R8,000</li><li>Any age, any mileage</li></ul></div>
+  </div>
+  <div class="also"><h3>Repair Assist Gold &middot; also includes</h3><div class="rows">
+    ${[["Instalment protection","R1,000"],["Insurance excess","R1,000"],["Towing","R1,000"],["Hotel stay","R1,000"],["Car rental","R1,000"],["Uber benefit","R200"],["Pothole Guru","R1,500"],["Battery Guru","R1,000"],["Turbo (factory)","R5,000"],["Fines Guru","Included"]].map(r=>`<div class="r"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")}
+  </div></div>
+  <div class="foot"><span>Innovate &middot; Agent price list</span><span>November</span></div></div>
+  <div class="flagbox"><b>Check before you quote:</b> the price list shows the Repair Assist Gold Uber benefit as R200, but the Repair Assist training material says Gold is R300 (Classic R200). Fines Guru is not described in the training material. Ask your team leader which is correct. The Repair Assist script also still offers Classic at R99.</div>`;
+}
+
+function renderFacts(){
+  const tabs=[["price","Price List"],["ra","Repair Assist"],["ct","Cartrack"],["ns","Netstar"],["all","Search all"]];
+  $app.innerHTML = `
+  <h1>Info Centre</h1>
+  <p class="lead">Prices, product knowledge and campaign rules in one place. Search for a word or pick a product.</p>
+  <div class="tools"><div class="search"><input id="infoSearch" type="search" placeholder="Search, e.g. waiting period, DebiCheck, jammer, R870" value="${esc(state.infoQ)}" aria-label="Search the Info Centre"></div>
+  <div class="filters" id="infoTabs"></div></div>
+  <div id="infoBody"></div>
+  <div class="note agent"><b class="tag">Agent</b><div>Internal training information for Innovate agents. Do not share outside Innovate. If something here doesn't match what you were told by your team leader, ask before you quote it.</div></div>`;
+  paintInfoTabs(); paintInfo();
+}
+function paintInfoTabs(){
+  const tabs=[["price","Price List"],["ra","Repair Assist"],["ct","Cartrack"],["ns","Netstar"],["all","All"]];
+  document.getElementById("infoTabs").innerHTML = tabs.map(x=>`<button class="fchip ${state.infoTab===x[0]?"on":""}" data-infotab="${x[0]}">${x[1]}</button>`).join("");
+}
+function paintInfo(){
+  const q=state.infoQ.trim().toLowerCase(); const el=document.getElementById("infoBody");
+  if(!q && state.infoTab==="price"){ el.innerHTML=priceSuiteHtml(); return; }
+  let list=INFO.filter(i=>(state.infoTab==="all"||state.infoTab==="price"||i.p===state.infoTab));
+  if(q) list=list.filter(i=>{ const body=i.html? i.html().replace(/<[^>]+>/g," "):i.text; return (i.t+" "+i.c+" "+(i.tags||"")+" "+body).toLowerCase().includes(q); });
+  if(!list.length){ el.innerHTML=`<div class="empty-state">No matches. Try another word or switch to All.</div>`; return; }
+  const nm={ra:"Repair Assist",ct:"Cartrack",ns:"Netstar"};
+  el.innerHTML = list.map(i=>`<details class="info"><summary><span>${esc(i.t)}</span><span class="badges"><span class="badge ${i.p}">${nm[i.p]}</span></span></summary><div class="info-body">${i.html? i.html() : `<p>${rich(i.text).replace(/(^|<br>)• /g,"$1&bull; ")}</p>`}</div></details>`).join("");
+}
+
+/* =====================================================================
+   PAINT / SYNC HELPERS
+===================================================================== */
+function sizeFill(el){ if(el.classList.contains("fill")) el.style.width = (Math.max(el.value.length, (el.placeholder||"").length, 4)+2)+"ch"; }
+function syncInputs(){
+  document.querySelectorAll("[data-fill]").forEach(el=>{
+    const v=state.fills[el.dataset.fill]; if(v!==undefined) el.value=v; sizeFill(el);
+  });
+}
+function acc4(){ const d=(state.fills.acc||"").replace(/\D/g,""); return d.length>=4? d.slice(-4) : ""; }
+function paintComputed(){
+  document.querySelectorAll("[data-comp]").forEach(el=>{
+    const k=el.dataset.comp; let v="", ph="";
+    if(k==="plan"){ v = state.plan?PLANS[state.plan].name:""; ph="[Classic / Gold]"; }
+    if(k==="price"){ v = state.plan?"R"+PLANS[state.plan].price:""; ph="R____"; }
+    if(k==="acc4"){ v = acc4(); ph="[last 4 digits]"; }
+    if(k==="nsname"){ v = state.nsplan? NSPLANS[state.nsplan].name:""; ph="[chosen package]"; }
+    if(k==="nsprice"){ v = state.nsplan? "R"+NSPLANS[state.nsplan].price:""; ph="R____"; }
+    el.textContent = v||ph; el.classList.toggle("empty",!v);
+  });
+}
+function paintYN(k){
+  const w=document.querySelector(`[data-yn="${k}"]`); if(!w) return;
+  w.querySelectorAll("button").forEach(b=>b.classList.toggle("on",state.yn[k]===b.dataset.b));
+  document.querySelectorAll(`[data-msg^="${k}-"]`).forEach(m=>m.hidden = m.dataset.msg!==`${k}-${state.yn[k]}`);
+}
+function paintPlan(){
+  document.querySelectorAll(".plan[data-plan]").forEach(p=>p.classList.toggle("active",p.dataset.plan===state.plan));
+  document.querySelectorAll(".plan[data-nsplan]").forEach(p=>p.classList.toggle("active",p.dataset.nsplan===state.nsplan));
+  document.querySelectorAll("[data-plantbl]").forEach(t=>{ t.classList.toggle("sel-classic",state.plan==="classic"); t.classList.toggle("sel-gold",state.plan==="gold"); });
+}
+function paintAll(){
+  document.querySelectorAll("[data-yn]").forEach(w=>paintYN(w.dataset.yn));
+  paintPlan(); paintComputed();
+}
+function updateProgress(){
+  return;
+  const rq=REQS[state.product], done=rq.filter(isDone).length;
+  const t=document.getElementById("progTxt"); if(t) t.textContent=`${done} of ${rq.length}`;
+  const b=document.getElementById("progBar"); if(b) b.style.width=(rq.length? done/rq.length*100:0)+"%";
+  document.querySelectorAll(".nav button").forEach(btn=>{
+    const i=+btn.dataset.sec, items=rq.filter(r=>r.sec===i), left=items.filter(r=>!isDone(r)).length, bad=items.some(isBad);
+    btn.classList.toggle("cur",i===state.sec);
+    btn.classList.toggle("done", items.length>0 && left===0);
+    btn.classList.toggle("flag", bad);
+    const c=btn.querySelector(".cnt"); c.textContent = left? left+" to do":"";
+    c.style.display = (items.length && left)? "":"none";
+  });
+  const here=rq.filter(r=>r.sec===state.sec), hl=here.filter(r=>!isDone(r)).length, hb=here.some(isBad);
+  const pb=document.getElementById("pendBar");
+  if(pb){
+    if(hb){ pb.className="pendbar"; pb.style.background="var(--red-bg)"; pb.style.borderColor="#f2b8b5"; pb.style.color="#7c1a15"; pb.textContent="A client answer on this step was No. Read the red message above."; }
+    else { pb.removeAttribute("style"); pb.className="pendbar"+(hl?"":" ok"); pb.textContent = here.length? (hl? `${hl} required confirmation${hl>1?"s":""} left on this step`:"All confirmations on this step are done") : "Nothing to tick on this step. Read it and move on."; }
+  }
+  refreshSummary();
+}
+
+/* =====================================================================
+   EVENTS
+===================================================================== */
+document.addEventListener("input",e=>{
+  const el=e.target.closest("[data-fill]"); if(!el) return;
+  const k=el.dataset.fill, v=el.value; state.fills[k]=v;
+  document.querySelectorAll(`[data-fill="${k}"]`).forEach(o=>{ if(o!==el) o.value=v; sizeFill(o); });
+  sizeFill(el);
+  if(k==="agent"){ try{ localStorage.setItem("innovate_agent",v); }catch(err){} }
+  if(k==="acc") paintComputed();
+});
+document.addEventListener("change",e=>{
+  const t=e.target.closest("[data-tick]");
+  if(t){ state.ticks[t.dataset.tick]=t.checked; updateProgress(); }
+});
+
+function copyText(txt,msg){
+  const done=()=>toast(msg||"Copied");
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done,()=>fallback()); } else fallback();
+  function fallback(){ const ta=document.createElement("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); done(); }catch(e){ toast("Press Ctrl+C to copy"); } ta.remove(); }
+}
+function plain(s){ return s.replace(/\*\*/g,""); }
+
+function goSec(i){ state.sec=i; const e=document.getElementById('sec-'+i); if(e){ const y=e.getBoundingClientRect().top+window.scrollY-130; window.scrollTo({top:y,behavior:'smooth'}); } }
+function newCall(){
+  if(state.product && !confirm("Start a new call? This clears everything typed and ticked for the current client.")) return;
+  const agent=state.fills.agent; state.fills={}; if(agent) state.fills.agent=agent;
+  state.yn={}; state.ticks={}; state.plan=null; state.sec=0;
+  if(state.product){ renderCall(); window.scrollTo({top:0}); toast("New call started"); }
+}
+
+document.addEventListener("click",e=>{
+  const t=e.target;
+  let el;
+  if((el=t.closest("[data-tab]"))){ state.fromCall=false; setTab(el.dataset.tab); return; }
+  if((el=t.closest("[data-infogo]"))){ state.infoTab=el.dataset.infogo; state.infoQ=""; state.fromCall=false; setTab("facts"); return; }
+  if((el=t.closest("[data-tab-go]"))){ setTab(el.dataset.tabGo); return; }
+  if(!t.closest("button,input,a") && (el=t.closest(".pcard:not(.soon)"))){ const b=el.querySelector("[data-start]"); if(b){ b.click(); return; } }
+  if((el=t.closest("[data-start]"))){
+    const pid=el.dataset.start;
+    state.product=pid; state.sec=0;
+    state.tab="scripts"; setTab("scripts"); return;
+  }
+  if((el=t.closest("[data-sec]"))){ goSec(+el.dataset.sec); return; }
+  if((el=t.closest("[data-goto]"))){ goSec(+el.dataset.goto); return; }
+  if((el=t.closest("[data-b]"))){
+    const k=el.closest("[data-yn]").dataset.yn, v=el.dataset.b;
+    state.yn[k] = state.yn[k]===v ? undefined : v; if(state.yn[k]===undefined) delete state.yn[k];
+    paintYN(k); updateProgress(); return;
+  }
+  if((el=t.closest("[data-nsplan]"))){ state.nsplan=el.dataset.nsplan; paintPlan(); paintComputed(); return; }
+  if((el=t.closest("[data-plan]"))){ state.plan=el.dataset.plan; paintPlan(); paintComputed(); updateProgress(); return; }
+  if((el=t.closest("[data-switch]"))){ state.product=el.dataset.switch; state.sec=0; renderCall(); window.scrollTo({top:0}); return; }
+  if((el=t.closest("[data-infotab]"))){ state.infoTab=el.dataset.infotab; paintInfoTabs(); paintInfo(); return; }
+  if((el=t.closest("[data-filter]"))){ state.filter=el.dataset.filter; paintFilters(); paintObjList(); return; }
+  if((el=t.closest("[data-objgo]"))){ state.fromCall=true; state.openObj=el.dataset.objgo; state.filter="all"; state.query=""; state.tab="objections"; setTab("objections"); return; }
+  if((el=t.closest("[data-copy]"))){ const o=OBJ.find(x=>x.id===el.dataset.copy); copyText(plain(o.say),"Answer copied"); e.preventDefault(); return; }
+  if((el=t.closest("[data-act]"))){
+    switch(el.dataset.act){
+      case "home": state.fromCall=false; state.product=null; setTab("scripts"); break;
+      case "newcall": newCall(); break;
+      case "prev": if(state.sec>0) goSec(state.sec-1); break;
+      case "next": if(state.sec<SCRIPTS[state.product].sections.length-1) goSec(state.sec+1); break;
+      case "objections": state.fromCall=true; state.filter=state.product||"all"; state.query=""; setTab("objections"); break;
+      case "backtocall": state.fromCall=false; setTab("scripts"); break;
+      case "copysum": copyText(summaryText(),"Call summary copied"); break;
+    }
+  }
+});
+document.addEventListener("input",e=>{
+  if(e.target.id==="objSearch"){ state.query=e.target.value; paintObjList(); }
+  if(e.target.id==="infoSearch"){ state.infoQ=e.target.value; if(state.infoQ.trim() && state.infoTab==="price"){ state.infoTab="all"; paintInfoTabs(); } paintInfo(); }
+});
+
+/* ---------- Notepad (kept for this browser session only) ---------- */
+(function(){
+  const btn=document.getElementById("npBtn"), box=document.getElementById("np"), ta=document.getElementById("npText");
+  try{ ta.value=sessionStorage.getItem("innovate_notes")||""; }catch(e){}
+  const mark=()=>btn.classList.toggle("has",!!ta.value.trim());
+  const open=o=>{ box.hidden=!o; btn.setAttribute("aria-expanded",o); if(o) ta.focus(); };
+  btn.addEventListener("click",()=>open(box.hidden));
+  document.getElementById("npClose").addEventListener("click",()=>open(false));
+  ta.addEventListener("input",()=>{ try{ sessionStorage.setItem("innovate_notes",ta.value); }catch(e){} mark(); });
+  document.getElementById("npCopy").addEventListener("click",()=>copyText(ta.value,"Notes copied"));
+  document.getElementById("npClear").addEventListener("click",()=>{ ta.value=""; try{ sessionStorage.removeItem("innovate_notes"); }catch(e){} mark(); toast("Notes cleared"); });
+  mark();
+})();
+
+render();
+</script>
+</body>
+</html>
