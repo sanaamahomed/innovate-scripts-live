@@ -636,30 +636,9 @@ ct: {
   ]},
   { title:"Close", blocks:[
     S("[[client|client's name]], Cartrack can have your unit installed at work, or at home, are you usually at work in the day? We can arrange for fitment there."),
-    NOTE("If the client objects, tap Objection Help, answer, then ask the close question again. Write their answer down so you don't ask again when capturing.","agent"),
+    NOTE("If the client objects, tap Objection Help, answer, then ask the close question again.","agent"),
     S("[[client|client's name]], would you like to go ahead with the Quick Gold with Cartrack Tag at R239 a month?",{yn:"ct_choice",label:"Client wants to proceed",no:"Handle the objection using Objection Help. If the client still declines, thank them and end the call politely."}),
     S("Wonderful! [[client|client's name]], let's go ahead and finalise your details. I will require some information like vehicle details, personal and banking information, as well as emergency contacts. Now, before we continue…")
-  ]},
-  { title:"Capturing", blocks:[
-    NOTE("Capture the answers on the client portal or application form.","agent"),
-    H("PERSONAL"),
-    S("[[client|client's name]], please will you confirm your first and last name for me."),
-    S("May I ask, [[client|client's name]], your title, are you Miss, Mr, maybe Doctor?"),
-    S("Wonderful, and your ID number is…?"),
-    S("Superb, may I use this cell number or another?"),
-    S("Great; and will you please let me know an email address to send your documents to? And would you prefer to receive messages by email or SMS?"),
-    H("RESIDENTIAL"),
-    S("[[client|client's name]], may I please have your street address."),
-    S("And is your residential address the same as your postal?"),
-    H("VEHICLE"),
-    S("[[client|client's name]], please may I have the registration number for your [[vehicle|vehicle make and model]]?"),
-    S("Confirm the make of the vehicle."),
-    S("Confirm the vehicle model."),
-    S("What colour is your [[vehicle|vehicle make and model]]?"),
-    S("And may I have the VIN or chassis number? You'll find it on your licence disc or your registration papers."),
-    H("EMERGENCY CONTACTS"),
-    S("[[client|client's name]], who are the two people you would like contacted if you are in an emergency?"),
-    S("And please choose a password that you will remember for emergencies.")
   ]},
   { title:"Premium & Banking", blocks:[
     H("PREMIUM"),
@@ -743,7 +722,7 @@ ct: {
 SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assist Upsell", by:"Innovate, on behalf of Netstar",
   version:"Approved script V004 (29.04.2026)",
   blurb:"Early Warning with StarTag back-up at R259 per month (or standard Early Warning at R239). Based on the approved Netstar script.",
-  bullets:["Sales pitch, capturing, banking and fitment booking","Premium objection answer built in","36 month rental, debit order on salary date"],
+  bullets:["Sales pitch, banking and fitment booking","Premium objection answer built in","36 month rental, debit order on salary date"],
   sections:[
   { title:"Introduction", blocks:[
     S("Good day, is this [[client|client's name]]?"),
@@ -790,27 +769,8 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
   ]},
   { title:"Close", blocks:[
     S("[[client|client's name]], Netstar technicians can have your unit installed at work, or at home, are you usually at work in the day? We can arrange for fitment there."),
-    NOTE("If the client objects, tap Objection Help, answer, then ask the close question again. Write their answer down so you don't ask again when capturing.","agent"),
+    NOTE("If the client objects, tap Objection Help, answer, then ask the close question again.","agent"),
     S("Wonderful! [[client|client's name]], let's go ahead and finalise your details. Now, before we continue…")
-  ]},
-  { title:"Capturing", blocks:[
-    NOTE("Capture the answers on the client portal or application form.","agent"),
-    H("PERSONAL"),
-    S("[[client|client's name]], please will you confirm your first and last name for me."),
-    S("May I ask, [[client|client's name]], your title, are you Miss, Mr, maybe Doctor?"),
-    S("Wonderful, and your ID number is…?"),
-    S("Superb, may I use this cell number or another?"),
-    S("Great; and will you please let me know an email address to send your documents to?"),
-    H("RESIDENTIAL"),
-    S("[[client|client's name]], may I please have your street address."),
-    S("And is your residential address the same as your postal?"),
-    H("VEHICLE"),
-    S("[[client|client's name]], please may I have the registration number for your [[vehicle|vehicle make and model]]?"),
-    S("Confirm the make of the vehicle."),
-    S("Confirm the vehicle model."),
-    S("[[client|client's name]], what colour is your [[vehicle|vehicle make and model]]?"),
-    H("EMERGENCY CONTACT"),
-    S("[[client|client's name]], who is the person you would like contacted if you are in an emergency?")
   ]},
   { title:"Premium & Banking", blocks:[
     H("PREMIUM"),
