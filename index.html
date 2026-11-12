@@ -609,9 +609,10 @@ ct: {
     S("[[client|client's name]], you're speaking to [[agent|your name]], calling you from **Motordrive SA** on behalf of **Cartrack**."),
     S("How are you doing today?"),
     NOTE("Opportunity to engage the client, and ask any questions necessary. If it is not a convenient time, ask for a better time, capture the callback and end politely.","agent"),
-    S("[[client|client's name]], I'm calling regarding your car, the [[vehicle|vehicle make and model]]. We have your vehicle details on record. Is that correct?"),
+    S("[[client|client's name]], I'm calling regarding your car, the [[vehicle|vehicle make and model]]. Do you currently have a tracking device fitted to it?"),
     NOTE("If the client says they no longer own the vehicle: \"Thank you for confirming. Would you know of anyone who might be interested that I can call?\" Capture any referral and end the call politely.","agent"),
-    S("**If \"Yes\":** That's great. Do you currently have a tracking device fitted? (Move to the Pitch.)"),
+    S("**If \"Yes\":** That's great, I'm glad you are aware of the need for a tracking device. (Move to the Pitch.)"),
+    S("**If \"No\":** Not a problem, [[client|client's name]]. I am calling to assist going forward by making sure the car you have worked so hard for is protected. (Move to the Pitch.)"),
     S("[[client|client's name]], please note, this call is recorded for security purposes.")
   ]},
   { title:"Pitch Landing & Pitch", blocks:[
