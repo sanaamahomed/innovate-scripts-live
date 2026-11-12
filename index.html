@@ -689,8 +689,8 @@ ct: {
 };
 
 SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assist Upsell", by:"Innovate, on behalf of Netstar",
-  version:"Approved script V004 (29.04.2026)",
-  blurb:"Early Warning with StarTag back-up at R259 per month (or standard Early Warning at R239). Based on the approved Netstar script.",
+  version:"",
+  blurb:"Early Warning with StarTag back-up at R259 per month (or standard Early Warning at R239).",
   bullets:["Sales pitch, banking and fitment booking","Premium objection answer built in","36 month rental, debit order on salary date"],
   sections:[
   { title:"Introduction", blocks:[
@@ -1113,7 +1113,7 @@ function renderHome(){
     <div><h2>${s.label}</h2><div class="by">${esc(s.by)}</div></div>
     <p style="margin:0">${esc(s.blurb)}</p>
     <ul>${s.bullets.map(b=>`<li>${esc(b)}</li>`).join("")}</ul>
-    <div class="meta">${s.soon?"":`<span class="chip y">${s.sections.length} steps</span>`}<span class="chip t">${esc(s.version)}</span></div>
+    <div class="meta">${s.soon?"":`<span class="chip y">${s.sections.length} steps</span>`}${s.version?`<span class="chip t">${esc(s.version)}</span>`:""}</div>
     <div class="go">${s.soon? `<button class="btn" data-infogo="ns">See Netstar prices</button>` : `<button class="btn primary" data-start="${s.id}">Start script</button>`}</div>
   </article>`;
   $app.innerHTML = `
