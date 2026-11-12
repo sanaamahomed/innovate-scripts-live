@@ -892,11 +892,16 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
 ===================================================================== */
 const OBJ = [
 /* ---------- both products ---------- */
-{id:"ns_premium",prods:["ns"],title:"Price uncertainty / premium (approved script answer)",tags:"price premium expensive cost value uncertain",
+{id:"ns_premium",prods:["ns"],title:"It's too expensive / I can't afford it",tags:"price premium expensive cost value uncertain afford too much cheaper",
  ack:"I understand that price is always an important consideration, and it's great that you're thinking about the investment.",
  say:"But when you look at the long-term benefits, it's less about the upfront cost and more about the value Netstar can provide. Think of the loss if your car is stolen: how much would that impact your pocket? Not to mention the time and frustration of dealing with insurance? Netstar is designed to give you 24/7 peace of mind. Plus, it could even lower your car insurance premiums, saving you money in the long run.\n\nWith Netstar, you're not just paying for a service, you're buying the security of your vehicle and the protection of your assets. The cost of replacing a stolen vehicle, or the stress of dealing with it, could be much higher than the price of our tracker. And if your car is recovered, the tracker essentially pays for itself.",
  back:"Ask the close question after addressing the objection.",
  avoid:"Use only when there is uncertainty about the price. Don't promise a premium discount: say insurers may offer one."},
+{id:"ns_tracker",prods:["ns"],title:"I already have a tracker / I'm still under contract",tags:"already tracker have other existing contract provider cartrack tracker switch cancel",
+ ack:"That's great, it shows you already take your car's safety seriously.",
+ say:"Netstar's Early Warning is a separate option I'd like you to consider. Please note that **the responsibility to cancel an existing contract lies with you**, and this **cannot be done by Netstar**. So it's worth checking the terms of your current contract before you decide.",
+ back:"Ask if they'd still like to hear how Early Warning works, then continue the pitch.",
+ avoid:"Never tell the client to cancel their existing tracker or badmouth another provider."},
 {id:"ns_tag",prods:["ns"],title:"Why must I keep the tag with my keys?",tags:"tag keys arm disarm theft signal early warning",
  ack:"Good question, it's what makes Early Warning work.",
  say:"With **Early Warning** you get a tag that must be kept with your keys. It **arms and disarms the unit automatically**. If the tag isn't present, the unit sends out a **\"Theft\" signal**. Just keep it on your key ring.",
@@ -1364,7 +1369,7 @@ function paintObjList(){
   const nsNote = "";
   if(!list.length){ el.innerHTML=nsNote+`<div class="empty-state">No close match. Acknowledge what they said, ask what worries them most, then go back to the close. If unsure, say you will check and ask your team leader.</div>`; return; }
   el.innerHTML = nsNote + list.map(o=>{
-    const badges = o.prods.length>=3 ? `<span class="badge all">All products</span>` : o.prods[0]==="ra"?`<span class="badge ra">Repair Assist</span>`:`<span class="badge ct">Cartrack</span>`;
+    const badges = o.prods.length>=3 ? `<span class="badge all">All products</span>` : o.prods[0]==="ra"?`<span class="badge ra">Repair Assist</span>`:o.prods[0]==="ns"?`<span class="badge ns">Netstar</span>`:`<span class="badge ct">Cartrack</span>`;
     return `<details class="obj" id="o_${o.id}" ${state.openObj===o.id?"open":""}><summary><span>“${esc(o.title)}”</span><span class="badges">${badges}</span></summary>
     <div class="obj-body">
       <div class="ostep s1"><b>1. Acknowledge</b><p>${rich(o.ack)}</p></div>
