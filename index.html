@@ -510,11 +510,9 @@ ra: {
     S("Hello! You are speaking to [[agent|your name]], I am calling you from **Innovate** on behalf of **Repair Assist**."),
     S("For quality and verification purposes, this call is recorded.",{read:"ra_rec",label:"Told the client the call is recorded",tick:"Said to client"}),
     S("I would like to tell you about an exciting product designed to give you peace-of-mind motoring at a very affordable monthly price."),
-    NOTE("Smile, slow down and use the client's name. If they sound rushed, keep it brief. If they push back, tap the red Objection Help button at the top right.","tip")
   ]},
   { title:"Create Need", blocks:[
     S("Mr/Mrs [[client|client's surname]], if your car broke down today, would you have the cash in hand to repair it? Many South Africans struggle to find money for an unexpected mechanical repair, and it often happens at the worst possible time."),
-    NOTE("Ask the question, then stop talking. Let the client answer. Listen for budget worries or a past breakdown story and use it later when you close.","tip"),
     {t:"obj",id:"ra_warranty"}
   ]},
   { title:"The Solution", blocks:[
@@ -528,7 +526,6 @@ ra: {
     S("There's no set limit on how many requests you can make. To keep things fair, a new request isn't taken within **2 000 km** of your previous one."),
   ]},
   { title:"Offer the Choice", blocks:[
-    NOTE("Closing technique: offer a choice between two options, not a yes or no. Say it, then be quiet and let the client choose.","tip"),
     S("Mr/Mrs [[client|client's surname]], you can choose the lower-cost Classic option at **R99 per month**, or the higher-limit Gold option at **R149 per month**. Which option would suit you better?"),
     {t:"choose"},
     {t:"plans"}
@@ -559,7 +556,7 @@ ra: {
   ]},
   { title:"Banking Details", blocks:[
     S("Wonderful, [[client|client's name]], now to seal the deal, let's take down your banking details. Who do you bank with… Capitec, FNB…?"),
-    NOTE("Probing for an answer helps to overcome objections at banking. Capture the answers on the client portal or application form.","agent"),
+    NOTE("Probe gently. Capture the answers on the client portal or form.","agent"),
     S("Super, and is this a cheque or savings account?"),
     S("Great! And is this [[bank|bank name]] account in your name?"),
     S("May I have the account number and the branch code?"),
@@ -590,9 +587,9 @@ ra: {
     H("REFERRAL STATEMENT"),
     S("Mr/Mrs [[client|client's surname]], please refer us to a few people whom you think may benefit from Repair Assist and stand a chance to win a **tank of fuel** in our monthly draw."),
     H("REVIEW REQUEST"),
-    NOTE("If the client wishes to leave a positive review, ask them to email it to **helpme@repairassist.co.za** for possible publication on the Repair Assist website.","tip"),
     S("Mr/Mrs [[client|client's surname]], we are delighted to welcome you to the Repair Assist family. Thank you for trusting us to help take care of your vehicle needs. We wish you many kilometres of peace-of-mind motoring!"),
-    {t:"summary"}
+    {t:"summary"},
+    NOTE("If the client wants to leave a review, ask them to email **helpme@repairassist.co.za**.","tip")
   ]}
   ]
 },
@@ -608,7 +605,7 @@ ct: {
     S("Good day, is this Mr./Mrs. [[client|client's name]]?"),
     S("[[client|client's name]], you're speaking to [[agent|your name]], calling you from **Motordrive SA** on behalf of **Cartrack**."),
     S("How are you doing today?"),
-    NOTE("Opportunity to engage the client, and ask any questions necessary. If the client asks to be called back, capture the callback and end politely.","agent"),
+    NOTE("If the client asks for a callback, capture it and end politely.","agent"),
     S("[[client|client's name]], please note, this call is recorded for security purposes."),
     S("[[client|client's name]], I'm calling regarding your car, the [[vehicle|vehicle make and model]]. Do you currently have a tracking device fitted to it?"),
     S("**If \"Yes\":** That's great, I'm glad you are aware of the need for a tracking device. (Move to the Pitch.)"),
@@ -631,7 +628,7 @@ ct: {
       {n:2,h:"Cartrack Tag wireless backup",d:"A small wireless tag that **does not rely on GPS**, so it can still help find the vehicle if the GPS is jammed. Battery lasts up to **5 years**, no cables.",hint:"The Tag on its own shows rough location through the control room only. It has no speed, trip or driver data and no recovery by itself. Never promise recovery from the Tag alone."},
       {n:3,h:"Alerts, crash detection and backup battery",d:"Automated alerts (idling, over speeding, harsh braking/turning), power event notifications, crash detection, CarWatch, and a back-up battery that runs the unit for up to **72 hours** if the vehicle battery is disconnected.",hint:"Protector is NOT part of Quick Gold (it is a separate R75 per month add-on). Don't offer it as included."}
     ]},
-    NOTE("Your November price list shows a \"NO recovery warranty\" badge on this product, while the training manual lists stolen vehicle recovery under Quick Gold. Until your team leader confirms the exact wording, say recovery is provided through the Quick Gold unit and do not promise a result.","warn"),
+    NOTE("Do not promise recovery results. Say recovery is provided through the Quick Gold unit.","warn"),
     H("PRICE"),
     S("So, [[client|client's name]], we can have the **Quick Gold with Cartrack Tag** installed in your [[vehicle|vehicle make and model]] for only **R239 incl VAT** a month, with free installation."),
     S("With this option your prized possession will be protected. There's no better time to secure your car than now. Vehicle thefts are on the rise, and the sooner you're protected, the better."),
@@ -639,12 +636,12 @@ ct: {
   ]},
   { title:"Close", blocks:[
     S("[[client|client's name]], Cartrack can have your unit installed at work, or at home, are you usually at work in the day? We can arrange for fitment there."),
-    NOTE("The client may object: objection handle, and ask the close question again. Remember to take their answer down, so you do not have to ask again when capturing. A safe, private space is needed for a mobile fitment.","agent"),
+    NOTE("If the client objects, tap Objection Help, answer, then ask the close question again. Write their answer down so you don't ask again when capturing.","agent"),
     S("[[client|client's name]], would you like to go ahead with the Quick Gold with Cartrack Tag at R239 a month?",{yn:"ct_choice",label:"Client wants to proceed",no:"Handle the objection using Objection Help. If the client still declines, thank them and end the call politely."}),
     S("Wonderful! [[client|client's name]], let's go ahead and finalise your details. I will require some information like vehicle details, personal and banking information, as well as emergency contacts. Now, before we continue…")
   ]},
   { title:"Capturing", blocks:[
-    NOTE("Capture the answers on the third-party client portal or client application form. The verification call later repeats this information back to the client.","agent"),
+    NOTE("Capture the answers on the client portal or application form.","agent"),
     H("PERSONAL"),
     S("[[client|client's name]], please will you confirm your first and last name for me."),
     S("May I ask, [[client|client's name]], your title, are you Miss, Mr, maybe Doctor?"),
@@ -671,7 +668,7 @@ ct: {
     NOTE("Get a clear \"Yes\".","warn"),
     H("BANKING"),
     S("Wonderful, now to seal the deal, let's take down your banking details. Who do you bank with… Capitec, FNB…?"),
-    NOTE("Probing for an answer helps to overcome the objections you could get at banking.","agent"),
+    NOTE("Probe gently. Capture the answers on the client portal or form.","agent"),
     S("Super, and is this a cheque or savings account?"),
     S("Great! And is this [[bank|bank name]] account in your name? It needs to be a private account in your name."),
     S("For convenience, debit orders are normally run on your salary date. Please confirm the date, and which day of the month you'd prefer the debit to go off?"),
@@ -684,7 +681,7 @@ ct: {
     H("CONTRACT TERMS"),
     S("The contract duration is **36 months** (free installation). The monthly fee is **R239.00 incl VAT** for the first year. A **10% escalation** applies in Year 2 and a further **10%** in Year 3. Thereafter, any increase will be aligned with the **CPI** (Consumer Price Index).",{ver:1,read:"ct_terms",label:"Contract duration, fee and escalation read",tick:"Read to client"}),
     S("**Early cancellation fee:**\nIndividual clients: **R2,650 incl. VAT** or the balance of the contract (whichever is lesser).\nBusiness clients: the **full balance** of the contract is payable.",{ver:1,read:"ct_cancel",label:"Early cancellation fee read",tick:"Read to client"}),
-    NOTE("Be upfront about the 36 months, the escalations and the cancellation fee. Your training manual says Year 3 is a further 10% on the Year 2 rate; the script adds that later increases follow CPI. Read the script as written.","agent"),
+    NOTE("Be upfront about the 36 months, the escalations and the cancellation fee. Read the script as written.","agent"),
     NOTE("**Business clients:** do NOT voice log. Send the Commercial Subscriber Form, Business Verification Form, CK document, directors' ID and a bank confirmation letter (under 3 months old). This verification script is for individual clients.","warn"),
     H("AUTHORITY CONFIRMATION"),
     S("Can I continue?"),
@@ -749,11 +746,9 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
   bullets:["Sales pitch, capturing, banking and fitment booking","Premium objection answer built in","36 month rental, debit order on salary date"],
   sections:[
   { title:"Introduction", blocks:[
-    NOTE("Approved Netstar script V004 (TRACKME Early Warning System with StarTag Backup). The script says calling \"from Cubix\": it is changed to **Innovate** here.","agent"),
     S("Good day, is this [[client|client's name]]?"),
     S("[[client|client's name]], you're speaking to [[agent|your name]], calling you from **Innovate** on behalf of **Netstar**."),
     S("How are you doing today?"),
-    NOTE("Opportunity to engage the client, and ask any questions necessary.","agent"),
     S("[[client|client's name]], please note, this call is recorded for security purposes.",{read:"ns_rec",label:"Recording statement",tick:"Said to client"}),
     S("[[client|client's name]], I'm calling regarding your car, the [[vehicle|vehicle make and model]]. Do you currently have a tracking device fitted to it?"),
     S("**If \"Yes\":** That's great, I'm glad you are aware of the need for a tracking device. (Move to the Pitch.)"),
@@ -795,11 +790,11 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
   ]},
   { title:"Close", blocks:[
     S("[[client|client's name]], Netstar technicians can have your unit installed at work, or at home, are you usually at work in the day? We can arrange for fitment there."),
-    NOTE("The client may object: objection handle, and ask the close question again. Remember to take their answer down, so you do not have to ask again when capturing.","agent"),
+    NOTE("If the client objects, tap Objection Help, answer, then ask the close question again. Write their answer down so you don't ask again when capturing.","agent"),
     S("Wonderful! [[client|client's name]], let's go ahead and finalise your details. Now, before we continue…")
   ]},
   { title:"Capturing", blocks:[
-    NOTE("Capture the answers on the third-party client portal or client application form.","agent"),
+    NOTE("Capture the answers on the client portal or application form.","agent"),
     H("PERSONAL"),
     S("[[client|client's name]], please will you confirm your first and last name for me."),
     S("May I ask, [[client|client's name]], your title, are you Miss, Mr, maybe Doctor?"),
@@ -824,7 +819,7 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
     NOTE("Get a clear \"Yes\".","warn"),
     H("BANKING"),
     S("Wonderful, now to seal the deal, let's take down your banking details. Who do you bank with… Capitec, FNB…?"),
-    NOTE("Probing for an answer helps to overcome the objections you could get at banking.","agent"),
+    NOTE("Probe gently. Capture the answers on the client portal or form.","agent"),
     S("Super, and this is a cheque or savings account?"),
     S("Great! And this [[bank|bank name]] account is in your name?"),
     S("For convenience, debit order runs are normally on your salary date. Please confirm the date?"),
@@ -863,7 +858,7 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
     {t:"upcall"}
   ]},
   { title:"Repair Assist Upsell (optional)", blocks:[
-    NOTE("**Optional upsell.** Use your own words. This is a talking guide, not a word for word script: cover the key points, then get a clear YES on the debit order. If the client says no, thank them and go to the Conclusion.","agent"),
+    NOTE("**Optional upsell.** Cover the key points in your own words, then get a clear YES on the debit order. If the client says no, go to the Conclusion.","agent"),
     H("INTRODUCE IT"),
     S("[[client|client's name]], before I let you go, may I quickly tell you about one more product that goes well with your tracker? It's called **Repair Assist**, and it helps you pay for mechanical repairs if your car breaks down."),
     H("CREATE THE NEED"),
@@ -1346,7 +1341,7 @@ function renderObjections(){
     <div><b>4. Ask</b><span>Go back to the close and ask the next question.</span></div>
   </div>
   <div class="tools">
-    <div class="search"><input id="objSearch" type="search" placeholder="Search, e.g. expensive, warranty, insurance, 36 months" value="${esc(state.query)}" aria-label="Search objections"></div>
+    <div class="search"><input id="objSearch" type="search" placeholder="Type what the client said, e.g. it is too expensive, I need to think, I already have a tracker" value="${esc(state.query)}" aria-label="Type what the client said"></div>
     <div class="filters" id="objFilters"></div>
   </div>
   <details class="tone"><summary>South African tone and rapport tips</summary><ul>${TONE.map(t=>`<li>${rich(t)}</li>`).join("")}</ul></details>
@@ -1360,10 +1355,14 @@ function paintFilters(){
 }
 function paintObjList(){
   const q=state.query.trim().toLowerCase();
-  const list = OBJ.filter(o=>(state.filter==="all"||o.prods.includes(state.filter)) && (!q || (o.title+" "+o.tags+" "+o.say+" "+o.ack).toLowerCase().includes(q)));
+  const stop=new Set("a an the i it is its im ive my me we you your to of and or but not no so do dont does did can cant will wont that this are was be been have has had for on in at with as if what they them there then just very too want need get got how why when who from about really".split(" "));
+  const stem=w=>w.replace(/(ing|ed|es|s)$/,"");
+  const words=q?q.replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(w=>w&&!stop.has(w)).map(stem).filter(w=>w.length>1):[];
+  const score=o=>{ if(!words.length) return 1; const t=(o.title||"").toLowerCase(), g=(o.tags||"").toLowerCase(), r=((o.say||"")+" "+(o.ack||"")).toLowerCase(); let sc=0; for(const w of words){ if(t.includes(w)) sc+=3; if(g.includes(w)) sc+=2; if(r.includes(w)) sc+=1; } return sc; };
+  const list = OBJ.filter(o=>state.filter==="all"||o.prods.includes(state.filter)).map(o=>({o,sc:score(o)})).filter(x=>x.sc>0).sort((a,b)=>b.sc-a.sc).map(x=>x.o).slice(0,q?4:999);
   const el=document.getElementById("objList");
   const nsNote = "";
-  if(!list.length){ el.innerHTML=nsNote+`<div class="empty-state">No matches. Try a different word, or clear the filter.</div>`; return; }
+  if(!list.length){ el.innerHTML=nsNote+`<div class="empty-state">No close match. Acknowledge what they said, ask what worries them most, then go back to the close. If unsure, say you will check and ask your team leader.</div>`; return; }
   el.innerHTML = nsNote + list.map(o=>{
     const badges = o.prods.length>=3 ? `<span class="badge all">All products</span>` : o.prods[0]==="ra"?`<span class="badge ra">Repair Assist</span>`:`<span class="badge ct">Cartrack</span>`;
     return `<details class="obj" id="o_${o.id}" ${state.openObj===o.id?"open":""}><summary><span>“${esc(o.title)}”</span><span class="badges">${badges}</span></summary>
