@@ -793,11 +793,21 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
     S("Does all of that sound fair to you?"),
     H("THE OFFER"),
     S("The **Repair Assist Gold** plan is **R149 a month**. Would you like to add it to your Netstar tracker?"),
-    H("DEBIT ORDER (COVER EACH POINT AND GET A CLEAR YES)"),
-    {t:"list",items:["Confirm the payer's ID number, full name and cell number.","The client authorises **Motordrive SA** to debit **R149 a month** for the Repair Assist **Gold** plan, and the amount will never exceed what was agreed.","Confirm that the same banking details given for the Netstar debit order will be used.","The debit date, the month of the first payment, and that a weekend or public holiday debit goes on the next business day.","The reference that will show on the bank statement.","If there are insufficient funds, the account may be tracked until the funds are available.","Ask for a final confirmation that the client understands and agrees."]},
-    S("[[client|client's name]], we already have your banking details from your Netstar debit order, so please confirm that we are using the same details you provided earlier for the Repair Assist debit order. Is that correct?",{yn:"ns_ra_bank",label:"Same banking details confirmed (YES)",no:"Get the correct account details in the client's name before continuing."}),
-    S("Do you authorise **Motordrive SA** to debit your account **R149** a month for your Repair Assist **Gold** plan? Yes or no?",{yn:"ns_ra_auth",label:"Repair Assist debit authorisation (YES)",no:"No clear YES means no Repair Assist sale. Thank the client and continue to the Conclusion."}),
-    S("Do you confirm that you understand and agree to this debit order authorisation?",{yn:"ns_ra_final",label:"Repair Assist final confirmation (YES)",no:"A second clear YES is needed. Don't close this sale without it."})
+    H("DEBIT ORDER CONFIRMATION"),
+    S("[[client|client's name]], for the record, this call is recorded. I'm now going to confirm your Repair Assist monthly debit order with you, and your answers here are your agreement for the debit."),
+    H("1. WHO IS PAYING"),
+    S("Let me confirm the details of the person paying for the plan. Your ID number is [[idno|ID number]], your name is [[payername|initials, name & surname]] and your cell number is [[cell|cell number]]. Is that all correct?",{yn:"ns_ra_d1",label:"Payer details confirmed (YES)",no:"Correct the details before continuing."}),
+    H("2. THE DEBIT ORDER"),
+    S("Do you agree that **Motordrive SA** may collect **R149 a month** from your bank account for your Repair Assist **Gold** plan? It will never be more than what we've agreed. Yes?",{yn:"ns_ra_auth",label:"Debit authorisation (clear YES)",no:"Without a clear YES there is no debit order. Don't continue the sale. Explain again, or end the call politely."}),
+    H("3. THE DETAILS"),
+    S("[[client|client's name]], we already have your banking details from your Netstar debit order, so please confirm that we are using the same details you provided earlier. Is that correct?",{yn:"ns_ra_bank",label:"Same banking details confirmed (YES)",no:"Get the correct account details in the client's name before continuing."}),
+    S("It will be taken on the [[debitdate|e.g. 25th]] of each month, starting in [[firstmonth|month]]. If that day is a weekend or public holiday, it's taken on the next business day. And if your salary comes in later in December, we can move that month's date to your pay day."),
+    S("On your bank statement, you'll see [[inscription|statement inscription]]."),
+    S("Your Repair Assist Gold reference number is [[refno|reference number]]. (If it isn't ready yet: \u201cIt will be sent to you and linked to this debit order.\u201d)"),
+    S("One more thing: if there isn't enough money in the account on the day, we may try again until the funds are available."),
+    H("4. FINAL CONFIRMATION"),
+    S("Do you understand and are you happy with this debit order arrangement?",{yn:"ns_ra_final",label:"Final confirmation (second clear YES)",no:"A second clear YES is needed. Don't close the sale without it."}),
+    S("Thank you, your debit order is all set. If you have any questions or need to reach us, please call [[ccnumber|call centre number]].")
   ]},
   { title:"Conclusion", blocks:[
     S("[[client|client's name]], congratulations on officially becoming the newest member of the Netstar family! We are glad to have you on board! Stay safe!")
