@@ -513,7 +513,6 @@ ra: {
   ]},
   { title:"Create Need", blocks:[
     S("Mr/Mrs [[client|client's surname]], if your car broke down today, would you have the cash in hand to repair it? Many South Africans struggle to find money for an unexpected mechanical repair, and it often happens at the worst possible time."),
-    {t:"obj",id:"ra_warranty"}
   ]},
   { title:"The Solution", blocks:[
     S("Repair Assist provides repair assistance if your vehicle experiences a qualifying mechanical or electrical failure. Each listed component has a Rand Value Benefit Limit."),
@@ -532,7 +531,6 @@ ra: {
   ]},
   { title:"Debit Date", blocks:[
     S("Do you prefer the **1st, 15th, 25th or last day** of the month as the debit date? Any other day is acceptable."),
-    NOTE("Confirm the first debit date for the current month and the monthly debit date for future months.","agent")
   ]},
   { title:"A Few Simple Things", blocks:[
     S("Before we set things up, [[client|client's name]], there are just a few simple things to keep your plan in good shape:"),
@@ -547,7 +545,6 @@ ra: {
   ]},
   { title:"Banking Details", blocks:[
     S("Wonderful, [[client|client's name]], now to seal the deal, let's take down your banking details. Who do you bank with… Capitec, FNB…?"),
-    NOTE("Probe gently. Capture the answers on the client portal or form.","agent"),
     S("Super, and is this a cheque or savings account?"),
     S("Great! And is this [[bank|bank name]] account in your name?"),
     S("May I have the account number and the branch code?"),
@@ -580,7 +577,6 @@ ra: {
     H("REVIEW REQUEST"),
     S("Mr/Mrs [[client|client's surname]], we are delighted to welcome you to the Repair Assist family. Thank you for trusting us to help take care of your vehicle needs. We wish you many kilometres of peace-of-mind motoring!"),
     {t:"summary"},
-    NOTE("If the client wants to leave a review, ask them to email **helpme@repairassist.co.za**.","tip")
   ]}
   ]
 },
@@ -596,7 +592,6 @@ ct: {
     S("Good day, is this Mr./Mrs. [[client|client's name]]?"),
     S("[[client|client's name]], you're speaking to [[agent|your name]], calling you from **Motordrive SA** on behalf of **Cartrack**."),
     S("How are you doing today?"),
-    NOTE("If the client asks for a callback, capture it and end politely.","agent"),
     S("[[client|client's name]], please note, this call is recorded for security purposes."),
     S("[[client|client's name]], I'm calling regarding your car, the [[vehicle|vehicle make and model]]. Do you currently have a tracking device fitted to it?"),
     S("**If \"Yes\":** That's great, I'm glad you are aware of the need for a tracking device. (Move to the Pitch.)"),
@@ -623,11 +618,9 @@ ct: {
     H("PRICE"),
     S("So, [[client|client's name]], we can have the **Quick Gold with Cartrack Tag** installed in your [[vehicle|vehicle make and model]] for only **R239 incl VAT** a month, with free installation."),
     S("With this option your prized possession will be protected. There's no better time to secure your car than now. Vehicle thefts are on the rise, and the sooner you're protected, the better."),
-    {t:"obj",id:"ct_price"}
   ]},
   { title:"Close", blocks:[
     S("[[client|client's name]], Cartrack can have your unit installed at work, or at home, are you usually at work in the day? We can arrange for fitment there."),
-    NOTE("If the client objects, tap Objection Help, answer, then ask the close question again.","agent"),
     S("[[client|client's name]], would you like to go ahead with the Quick Gold with Cartrack Tag at R239 a month?",{yn:"ct_choice",label:"Client wants to proceed",no:"Handle the objection using Objection Help. If the client still declines, thank them and end the call politely."}),
     S("Wonderful! [[client|client's name]], let's go ahead and finalise your details. I will require some information like vehicle details, personal and banking information, as well as emergency contacts. Now, before we continue…")
   ]},
@@ -638,7 +631,6 @@ ct: {
     NOTE("Get a clear \"Yes\".","warn"),
     H("BANKING"),
     S("Wonderful, now to seal the deal, let's take down your banking details. Who do you bank with… Capitec, FNB…?"),
-    NOTE("Probe gently. Capture the answers on the client portal or form.","agent"),
     S("Super, and is this a cheque or savings account?"),
     S("Great! And is this [[bank|bank name]] account in your name? It needs to be a private account in your name."),
     S("For convenience, debit orders are normally run on your salary date. Please confirm the date, and which day of the month you'd prefer the debit to go off?"),
@@ -651,7 +643,6 @@ ct: {
     H("CONTRACT TERMS"),
     S("The contract duration is **36 months** (free installation). The monthly fee is **R239.00 incl VAT** for the first year. A **10% escalation** applies in Year 2 and a further **10%** in Year 3. Thereafter, any increase will be aligned with the **CPI** (Consumer Price Index).",{ver:1,read:"ct_terms",label:"Contract duration, fee and escalation read",tick:"Read to client"}),
     S("**Early cancellation fee:**\nIndividual clients: **R2,650 incl. VAT** or the balance of the contract (whichever is lesser).\nBusiness clients: the **full balance** of the contract is payable.",{ver:1,read:"ct_cancel",label:"Early cancellation fee read",tick:"Read to client"}),
-    NOTE("Be upfront about the 36 months, the escalations and the cancellation fee. Read the script as written.","agent"),
     NOTE("**Business clients:** do NOT voice log. Send the Commercial Subscriber Form, Business Verification Form, CK document, directors' ID and a bank confirmation letter (under 3 months old). This verification script is for individual clients.","warn"),
     H("AUTHORITY CONFIRMATION"),
     S("Can I continue?"),
@@ -755,11 +746,9 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
     S("**Preventative Alerts:** You get alerts for things like unauthorised movements helping you prevent theft or misuse before it happens."),
     S("**Convenient Access:** You can track your vehicle from your phone or computer anytime, anywhere."),
     S("You can view your trip reports, location, fitment certificates and more on the website **my.netstar.co.za** or by downloading and registering on the **MyNetstar app**. You will also be able to view your account details and functionality of your unit."),
-    {t:"obj",id:"ns_premium"}
   ]},
   { title:"Close", blocks:[
     S("[[client|client's name]], Netstar technicians can have your unit installed at work, or at home, are you usually at work in the day? We can arrange for fitment there."),
-    NOTE("If the client objects, tap Objection Help, answer, then ask the close question again.","agent"),
     S("Wonderful! [[client|client's name]], let's go ahead and finalise your details. Now, before we continue…")
   ]},
   { title:"Premium & Banking", blocks:[
@@ -769,7 +758,6 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
     NOTE("Get a clear \"Yes\".","warn"),
     H("BANKING"),
     S("Wonderful, now to seal the deal, let's take down your banking details. Who do you bank with… Capitec, FNB…?"),
-    NOTE("Probe gently. Capture the answers on the client portal or form.","agent"),
     S("Super, and this is a cheque or savings account?"),
     S("Great! And this [[bank|bank name]] account is in your name?"),
     S("For convenience, debit order runs are normally on your salary date. Please confirm the date?"),
@@ -808,12 +796,10 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
     {t:"upcall"}
   ]},
   { title:"Repair Assist Upsell (optional)", blocks:[
-    NOTE("**Optional upsell.** Cover the key points in your own words, then get a clear YES on the debit order. If the client says no, go to the Conclusion.","agent"),
     H("INTRODUCE IT"),
     S("[[client|client's name]], before I let you go, may I quickly tell you about one more product that goes well with your tracker? It's called **Repair Assist**, and it helps you pay for mechanical repairs if your car breaks down."),
     H("CREATE THE NEED"),
     S("If your car broke down today, would you have the cash in hand to repair it? Many South Africans struggle to find money for an unexpected mechanical repair, and it often happens at the worst possible time."),
-    {t:"obj",id:"ra_warranty"},
     H("KEY POINTS (SAY IT IN YOUR OWN WORDS)"),
     {t:"list",items:["Helps pay for repairs after an **unforeseen mechanical or electrical breakdown** of the **engine, gearbox, differential and factory-fitted turbo**.","Two options: **Classic R99** a month or **Gold R149** a month (incl. VAT). Gold has higher limits.","Extras included: towing, hotel or car rental, Uber, Pothole Guru, Battery Guru and more.","**Any age and any mileage** qualifies. It is a **month-to-month** plan, not a fixed contract.","The limits are the **maximum per approved request**, not a cash pool."]},
     {t:"plans"},
