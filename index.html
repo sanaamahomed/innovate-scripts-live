@@ -552,7 +552,6 @@ ra: {
     S("Perfect, and shall we start this month or from next month?")
   ]},
   { title:"Debit Order Confirmation", blocks:[
-    NOTE("Keep it friendly and in your own words, but cover every point and get a clear **YES** where marked. The call must be recorded.","agent"),
     S("[[client|client's name]], for the record, this call is recorded. I'm now going to confirm your monthly debit order with you, and your answers here are your agreement for the debit."),
     H("1. WHO IS PAYING"),
     S("Let me confirm the details of the person paying for the plan. Your ID number is [[idno|ID number]], your name is [[payername|initials, name & surname]] and your cell number is [[cell|cell number]]. Is that all correct?",{yn:"ra_d1",label:"Payer details confirmed (YES)",no:"Correct the details before continuing."}),
@@ -596,7 +595,6 @@ ct: {
     S("[[client|client's name]], I'm calling regarding your car, the [[vehicle|vehicle make and model]]. Do you currently have a tracking device fitted to it?"),
     S("**If \"Yes\":** That's great, I'm glad you are aware of the need for a tracking device. (Move to the Pitch.)"),
     S("**If \"No\":** Not a problem, [[client|client's name]]. I am calling to assist going forward by making sure the car you have worked so hard for is protected. (Move to the Pitch.)"),
-    NOTE("If the client says they no longer own the vehicle: \"Thank you for confirming. Would you know of anyone who might be interested that I can call?\" Capture any referral and end the call politely.","agent")
   ]},
   { title:"Pitch Landing & Pitch", blocks:[
     H("PITCH LANDING"),
@@ -605,7 +603,6 @@ ct: {
     S("So, [[client|client's name]], that's where Cartrack comes in. Their vehicle tracker gives you live tracking, so you can locate your car in real time from your phone. Even if the worst happens, Cartrack's own recovery teams, on the ground and in the air, can be dispatched to track and recover your vehicle."),
     S("Not only does this give you peace of mind, but if your car is ever involved in an accident, the unit can alert the control room automatically, which can help you get help faster."),
     S("Before we proceed, is your vehicle in full working order, with no issues with battery, wiring, mechanical function, or starting?",{yn:"ct_order",label:"Vehicle in full working order (clear YES)",no:"STOP. A clear YES must be received to continue. Do not tick Yes to get past this. Thank the client and end the call politely."}),
-    NOTE("A clear YES must be received to continue.","warn")
   ]},
   { title:"Product, Price & Benefits", blocks:[
     S("Based on your vehicle, I would like to offer you a product called the **Quick Gold with Cartrack Tag**. This device has the following benefits, amongst many more features that you can enjoy:"),
@@ -614,7 +611,6 @@ ct: {
       {n:2,h:"Cartrack Tag wireless backup",d:"A small wireless tag that **does not rely on GPS**, so it can still help find the vehicle if the GPS is jammed. Battery lasts up to **5 years**, no cables.",hint:"The Tag on its own shows rough location through the control room only. It has no speed, trip or driver data and no recovery by itself. Never promise recovery from the Tag alone."},
       {n:3,h:"Alerts, crash detection and backup battery",d:"Automated alerts (idling, over speeding, harsh braking/turning), power event notifications, crash detection, CarWatch, and a back-up battery that runs the unit for up to **72 hours** if the vehicle battery is disconnected.",hint:"Protector is NOT part of Quick Gold (it is a separate R75 per month add-on). Don't offer it as included."}
     ]},
-    NOTE("Do not promise recovery results. Say recovery is provided through the Quick Gold unit.","warn"),
     H("PRICE"),
     S("So, [[client|client's name]], we can have the **Quick Gold with Cartrack Tag** installed in your [[vehicle|vehicle make and model]] for only **R239 incl VAT** a month, with free installation."),
     S("With this option your prized possession will be protected. There's no better time to secure your car than now. Vehicle thefts are on the rise, and the sooner you're protected, the better."),
@@ -628,7 +624,6 @@ ct: {
     H("PREMIUM"),
     S("Superb, so we are about rounding up now. I just want to tell you about the costs involved."),
     S("You have opted for the **Quick Gold with Cartrack Tag** for your [[vehicle|vehicle make]]. This is at **R239 incl VAT** a month, with free installation. You did say you want cover to start [[startdate|date from the Close question]]. Please confirm that this is correct?",{yn:"ct_prem",label:"Premium confirmed (clear YES)",no:"By selecting No to this question, this sale cannot be completed. Objection handle, and ask again."}),
-    NOTE("Get a clear \"Yes\".","warn"),
     H("BANKING"),
     S("Wonderful, now to seal the deal, let's take down your banking details. Who do you bank with… Capitec, FNB…?"),
     S("Super, and is this a cheque or savings account?"),
@@ -636,18 +631,15 @@ ct: {
     S("For convenience, debit orders are normally run on your salary date. Please confirm the date, and which day of the month you'd prefer the debit to go off?"),
     H("SALE CONFIRMATION"),
     S("[[client|client's name]], thank you for taking the time to talk to me. Please confirm you have agreed to have the **Quick Gold with Cartrack Tag** installed in your [[vehicle|vehicle make and model]] for **R239** a month?",{yn:"ct_sale",label:"Sale confirmation (clear YES)",no:"By selecting No to this question, this sale cannot be completed. Objection handle and ask again."}),
-    NOTE("Get a clear \"Yes\". Now move to the verification: the information you just captured is confirmed back to the client.","warn")
   ]},
   { title:"Verification & Contract Terms", blocks:[
     S("We will now deal with the Cartrack portion of the contract for your tracking unit. This call is recorded for security and quality purposes and will form the basis of your contract should you proceed. Motordrive SA is a registered financial services provider, and a copy of this call can be made available to you upon request.",{ver:1}),
     H("CONTRACT TERMS"),
     S("The contract duration is **36 months** (free installation). The monthly fee is **R239.00 incl VAT** for the first year. A **10% escalation** applies in Year 2 and a further **10%** in Year 3. Thereafter, any increase will be aligned with the **CPI** (Consumer Price Index).",{ver:1,read:"ct_terms",label:"Contract duration, fee and escalation read",tick:"Read to client"}),
     S("**Early cancellation fee:**\nIndividual clients: **R2,650 incl. VAT** or the balance of the contract (whichever is lesser).\nBusiness clients: the **full balance** of the contract is payable.",{ver:1,read:"ct_cancel",label:"Early cancellation fee read",tick:"Read to client"}),
-    NOTE("**Business clients:** do NOT voice log. Send the Commercial Subscriber Form, Business Verification Form, CK document, directors' ID and a bank confirmation letter (under 3 months old). This verification script is for individual clients.","warn"),
     H("AUTHORITY CONFIRMATION"),
     S("Can I continue?"),
     S("Please answer YES or NO to the following: “I confirm that I have the necessary right and authority to enter into this agreement and indemnify Cartrack from any claim arising from misrepresentation of my authority.”",{ver:1,yn:"ct_auth",label:"Authority confirmation (YES)",no:"STOP. If NO, end the call. Do not continue."}),
-    NOTE("If NO, end the call. If YES, continue.","warn")
   ]},
   { title:"Verify: Client Details", blocks:[
     S("Please confirm: is your full name as per your ID **[[fullname|full name]]**?",{yn:"ct_name",label:"Full name confirmed"}),
@@ -668,14 +660,11 @@ ct: {
     S("Registration: **[[reg|registration]]**",{yn:"ct_reg",label:"Registration confirmed"}),
     S("Make / model / description: **[[makemodel|make and model]]**",{yn:"ct_make",label:"Make and model confirmed"}),
     S("VIN / chassis number: please state the VIN for accuracy. **[[vin|VIN]]**",{yn:"ct_vin",label:"VIN stated and captured"}),
-    NOTE("If the client sends the VIN by message, you must call back and verify it on a recorded line.","agent"),
     S("Please confirm your two emergency contacts are **[[ec1|contact 1]]** and **[[ec2|contact 2]]**.",{yn:"ct_ec",label:"Emergency contacts confirmed"}),
     S("Please provide a password you will remember for emergencies.",{read:"ct_pw",label:"Emergency password recorded",tick:"Password recorded"}),
-    NOTE("Record the password on the client portal or application form. Don't repeat it out loud.","agent")
   ]},
   { title:"Verify: Final Declaration", blocks:[
     S("I will now continue to read you the declaration. Please note that I refer to you as the client. Please audibly answer Yes or No to each of the following:",{ver:1}),
-    NOTE("Each answer must be audible on the recording. A No on any item means do not proceed with the sale as it stands.","warn"),
     ...[
       ["ct_f1","Debit order collection","I agree that Cartrack may collect all charges via debit order monthly."],
       ["ct_f2","Fees payable in advance","I agree that fees are payable in advance and a pro-rata fee will be debited after installation to cover the rest of the month and thereafter the full subscriptions will then be debited in advance on my selected date each month."],
@@ -691,7 +680,6 @@ ct: {
     H("FITMENT"),
     S("You will receive both an **SMS and an email** from Cartrack with a link to confirm the installation location. Please ensure the written address and map location are correct to avoid any delays.",{read:"ct_install",label:"Installation SMS/email link explained",tick:"Read to client"}),
     S("**Cartrack will call you within 3 days** to schedule your installation."),
-    NOTE("Say it exactly like this. Earlier fitments may be available but don't overpromise. Scheduling can change during the day.","agent"),
     H("CLOSE"),
     S("Do you have any questions?"),
     S("Thank you again for choosing Cartrack. Have a wonderful day! You have been speaking to [[agent|your name]] from Motordrive SA.")
@@ -731,7 +719,6 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
     S("The unit also transmits driving behaviour data such as location, speed, harsh acceleration, and harsh braking."),
     H("STARTAG BACK-UP"),
     S("This offer comes standard with an additional **back-up device** for added safety. This back-up device has a battery that lasts a maximum of three years, and you **MUST replace this unit after 3 years**."),
-    NOTE("Read the back-up device lines only for the Early Warning + StarTag option (R259). The standard Early Warning without the StarTag is R239.","agent"),
     H("PRICE"),
     {t:"nschoose"},
     S("So, [[client|client's name]], we can have the **{{nsname}}** installed in your [[vehicle|vehicle make and model]], for only **{{nsprice}}**."),
@@ -755,7 +742,6 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
     H("PREMIUM"),
     S("Superb, so we are about rounding up now. I just want to tell you about the costs involved."),
     S("You have opted for the **{{nsname}}** for your [[vehicle|vehicle make]]. This is at a standard cost of **{{nsprice}}**. You did say you want cover to start [[startdate|date from the Close question]]. Please confirm that this is correct?",{ver:1,yn:"ns_prem",label:"Premium confirmed (clear YES)",no:"By selecting No to this question, this quotation cannot be completed. Objection handle, and ask again."}),
-    NOTE("Get a clear \"Yes\".","warn"),
     H("BANKING"),
     S("Wonderful, now to seal the deal, let's take down your banking details. Who do you bank with… Capitec, FNB…?"),
     S("Super, and this is a cheque or savings account?"),
@@ -780,12 +766,10 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
     S("Please take note the responsibility to cancel your existing contract lies with you and this cannot be done by Netstar.",{ver:1}),
     H("SALE CONFIRMATION"),
     S("[[client|client's name]], thank you for taking the time to talk to me. Please confirm you have agreed to have the **{{nsname}}** installed in your [[vehicle|vehicle make and model]] for **{{nsprice}}** a month?",{ver:1,yn:"ns_sale",label:"Sale confirmation (clear YES)",no:"By selecting No to this question, this quotation cannot be completed. Objection handle and ask again."}),
-    NOTE("Get a clear \"Yes\".","warn")
   ]},
   { title:"Booking & Fitment", blocks:[
     S("You mentioned you would like installation done at [[fitplace|work or home, from the Close question]]. Netstar can install **Monday to Friday from 8am to 5pm**. Please will you give me the street address for [[fitplace|work or home]]?"),
     H("BOOKING TOOL"),
-    NOTE("• Confirm the correct address is on the fitment case.\n• Insert the case number into the booking tool to check available fitment slots.\n• If no availability, inform the client that the Netstar fitment team will contact them to schedule the fitment.\n• When slots are available, offer two options.\n• If neither option works, offer the next closest time slot.","agent"),
     S("“Netstar can fit the device on [[slot1|e.g. Thursday at 08:00]] or [[slot2|e.g. Friday at 10:00]]. Which do you prefer?”"),
     H("REQUIREMENTS TO STATE"),
     S("“Netstar need a safe, private area for the fitment. Do you have a secure area?”"),
@@ -809,7 +793,6 @@ SCRIPTS.ns = { id:"ns", short:"NS", name:"Netstar", label:"Netstar + Repair Assi
     S("You can choose the lower-cost **Classic at R99 a month**, or the higher-limit **Gold at R149 a month**. Which one would suit you better?"),
     {t:"choose"},
     H("DEBIT ORDER (COVER EACH POINT AND GET A CLEAR YES)"),
-    NOTE("Your own words are fine, but every point below must be covered on the recorded call. The Repair Assist debit order is separate from the Netstar one.","warn"),
     {t:"list",items:["Confirm the payer's ID number, full name and cell number.","The client authorises **Motordrive SA** to debit **{{price}} a month** for the Repair Assist **{{plan}}** plan, and the amount will never exceed what was agreed.","Confirm the bank account (the same one as the Netstar debit, or another one in the client's name).","The debit date, the month of the first payment, and that a weekend or public holiday debit goes on the next business day.","The reference that will show on the bank statement.","If there are insufficient funds, the account may be tracked until the funds are available.","Ask for a final confirmation that the client understands and agrees."]},
     S("Do you authorise **Motordrive SA** to debit your account **{{price}}** a month for your Repair Assist **{{plan}}** plan? Yes or no?",{yn:"ns_ra_auth",label:"Repair Assist debit authorisation (YES)",no:"No clear YES means no Repair Assist sale. Thank the client and continue to the Conclusion."}),
     S("Do you confirm that you understand and agree to this debit order authorisation?",{yn:"ns_ra_final",label:"Repair Assist final confirmation (YES)",no:"A second clear YES is needed. Don't close this sale without it."})
@@ -1167,7 +1150,6 @@ function renderCall(){
   <div class="jump" id="jump">${sc.sections.map((s,i)=>`<button data-sec="${i}" class="${/Upsell/.test(s.title)?"upsell":""}">${i+1}. ${esc(s.title)}</button>`).join("")}</div>
   <article class="reader">
     ${sc.sections.map((sec,i)=>`<section class="rsec" id="sec-${i}"><h2><span>${i+1}</span>${esc(sec.title)}</h2>${sec.blocks.map(renderBlock).join("")}</section>`).join("")}
-    <div class="rend"><button class="btn" data-act="objections">Client objecting? Open Objection Help</button></div>
   </article>`;
   syncInputs(); paintAll();
 }
