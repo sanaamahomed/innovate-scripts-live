@@ -530,18 +530,9 @@ ra: {
     {t:"choose"},
     {t:"plans"}
   ]},
-  { title:"Vehicle Details", blocks:[
-    S("Please confirm and capture the following vehicle details:"),
-    FIELDS([
-      {k:"make",l:"Vehicle make"},{k:"model",l:"Model"},{k:"year",l:"Year"},{k:"reg",l:"Registration number"},
-      {k:"vin",l:"VIN / chassis number",wide:1},{k:"km",l:"Current kilometre reading"},
-      {k:"mwarranty",l:"Currently under manufacturer warranty?",type:"select",opts:["","Yes","No"]}
-    ]),
+  { title:"Debit Date", blocks:[
     S("Do you prefer the **1st, 15th, 25th or last day** of the month as the debit date? Any other day is acceptable."),
-    NOTE("Confirm the first debit date for the current month and the monthly debit date for future months.","agent"),
-    FIELDS([
-      {k:"debitdate",l:"Monthly debit date (e.g. 25th)"},{k:"firstmonth",l:"First debit month"}
-    ])
+    NOTE("Confirm the first debit date for the current month and the monthly debit date for future months.","agent")
   ]},
   { title:"A Few Simple Things", blocks:[
     S("Before we set things up, [[client|client's name]], there are just a few simple things to keep your plan in good shape:"),
@@ -672,8 +663,7 @@ ct: {
     S("Please confirm: is your ID number **[[idno|ID number]]**?",{yn:"ct_id",label:"ID number confirmed"}),
     S("Is your email **[[email|email address]]** and cellphone number **[[cell|cell number]]**?",{yn:"ct_contact",label:"Email and cell confirmed"}),
     S("Is your physical address **[[address|physical address]]**?",{yn:"ct_addr",label:"Physical address confirmed"}),
-    S("Preferred communication method: **Email or SMS?**"),
-    FIELDS([{k:"comm",l:"Preferred communication",type:"select",opts:["","Email","SMS"]}])
+    S("Preferred communication method: **Email or SMS?**")
   ]},
   { title:"Verify: Banking & DebiCheck", blocks:[
     S("Please confirm: will the debit come from the account ending in **[[accend|last 4 digits]]**?",{ver:1,yn:"ct_acc",label:"Debit account confirmed"}),
