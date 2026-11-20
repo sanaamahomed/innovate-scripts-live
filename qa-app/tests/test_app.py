@@ -218,3 +218,17 @@ def test_healthz_is_public(client, monkeypatch):
     monkeypatch.setenv("APP_PASSWORD", "pw")
     assert c.get("/healthz").json() == {"ok": True}
     assert c.get("/api/health").status_code == 401
+
+
+def test_pii_masking_keeps_prices():
+    m = engine.mask_pii("Email me at sam.d@gmail.com, ID 900101 5009 087, cell 082 123 4567, account 1234 5678 90, it is R239 and R2,650.")
+    assert "gmail" not in m and "5009" not in m and "123 4567" not in m and "1234 5678" not in m
+    assert "[EMAIL]" in m and "[ID NUMBER]" in m and "[PHONE]" in m and "[NUMBER]" in m
+    assert "R239" in m and "R2,650" in m
+
+
+def test_prompt_is_masked_and_quotes_check_masked_text():
+    turns = [{"spk": "agent", "text": "Is your cell 082 123 4567?", "t": 0}]
+    assert "123 4567" not in engine.build_prompt("ns", {}, turns)
+    raw = {"items": [{"id": "n_kyc", "status": "pass", "reason": "r", "evidence": [{"turn": 1, "quote": "Is your cell [PHONE]?"}]}]}
+    assert engine.normalise(raw, "ns", turns)["items"]["n_kyc"]["status"] == "pass"

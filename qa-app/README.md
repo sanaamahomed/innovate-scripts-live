@@ -13,6 +13,11 @@ recording -> speech-to-text (faster-whisper, runs on this server)
 Claude then does the marking and insights from that transcript. Tone, pace and interruptions can't
 be judged from words, so those items come back as *Review* for a human to decide.
 
+## Run it on your own laptop/PC (same as the Cowork setup)
+Your Cowork setup transcribes on the laptop with faster-whisper large-v3-turbo, so audio never leaves the machine.
+This app can do the same: `docker compose up -d --build` on a PC with about 4 GB free RAM (8 cores is comfortable),
+then open http://localhost:8000. Only the masked transcript text goes to Claude.
+
 ## Put it live (easiest)
 **Render (recommended, no server skills needed):** render.com > New > Blueprint > connect this GitHub repo and
 branch > it reads `render.yaml` at the repo root. Fill in `ANTHROPIC_API_KEY` and `APP_PASSWORD` (and a speech
@@ -44,7 +49,10 @@ Without Docker: install `ffmpeg`, then `pip install -r requirements.txt` and
 | `CLAUDE_MODEL` | `claude-sonnet-5-5` | Model used for marking. |
 | `TRANSCRIBER` | `whisper` | `whisper` (built in, free, private), `deepgram`, `assemblyai` or `elevenlabs` (cloud, usually more accurate; needs `DEEPGRAM_API_KEY`, `ASSEMBLYAI_API_KEY` or `ELEVENLABS_API_KEY`). Audio is sent to that vendor. |
 | `STT_KEYTERMS` | product names | Comma-separated words the speech engine should expect (Netstar, StarTag, DebiCheck...). Cloud engines only. |
-| `WHISPER_MODEL` | `small` | `tiny`/`base` faster, `medium`/`large-v3` more accurate (needs more RAM and time). |
+| `WHISPER_MODEL` | `large-v3-turbo` | Same model your Cowork setup uses. `small`/`medium` need less RAM; `large-v3` is slowest and most accurate. About 4 GB RAM for turbo. |
+| `WHISPER_BEAM` | `5` | `1` = fast, higher = slower and more accurate (the "slower more accurate setting"). |
+| `STT_PROMPT` | call-centre hint | Hint given to Whisper: "South African call centre sales call between an agent and a client" plus product names. |
+| `MASK_PII` | `true` | Hides emails, ID, phone and account numbers (8+ digits) before Claude reads the call. Prices are kept. Digits spoken as words are not caught. |
 | `RETAIN_AUDIO` | `true` | `false` deletes the recording once transcribed. |
 | `MAX_UPLOAD_MB` | `200` | Upload limit. |
 | `DATA_DIR` | `./data` | Where assessments and audio are stored. |
@@ -52,7 +60,7 @@ Without Docker: install `ffmpeg`, then `pip install -r requirements.txt` and
 ## Getting the best accuracy
 - **Stereo recordings** (agent on one channel, client on the other) are transcribed per channel, so
   speakers are separated almost perfectly. Ask your dialler/phone system for dual-channel recordings.
-- Use `WHISPER_MODEL=medium` if calls contain heavy accents or Zulu/Afrikaans code-switching and the
+- Use `WHISPER_BEAM=5` (default) rather than 1 for phone audio. Use `WHISPER_MODEL=large-v3` if calls contain heavy accents or Zulu/Afrikaans code-switching and the
   server has the memory (about 5 GB). If you have a better transcript source, paste it in: it is used
   instead of the audio.
 - Mono recordings work too; Claude works out who is the agent. If it gets a speaker wrong, click the

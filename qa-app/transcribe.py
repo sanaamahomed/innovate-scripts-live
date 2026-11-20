@@ -9,7 +9,9 @@ import subprocess
 
 import numpy as np
 
-MODEL_NAME = os.environ.get("WHISPER_MODEL", "small")  # tiny, base, small, medium, large-v3 ...
+MODEL_NAME = os.environ.get("WHISPER_MODEL", "large-v3-turbo")  # tiny, base, small, medium, large-v3, large-v3-turbo ...
+BEAM = int(os.environ.get("WHISPER_BEAM", "5"))  # 1 = fast, 5 = slower and more accurate
+PROMPT = os.environ.get("STT_PROMPT", "South African call centre sales call between an agent and a client. Netstar, Cartrack, StarTag, DebiCheck, Innovate, Early Warning, Repair Assist.")
 SR = 16000
 _model = None
 
@@ -51,7 +53,8 @@ def is_true_stereo(a):
 
 def _segments(samples, label, progress):
     model = _load()
-    segs, info = model.transcribe(samples, vad_filter=True, beam_size=5, condition_on_previous_text=False)
+    segs, info = model.transcribe(samples, vad_filter=True, beam_size=BEAM, condition_on_previous_text=False,
+                                  initial_prompt=PROMPT or None)
     dur = max(len(samples) / SR, 1)
     out = []
     for s in segs:

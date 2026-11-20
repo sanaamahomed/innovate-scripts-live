@@ -1,11 +1,35 @@
 """Claude-based assessment: build the prompt, call Claude, parse and score the answer."""
 import json
 import os
+import re
 
 from scorecards import COACH_MARK, PASS_MARK, PRODUCTS
 
 MODEL = os.environ.get("CLAUDE_MODEL", "claude-sonnet-5-5")
 STATUSES = {"pass", "fail", "review", "na"}
+
+
+MASK_PII = os.environ.get("MASK_PII", "true").lower() != "false"
+_PII = [
+    (re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"), "[EMAIL]"),
+    (re.compile(r"\b\d{6}\s?\d{4}\s?\d{3}\b"), "[ID NUMBER]"),                       # SA ID: 13 digits
+    (re.compile(r"(?<!\d)(?:\+27|0)[\s-]?\d{2}[\s-]?\d{3}[\s-]?\d{4}(?!\d)"), "[PHONE]"),  # SA phone numbers
+    (re.compile(r"\b\d(?:[\s-]?\d){7,}\b"), "[NUMBER]"),                              # account / policy numbers (8+ digits)
+]
+
+
+def mask_pii(text):
+    """Hide emails, ID, phone and account numbers before the text goes to Claude. Prices (R239, R2,650) are untouched.
+    Digits spoken as words ("zero eight two...") are not caught."""
+    if not MASK_PII:
+        return text
+    for rx, tag in _PII:
+        text = rx.sub(tag, text)
+    return text
+
+
+def masked_turns(turns):
+    return [dict(t, text=mask_pii(t["text"])) for t in turns]
 
 
 def clock(s):
@@ -25,7 +49,7 @@ def build_prompt(product, meta, turns):
         f"- {i['id']} [{i['group']}{', CRITICAL' if i['critical'] else ''}]: {i['label']}" for i in p["items"]
     )
     tr = "\n".join(
-        f"[{n + 1}]{' (' + clock(t['t']) + ')' if t.get('t') is not None else ''} {_label(t)}: {t['text']}"
+        f"[{n + 1}]{' (' + clock(t['t']) + ')' if t.get('t') is not None else ''} {_label(t)}: {mask_pii(t['text'])}"
         for n, t in enumerate(turns)
     )
     named = sorted({t["spk"] for t in turns if t["spk"] not in ("agent", "client", "unknown")})
@@ -130,6 +154,7 @@ def quote_in_transcript(quote, turns):
 def normalise(raw, product, turns):
     """Turn Claude's JSON into the stored result: per-item status/reason/evidence plus insights."""
     items = {}
+    turns = masked_turns(turns)  # quotes are checked against what Claude actually saw
     by_id = {x.get("id"): x for x in raw.get("items", []) if isinstance(x, dict)}
     for it in PRODUCTS[product]["items"]:
         x = by_id.get(it["id"])
