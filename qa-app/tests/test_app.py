@@ -211,3 +211,10 @@ def test_elevenlabs_provider(tmp_path, monkeypatch):
             {"words": [w("Hi", 2.0, 2.2)]}]})
     turns = providers.elevenlabs(_wav(tmp_path, True), client=httpx.Client(transport=httpx.MockTransport(handler)))
     assert [(t["spk"], t["text"]) for t in turns] == [("Speaker 1", "Hello there"), ("Speaker 2", "Hi")]
+
+
+def test_healthz_is_public(client, monkeypatch):
+    c, _ = client
+    monkeypatch.setenv("APP_PASSWORD", "pw")
+    assert c.get("/healthz").json() == {"ok": True}
+    assert c.get("/api/health").status_code == 401

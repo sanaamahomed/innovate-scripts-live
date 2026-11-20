@@ -1,0 +1,28 @@
+# One-click deploy on Render: New > Blueprint > pick this repo and branch. Then fill in the secret values.
+# The built-in speech engine (TRANSCRIBER=whisper) needs about 2 GB RAM. If you switch to deepgram/assemblyai/
+# elevenlabs, a smaller plan is enough.
+services:
+  - type: web
+    name: innovate-qa
+    runtime: docker
+    dockerfilePath: ./qa-app/Dockerfile
+    dockerContext: ./qa-app
+    plan: standard
+    healthCheckPath: /healthz
+    disk:
+      name: qa-data
+      mountPath: /data
+      sizeGB: 5
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: APP_PASSWORD
+        sync: false
+      - key: TRANSCRIBER
+        value: whisper
+      - key: DEEPGRAM_API_KEY
+        sync: false
+      - key: ASSEMBLYAI_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false

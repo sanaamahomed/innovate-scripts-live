@@ -117,6 +117,12 @@ def run(rid):
         save(rec)
 
 
+@app.get("/healthz")
+def healthz():
+    """Unauthenticated liveness probe for hosting platforms. Reveals nothing."""
+    return {"ok": True}
+
+
 @app.get("/api/health")
 def health(_=Depends(auth)):
     return {"ok": True, "claude_key": bool(os.environ.get("ANTHROPIC_API_KEY")), "model": engine.MODEL,

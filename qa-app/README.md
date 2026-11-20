@@ -13,7 +13,16 @@ recording -> speech-to-text (faster-whisper, runs on this server)
 Claude then does the marking and insights from that transcript. Tone, pace and interruptions can't
 be judged from words, so those items come back as *Review* for a human to decide.
 
-## Run it
+## Put it live (easiest)
+**Render (recommended, no server skills needed):** render.com > New > Blueprint > connect this GitHub repo and
+branch > it reads `render.yaml` at the repo root. Fill in `ANTHROPIC_API_KEY` and `APP_PASSWORD` (and a speech
+engine key if you use one) when asked. When it finishes you get a `https://....onrender.com` address; share it
+with the QA team with the password. Works the same on Railway, Fly.io or any host that runs Docker.
+
+**Office/local server:** `cp .env.example .env`, fill it in, then `docker compose up -d --build` and open
+http://localhost:8000.
+
+## Run it manually
 
 ```bash
 docker build -t innovate-qa ./qa-app
