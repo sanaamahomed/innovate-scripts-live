@@ -4,7 +4,5 @@ services:
     build: .
     ports: ["8000:8000"]
     env_file: .env
-    volumes: ["qa-data:/data"]
+    volumes: ["./data:/data"]  # a real folder, so Claude Cowork can be connected to it
     restart: unless-stopped
-volumes:
-  qa-data:

@@ -93,6 +93,7 @@ function viewNew(){
   const sel=Object.entries(cards).map(([k,v])=>`<option value="${k}">${esc(v.title)}</option>`).join("");
   app.innerHTML=`<h1>New assessment</h1><p class="lead">Upload a call recording or paste a transcript. The server transcribes the audio, Claude marks it against the scorecard and writes insights, then you review and download the PDF.</p>
   ${health.claude_key===false?`<div class="warn bad">The server has no Claude API key set (ANTHROPIC_API_KEY), so assessments will fail.</div>`:""}
+  ${health.mode==="cowork"?`<div class="note">Cowork mode: calls are transcribed here, then Claude (scheduled task in Cowork) analyses them, usually within 15 minutes.</div>`:""}
   <div class="grid"><section class="card"><h3>Call details</h3>
    <div class="row"><div class="full"><label>Scorecard</label><select id="product">${sel}</select></div>
    <div><label>Agent</label><input type="text" id="agent" value="${esc(localStorage.getItem("qa_agent")||"")}"></div>
@@ -100,38 +101,41 @@ function viewNew(){
    <div><label>Call date</label><input type="date" id="cdate" value="${new Date().toISOString().slice(0,10)}"></div>
    <div><label>Reference (optional)</label><input type="text" id="ref"></div></div></section>
   <section class="card"><h3>The call <small>recording, transcript, or both</small></h3>
-   <div class="drop" id="drop"><b>Drop the recording here</b> or <button class="btn small" id="pick" type="button">choose a file</button>
+   <div class="drop" id="drop"><b>Drop recordings here</b> (one or many) or <button class="btn small" id="pick" type="button">choose files</button>
     <div class="note">mp3, wav, m4a, ogg, webm, aac, flac. Recordings with the agent and client on separate channels (stereo) give the best speaker separation.</div>
-    <div id="fname" class="note"></div><input type="file" id="file" hidden accept="audio/*,video/mp4,.m4a,.amr,.opus"></div>
-   <label style="margin-top:12px">Transcript <small style="font-weight:400">(optional. If you add one, it is used instead of transcribing the audio)</small></label>
+    <div id="fname" class="note"></div><input type="file" id="file" multiple hidden accept="audio/*,video/mp4,.m4a,.amr,.opus"></div>
+   <label style="margin-top:12px">Transcript <small style="font-weight:400">(optional, for a single call. If you add one, it is used instead of transcribing the audio)</small></label>
    <textarea id="tx" placeholder="Agent: Hello! You are speaking to Sam...&#10;Client: Hi"></textarea>
    <div class="actions"><button class="btn primary" id="go" type="button">Assess call</button></div><div id="msg"></div></section></div>`;
-  let file=null; const setFile=f=>{ file=f; $("#fname").textContent=f?f.name+" ("+(f.size/1048576).toFixed(1)+" MB)":""; };
-  $("#pick").onclick=()=>$("#file").click(); $("#file").onchange=e=>setFile(e.target.files[0]||null);
-  const d=$("#drop"); ["dragover","dragleave","drop"].forEach(ev=>d.addEventListener(ev,e=>{ e.preventDefault(); d.classList.toggle("over",ev==="dragover"); if(ev==="drop"&&e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]); }));
+  let files=[]; const setFiles=f=>{ files=[...f]; $("#fname").textContent=files.length?files.length+" file"+(files.length>1?"s":"")+": "+files.map(x=>x.name).join(", ").slice(0,160)+" ("+(files.reduce((a,x)=>a+x.size,0)/1048576).toFixed(1)+" MB)":""; };
+  $("#pick").onclick=()=>$("#file").click(); $("#file").onchange=e=>setFiles(e.target.files);
+  const d=$("#drop"); ["dragover","dragleave","drop"].forEach(ev=>d.addEventListener(ev,e=>{ e.preventDefault(); d.classList.toggle("over",ev==="dragover"); if(ev==="drop"&&e.dataTransfer.files.length) setFiles(e.dataTransfer.files); }));
   $("#go").onclick=async()=>{
     const fd=new FormData(); fd.append("product",$("#product").value); fd.append("agent",$("#agent").value); fd.append("client",$("#client").value);
-    fd.append("call_date",$("#cdate").value); fd.append("ref",$("#ref").value); fd.append("transcript",$("#tx").value); if(file) fd.append("audio",file);
+    fd.append("call_date",$("#cdate").value); fd.append("ref",$("#ref").value); fd.append("transcript",$("#tx").value); files.forEach(f=>fd.append("audio",f));
     localStorage.setItem("qa_agent",$("#agent").value);
     $("#go").disabled=true; $("#msg").innerHTML=`<div class="note">Uploading…</div>`;
-    try{ const r=await api("/api/assessments",{method:"POST",body:fd}); openRec(r.id); }
+    try{ const r=await api("/api/assessments",{method:"POST",body:fd}); if(r.ids.length>1){ setView("history"); } else openRec(r.id); }
     catch(e){ $("#msg").innerHTML=`<div class="warn bad">${esc(e.message)}</div>`; $("#go").disabled=false; }
   };
 }
 
 /* ---------- history ---------- */
 async function viewHistory(){
-  app.innerHTML=`<h1>History</h1><section class="card" id="hist">Loading…</section>`;
+  app.innerHTML=`<h1>History</h1><div class="actions" style="margin:0 0 10px"><a class="btn small" href="/api/export.xlsx">Download Excel</a></div><section class="card" id="agents" hidden></section><section class="card" id="hist">Loading…</section>`;
   const list=await api("/api/assessments");
-  $("#hist").innerHTML=list.length?`<table><tr><th>Date</th><th>Agent</th><th>Client / Ref</th><th>Scorecard</th><th>Score</th><th>Result</th></tr>${list.map(x=>`<tr class="click" data-open="${x.id}"><td>${esc(x.meta.date)}</td><td>${esc(x.meta.agent)}</td><td>${esc(x.meta.ref||x.meta.client)}</td><td>${esc((cards[x.product]||{}).name||x.product)}</td><td>${x.score&&x.score.pct!=null?x.score.pct+"%":"–"}</td><td>${x.status==="done"?esc(x.score.verdict)+(x.score.provisional?" (provisional)":""):esc(x.status)}</td></tr>`).join("")}</table>`:`<div class="note">No assessments yet.</div>`;
+  $("#hist").innerHTML=list.length?`<table><tr><th>Date</th><th>Agent</th><th>Client / Ref</th><th>Scorecard</th><th>Score</th><th>Result</th></tr>${list.map(x=>`<tr class="click" data-open="${x.id}"><td>${esc(x.meta.date)}</td><td>${esc(x.meta.agent)}</td><td>${esc(x.meta.ref||x.meta.client)}</td><td>${esc((cards[x.product]||{}).name||x.product)}</td><td>${x.score&&x.score.pct!=null?x.score.pct+"%":"–"}</td><td>${x.status==="done"?esc(x.score.verdict)+(x.score.provisional?" (provisional)":""):esc(x.status==="awaiting_claude"?"waiting for Claude":x.status)}</td></tr>`).join("")}</table>`:`<div class="note">No assessments yet.</div>`;
+  const by={}; list.filter(x=>x.score&&x.score.pct!=null).forEach(x=>{ const k=x.meta.agent||"(no agent)"; (by[k]=by[k]||[]).push(x.score.pct); });
+  const ag=Object.entries(by).sort((a,b)=>b[1].reduce((p,c)=>p+c,0)/b[1].length-a[1].reduce((p,c)=>p+c,0)/a[1].length);
+  if(ag.length){ $("#agents").hidden=false; $("#agents").innerHTML=`<h3>Agent averages</h3><table><tr><th>Agent</th><th>Calls</th><th>Average</th><th>Lowest</th></tr>${ag.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.length}</td><td>${Math.round(v.reduce((p,c)=>p+c,0)/v.length)}%</td><td>${Math.min(...v)}%</td></tr>`).join("")}</table>`; }
   $("#hist").onclick=e=>{ const r=e.target.closest("[data-open]"); if(r) openRec(r.dataset.open); };
 }
 
 /* ---------- result ---------- */
-function openRec(id){ clearInterval(poll); cur=null; app.innerHTML=`<h1>Assessment</h1><section class="card" id="run"></section>`; const tick=async()=>{ try{ const r=await api("/api/assessments/"+id); if(r.status==="done"){ clearInterval(poll); cur=r; paintRec(); } else if(r.status==="error"){ clearInterval(poll); paintError(r); } else paintRun(r); }catch(e){ clearInterval(poll); app.innerHTML=`<div class="warn bad">${esc(e.message)}</div>`; } }; tick(); poll=setInterval(tick,2000); }
+function openRec(id){ clearInterval(poll); cur=null; app.innerHTML=`<h1>Assessment</h1><section class="card" id="run"></section>`; const tick=async()=>{ try{ const r=await api("/api/assessments/"+id); if(r.status==="done"){ clearInterval(poll); cur=r; paintRec(); } else if(r.status==="error"){ clearInterval(poll); paintError(r); } else paintRun(r); }catch(e){ clearInterval(poll); app.innerHTML=`<div class="warn bad">${esc(e.message)}</div>`; } }; tick(); poll=setInterval(tick,3000); }
 function paintRun(r){
-  const msg={queued:"Waiting in the queue…",transcribing:"Transcribing the recording… long calls take a few minutes.",assessing:"Claude is reading the call and marking the scorecard…"}[r.status]||r.status;
-  const pct=r.status==="transcribing"?Math.max(5,r.progress*80):r.status==="assessing"?90:3;
+  const msg={queued:"Waiting in the queue…",awaiting_claude:"Transcribed and masked. Waiting for Claude's scheduled analysis (runs about every 15 minutes). You can leave this page; the result will appear in History.",transcribing:"Transcribing the recording… long calls take a few minutes.",assessing:"Claude is reading the call and marking the scorecard…"}[r.status]||r.status;
+  const pct=r.status==="transcribing"?Math.max(5,r.progress*80):r.status==="assessing"?90:r.status==="awaiting_claude"?70:3;
   $("#run").innerHTML=`<h3>${msg}</h3><div class="prog"><i style="width:${pct}%"></i></div><div class="note">You can leave this page; the result will be in History.</div>`;
 }
 function paintError(r){ app.innerHTML=`<h1>Assessment</h1><div class="warn bad"><b>This assessment failed.</b><br>${esc(r.error)}</div><div class="actions"><button class="btn" id="re">Re-run</button><button class="btn ghost" data-view="new">Back</button></div>`; $("#re").onclick=async()=>{ await api(`/api/assessments/${r.id}/reassess`,{method:"POST"}); openRec(r.id); }; }
@@ -152,6 +156,7 @@ function paintRec(){
   app.innerHTML=`<h1>${esc(card.name)} call: ${esc(r.meta.agent||"agent")}</h1>
   <p class="lead">${esc(r.meta.date)}${r.meta.client?" · client "+esc(r.meta.client):""}${r.meta.ref?" · ref "+esc(r.meta.ref):""}</p>
   ${r.warning?`<div class="warn">${esc(r.warning)}</div>`:""}
+  ${(r.flags||[]).length?`<div class="warn"><b>Quick scan flags</b> (keyword check, not part of the score): ${r.flags.map(esc).join(" · ")}</div>`:""}
   <div class="grid"><div>
     <section class="card"><h3>Call</h3>${r.audio_url?`<audio id="aud" controls preload="metadata" src="${r.audio_url}"></audio>`:""}
      <div class="tr" id="tr">${r.turns.map((t,i)=>`<div class="turn ${hits.has(i)?"hit":""}" id="t${i}">${t.t!=null&&r.audio_url?`<button class="time" data-seek="${t.t}">${clock(t.t)}</button>`:`<span class="time">${t.t!=null?clock(t.t):"#"+(i+1)}</span>`}<button class="spk ${t.spk}" data-spk="${i}" title="Click to change speaker">${t.spk==="unknown"?"?":t.spk}</button><span>${esc(t.text)}</span></div>`).join("")}</div>

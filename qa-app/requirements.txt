@@ -6,4 +6,5 @@ faster-whisper>=1.0.3
 numpy
 httpx
 reportlab>=4.0
+openpyxl>=3.1
 svglib>=1.5

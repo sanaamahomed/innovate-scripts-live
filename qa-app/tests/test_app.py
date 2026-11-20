@@ -232,3 +232,62 @@ def test_prompt_is_masked_and_quotes_check_masked_text():
     assert "123 4567" not in engine.build_prompt("ns", {}, turns)
     raw = {"items": [{"id": "n_kyc", "status": "pass", "reason": "r", "evidence": [{"turn": 1, "quote": "Is your cell [PHONE]?"}]}]}
     assert engine.normalise(raw, "ns", turns)["items"]["n_kyc"]["status"] == "pass"
+
+
+def test_cowork_mode_queue_and_ingest(client, monkeypatch):
+    c, server = client
+    monkeypatch.setenv("ANALYSIS_MODE", "cowork")
+    monkeypatch.delenv("ANTHROPIC_API_KEY")
+    monkeypatch.setattr(server.engine, "call_claude", lambda *a, **k: (_ for _ in ()).throw(AssertionError("must not call the API")))
+    r = c.post("/api/assessments", data={"product": "ns", "agent": "Sam"}, files={"audio": ("call.mp3", b"x", "audio/mpeg")})
+    assert r.status_code == 202
+    rid = r.json()["id"]
+    for _ in range(100):
+        rec = c.get(f"/api/assessments/{rid}").json()
+        if rec["status"] == "awaiting_claude":
+            break
+        time.sleep(0.05)
+    assert rec["status"] == "awaiting_claude" and rec["flags"]
+    q = server.QUEUE / f"{rid}.json"
+    job = __import__("json").loads(q.read_text())
+    assert "TRANSCRIPT" in job["prompt"] and job["id"] == rid
+    # Cowork (Claude) writes the result file
+    (server.RESULTS / f"{rid}.json").write_text("```json\n" + __import__("json").dumps(fake_claude("")) + "\n```")
+    rec = c.get(f"/api/assessments/{rid}").json()
+    assert rec["status"] == "done" and rec["score"]["pct"] == 95
+    assert not q.exists() and (server.RESULTS / f"{rid}.done.json").exists()
+
+
+def test_cowork_bad_result_then_rerun(client, monkeypatch):
+    c, server = client
+    monkeypatch.setenv("ANALYSIS_MODE", "cowork")
+    rid = c.post("/api/assessments", data={"product": "ns", "transcript": "Agent: Hi\nClient: Yo"}).json()["id"]
+    for _ in range(100):
+        if c.get(f"/api/assessments/{rid}").json()["status"] == "awaiting_claude":
+            break
+        time.sleep(0.05)
+    (server.RESULTS / f"{rid}.json").write_text("not json at all")
+    rec = c.get(f"/api/assessments/{rid}").json()
+    assert rec["status"] == "error" and "Re-run" in rec["error"]
+    assert c.post(f"/api/assessments/{rid}/reassess").status_code == 202
+
+
+def test_batch_upload_and_excel(client):
+    c, _ = client
+    r = c.post("/api/assessments", data={"product": "ns", "agent": "Sam"},
+               files=[("audio", ("a.mp3", b"x", "audio/mpeg")), ("audio", ("b.mp3", b"y", "audio/mpeg"))])
+    ids = r.json()["ids"]
+    assert len(ids) == 2
+    for i in ids:
+        assert wait(c, i)["status"] == "done"
+    x = c.get("/api/export.xlsx")
+    assert x.status_code == 200 and x.content[:2] == b"PK"
+    import io, openpyxl
+    wb = openpyxl.load_workbook(io.BytesIO(x.content))
+    assert wb["Calls"].max_row == 3 and wb["Items"].max_row == 1 + 2 * 14
+    assert {wb["Calls"].cell(r, 4).value for r in (2, 3)} == {"a", "b"}  # refs default to the file names
+
+
+def test_quick_scan():
+    f = engine.quick_scan("ns", [{"spk": "agent", "text": "Howzit bro", "t": 0}])
+    assert any("recording" in x for x in f) and any("slang" in x for x in f) and any("short" in x.lower() for x in f)

@@ -32,6 +32,29 @@ def masked_turns(turns):
     return [dict(t, text=mask_pii(t["text"])) for t in turns]
 
 
+QUICK_SLANG = re.compile(r"\b(lekker|bru|boet|my china|ja nee|howzit|yoh|eish|sharp sharp|dude|bro|gonna|wanna|gotta|kinda|nope|yup|no worries|guys)\b", re.I)
+
+
+def quick_scan(product, turns):
+    """Cheap keyword flags that need no AI (step 'mask and quick scan'). Shown to the reviewer; they never change the score."""
+    agent = " ".join(t["text"] for t in turns if t["spk"] != "client") or " ".join(t["text"] for t in turns)
+    allt = " ".join(t["text"] for t in turns)
+    flags = []
+    if not re.search(r"(call is|calls are|call will be|being) recorded|recorded for", agent, re.I):
+        flags.append("No recording statement heard")
+    if not re.search(r"\br\s?\d{2,4}\b", allt, re.I):
+        flags.append("No rand amount mentioned (price/premium)")
+    brand = r"netstar" if product == "ns" else r"cartrack"
+    if not re.search(brand, agent, re.I):
+        flags.append(f"Brand name ({PRODUCTS[product]['name']}) not heard from the agent")
+    s = sorted({m.group(0).lower() for m in QUICK_SLANG.finditer(agent)})
+    if s:
+        flags.append("Possible slang: " + ", ".join(s))
+    if len(turns) < 6:
+        flags.append("Very short call or transcript")
+    return flags
+
+
 def clock(s):
     if s is None:
         return ""

@@ -1,7 +1,11 @@
 # Innovate QA Assessment app
 
-Upload a call recording (or paste a transcript) and get it marked against the Cartrack or Netstar
+Upload one or many call recordings (or paste a transcript) and get it marked against the Cartrack or Netstar
 scorecard, with insights, coaching points and a branded PDF.
+
+**Two ways to run the analysis step:** `ANALYSIS_MODE=cowork` needs **no API key** (a Claude Cowork scheduled
+task analyses queued calls, like the existing tool, see `cowork/README.md`); `ANALYSIS_MODE=api` calls Claude
+directly with an Anthropic API key and answers immediately.
 
 ```
 recording -> speech-to-text (faster-whisper, runs on this server)
@@ -44,7 +48,8 @@ Without Docker: install `ffmpeg`, then `pip install -r requirements.txt` and
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | required | Claude access. Stays on the server. |
+| `ANALYSIS_MODE` | `api` | `api` (needs key) or `cowork` (no key, scheduled task). |
+| `ANTHROPIC_API_KEY` | api mode only | Claude access. Stays on the server. |
 | `APP_PASSWORD` | none | Shared password. **Set this**: the app holds call recordings and spends API credit. |
 | `CLAUDE_MODEL` | `claude-sonnet-5-5` | Model used for marking. |
 | `TRANSCRIBER` | `whisper` | `whisper` (built in, free, private), `deepgram`, `assemblyai` or `elevenlabs` (cloud, usually more accurate; needs `DEEPGRAM_API_KEY`, `ASSEMBLYAI_API_KEY` or `ELEVENLABS_API_KEY`). Audio is sent to that vendor. |
@@ -89,6 +94,9 @@ Afrikaans in Aug 2026. Treat both as claims to test, not facts.
 ## Changing the scorecards
 Edit `scorecards.py` (wording, points, critical flags, pass marks), then restart. Add a new product by
 adding an entry to `PRODUCTS`.
+
+## Reports
+History shows agent averages; **Download Excel** gives every call (and every scorecard item) in a workbook; each call has a PDF.
 
 ## Tests
 `pip install pytest httpx && python -m pytest qa-app/tests` (speech-to-text and Claude are faked).
