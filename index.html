@@ -371,6 +371,80 @@ h3.rh{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--mut
   .cb-field input{width:130px}
 }
 @media print{.topbar,.nav,.footnav,.callbar{display:none}}
+
+/* ---------- QA Assessment ---------- */
+.qa-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:18px;align-items:start;margin-top:16px}
+@media (max-width:1000px){.qa-grid{grid-template-columns:1fr}}
+.qa-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;margin-bottom:16px}
+.qa-card h3{margin-bottom:10px}
+.qa-card h3 small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
+.qa-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qa-row label,.qa-lab{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:3px}
+.qa input[type=text],.qa input[type=date],.qa textarea,.qa select{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:7px 10px;background:#fff}
+.qa textarea{min-height:130px;resize:vertical;font-size:14px}
+.qa-drop{border:2px dashed #b9c3d4;border-radius:10px;padding:18px;text-align:center;background:var(--bg);color:var(--muted);transition:.15s}
+.qa-drop.over{border-color:var(--teal);background:var(--teal-bg)}
+.qa-drop b{color:var(--navy)}
+.qa-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.btn.rec{border-color:var(--red);color:var(--red)}
+.btn.rec.on{background:var(--red);color:#fff}
+.qa-note{font-size:13px;color:var(--muted);margin:6px 0 0}
+.qa-warn{background:var(--yellow-bg);border-left:4px solid var(--yellow);padding:8px 12px;border-radius:6px;font-size:13.5px;margin-top:10px}
+.qa audio{width:100%;margin-top:6px}
+.qa-prog{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:8px}
+.qa-prog i{display:block;height:100%;background:var(--teal);width:0;transition:width .2s}
+.qa-tr{max-height:440px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+.qa-turn{display:grid;grid-template-columns:62px 54px 1fr;gap:8px;padding:6px 10px;border-bottom:1px solid var(--line);font-size:14px;align-items:start}
+.qa-turn:last-child{border-bottom:0}
+.qa-turn.hit{background:var(--yellow-bg)}
+.qa-turn.flash{animation:qaflash 1.4s}
+@keyframes qaflash{0%{background:var(--teal-bg)}100%{background:transparent}}
+.qa-spk{border:0;border-radius:99px;font-size:11.5px;font-weight:700;padding:2px 8px;text-transform:uppercase;letter-spacing:.4px;background:var(--line);color:var(--muted)}
+.qa-spk.agent{background:var(--navy);color:#fff}
+.qa-spk.client{background:var(--teal);color:var(--navy)}
+.qa-time{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums;background:none;border:0;padding:0;text-align:left}
+button.qa-time:hover{color:var(--navy);text-decoration:underline}
+.qa-turn mark{background:#ffe27a;padding:0 2px;border-radius:3px}
+.qa-score{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.qa-big{font-size:54px;font-weight:800;line-height:1;color:var(--navy)}
+.qa-big small{font-size:22px;font-weight:700}
+.qa-verdict{display:inline-block;padding:4px 14px;border-radius:99px;font-weight:700;font-size:14px}
+.qa-verdict.pass{background:var(--green-bg);color:var(--green)}
+.qa-verdict.coach{background:var(--yellow-bg);color:#7a5d00}
+.qa-verdict.fail{background:var(--red-bg);color:var(--red)}
+.qa-verdict.none{background:var(--bg);color:var(--muted)}
+.qa-bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 0 4px}
+.qa-bar i{display:block;height:100%}
+.qa-grp{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 6px;border-bottom:2px solid var(--line);padding-bottom:4px}
+.qa-grp b{color:var(--navy);font-size:16px}
+.qa-grp span{font-size:13px;color:var(--muted)}
+.qa-item{border:1px solid var(--line);border-left:5px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px;background:#fff}
+.qa-item.pass{border-left-color:var(--green)}
+.qa-item.fail{border-left-color:var(--red)}
+.qa-item.review{border-left-color:var(--yellow)}
+.qa-item.na{border-left-color:#9aa5b8;background:var(--bg)}
+.qa-ih{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.qa-il{font-weight:600;flex:1 1 220px}
+.qa-crit{font-size:11px;font-weight:700;color:var(--red);background:var(--red-bg);border-radius:99px;padding:1px 7px;margin-left:6px;vertical-align:middle}
+.qa-st{display:inline-flex;gap:0;border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
+.qa-st button{border:0;background:#fff;padding:3px 10px;font-size:13px;font-weight:700;color:var(--muted);border-right:1px solid var(--line)}
+.qa-st button:last-child{border-right:0}
+.qa-st button.on.pass{background:var(--green);color:#fff}
+.qa-st button.on.fail{background:var(--red);color:#fff}
+.qa-st button.on.na{background:#6b7790;color:#fff}
+.qa-why{font-size:13.5px;color:var(--muted);margin-top:4px}
+.qa-pill{display:inline-block;font-size:11.5px;font-weight:700;border-radius:99px;padding:1px 8px;margin-right:6px;text-transform:uppercase}
+.qa-pill.pass{background:var(--green-bg);color:var(--green)}
+.qa-pill.fail{background:var(--red-bg);color:var(--red)}
+.qa-pill.review{background:var(--yellow-bg);color:#7a5d00}
+.qa-pill.na{background:var(--line);color:var(--muted)}
+.qa-ev{display:block;width:100%;text-align:left;background:var(--bg);border:0;border-left:3px solid var(--teal);border-radius:4px;padding:3px 8px;margin-top:4px;font-size:13px;color:var(--ink)}
+.qa-ev:hover{background:var(--teal-bg)}
+.qa-ev em{color:var(--muted);font-style:normal;margin-right:6px}
+.qa-nt{width:100%;margin-top:6px;font-size:13px!important;padding:4px 8px!important}
+.qa-hist{width:100%;border-collapse:collapse;font-size:13.5px}
+.qa-hist th,.qa-hist td{text-align:left;padding:5px 6px;border-bottom:1px solid var(--line)}
+@media print{.qa-noprint{display:none!important}.qa-grid{display:block}.qa-tr{max-height:none}}
 </style>
 </head>
 <body>
@@ -449,13 +523,14 @@ h3.rh{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--mut
       <button class="tab active" data-tab="scripts" role="tab">Scripts<span class="dot" id="liveDot" hidden></span></button>
       <button class="tab" data-tab="objections" role="tab">Objection Help</button>
       <button class="tab" data-tab="facts" role="tab">Info Centre</button>
+      <button class="tab" data-tab="qa" role="tab">QA Assessment</button>
     </nav>
   </div>
 </header>
 
 <main class="wrap" id="app"></main>
 
-<footer class="footer"><b>Innovate</b> &middot; Where Strategy Meets People And Growth. &middot; Always follow the latest approved script. Nothing typed here is saved or sent anywhere.</footer>
+<footer class="footer"><b>Innovate</b> &middot; Where Strategy Meets People And Growth. &middot; Always follow the latest approved script. Nothing typed here is sent anywhere. QA scores (only) can be saved in this browser.</footer>
 <button class="npbtn" id="npBtn" aria-expanded="false" aria-controls="np">Notepad</button>
 <section class="np" id="np" hidden aria-label="Notepad">
   <div class="np-h"><b>Notepad<small>for this call</small></b><button id="npClose" aria-label="Close notepad">&times;</button></div>
@@ -1104,6 +1179,7 @@ function render(){
   document.getElementById("liveDot").hidden = !state.product;
   if(state.tab==="scripts") (state.product? renderCall() : renderHome());
   else if(state.tab==="objections") renderObjections();
+  else if(state.tab==="qa") renderQA();
   else renderFacts();
 }
 
@@ -1599,6 +1675,483 @@ document.addEventListener("input",e=>{
   document.getElementById("npClear").addEventListener("click",()=>{ ta.value=""; try{ sessionStorage.removeItem("innovate_notes"); }catch(e){} mark(); toast("Notes cleared"); });
   mark();
 })();
+
+/* =====================================================================
+   QA ASSESSMENT
+   Scores a call (transcript and/or audio) against the Cartrack QA
+   scorecard from the Info Centre. Everything runs in this browser:
+   audio and transcripts are never uploaded anywhere.
+===================================================================== */
+const QA_CARD = [
+ /* group, id, label, weight, crit(ical), rx = regexes that must be heard from the agent, need = how many */
+ {g:"Verification",id:"v_name",   label:"Agent introduced themselves by name", w:1, rx:[/\b(my name is|speaking (to|with)|this is [a-z]+ (from|calling)|you are speaking)\b/i]},
+ {g:"Verification",id:"v_broker", label:"Said they are calling from the brokerage (Innovate)", w:1, rx:[/\b(innovate|brokerage|broker)\b/i]},
+ {g:"Verification",id:"v_behalf", label:"Said they are calling on behalf of Cartrack", w:1, rx:[/on behalf of (cartrack|motordrive)/i]},
+ {g:"Verification",id:"v_pkg",    label:"Package confirmed (e.g. Quick Gold with Cartrack Tag)", w:1, rx:[/\b(quick gold|cartrack tag|gold package|the package)\b/i]},
+ {g:"Verification",id:"v_ben",    label:"3 benefits mentioned", w:1, custom:"benefits"},
+ {g:"Verification",id:"v_work",   label:"Vehicle in full working order, with a clear YES", w:1, custom:"working"},
+ {g:"Verification",id:"v_price",  label:"Correct price (R239 incl VAT)", w:3, crit:1, rx:[/\br\s?239\b|\b239 rand/i]},
+ {g:"Verification",id:"v_term",   label:"Contract length (36 months)", w:1, rx:[/\b36[\s-]?months?\b|thirty[\s-]six/i]},
+ {g:"Verification",id:"v_incr",   label:"Price increases explained (10% escalation, then CPI)", w:1, rx:[/\b10\s?%|10 percent|ten percent/i,/\b(escalat|cpi|consumer price)/i], need:1},
+ {g:"Verification",id:"v_cancel", label:"Cancellation process and cost (R2,650 or balance of contract)", w:3, crit:1, rx:[/cancel/i,/2[\s,]?650|balance of the contract|cancellation fee/i], need:2},
+ {g:"Verification",id:"v_debi",   label:"DebiCheck explained", w:1, rx:[/debi[\s-]?check|\bmandate\b/i]},
+ {g:"Verification",id:"v_r19",    label:"R19 fee explained", w:1, rx:[/\br\s?19\b|19 rand/i]},
+ {g:"Verification",id:"v_recap",  label:"Customer details recapped (name, ID, contact, address, vehicle)", w:1, custom:"recap"},
+ {g:"Verification",id:"v_acct",   label:"Business or personal account confirmed", w:1, rx:[/(business|company).{0,30}(personal|private)|(personal|private).{0,30}(business|company)|private account|personal account/i]},
+ {g:"Verification",id:"v_vin",    label:"VIN confirmed", w:1, rx:[/\b(vin|chassis)\b/i]},
+ {g:"Verification",id:"v_decl",   label:"Declaration read in full (all 7 points)", w:3, crit:1, custom:"declaration"},
+ {g:"Verification",id:"v_yes",    label:"Clear YES from the client for each declaration point", w:3, crit:1, custom:"declyes"},
+ {g:"Verification",id:"v_pro",    label:"Pro-rata explained (only if needed)", w:1, cond:1, rx:[/pro[\s-]?rata/i]},
+ {g:"Verification",id:"v_q",      label:"Asked if the client has questions", w:1, rx:[/(any|have (a|any)|got (a|any)|further|other) questions?|anything (else )?(you.d|you would|i can|to ask)/i]},
+
+ {g:"Behaviour",id:"b_tone",  label:"Matched the client's tone and pace", w:1, manual:1},
+ {g:"Behaviour",id:"b_listen",label:"Active listening (acknowledged what the client said)", w:1, custom:"listen"},
+ {g:"Behaviour",id:"b_lang",  label:"Verification in English, then explained in the client's preferred language", w:1, manual:1},
+ {g:"Behaviour",id:"b_name",  label:"Used the client's name more than 3 times", w:1, custom:"nameuse"},
+ {g:"Behaviour",id:"b_slang", label:"Avoided slang", w:1, custom:"slang"},
+ {g:"Behaviour",id:"b_int",   label:"Let the client ask questions without interrupting", w:1, manual:1},
+ {g:"Behaviour",id:"b_rep",   label:"Repeated a clause if interrupted", w:1, manual:1},
+ {g:"Behaviour",id:"b_req",   label:"Noted the client's specific requests", w:1, custom:"requests"}
+];
+const QA_BENEFITS=/\b(stolen vehicle|recover|recovery|theft|track(ing)?|alerts?|app\b|roadside|emergency|panic|crash|accident|driver behaviour|location|insurance|discount|24\/?7|monitor)/gi;
+const QA_SLANG=/\b(lekker|bru|boet|bra|my china|ja nee|howzit|yoh|eish|sharp sharp|dude|bro|mate|buddy|gonna|wanna|gotta|kinda|nope|yup|yep|cool|awesome|no worries|no probs?|hey there|guys|stuff|whatever|chill)\b/gi;
+const QA_DECL=[/debit order/i,/in advance|pro[\s-]?rata/i,/available for (the )?(unit )?install/i,/24 hours|r\s?600|call[\s-]?out/i,/terms and conditions/i,/(share|insurer).{0,40}(install|insurer|party)|installation proof/i,/verbal agreement|contractually binding/i];
+const QA_YES=/^\W*(yes|yep|yeah|yebo|ja|i agree|agreed|i do|correct|that'?s correct|sure|okay yes|ok yes)\b/i;
+
+const qa = { turns:[], fileName:"", audioUrl:"", manual:{}, notes:{}, res:{}, busy:"", rec:null, warn:"", meta:{agent:"",client:"",date:"",ref:""} };
+try{ qa.meta.agent=localStorage.getItem("innovate_agent")||""; }catch(e){}
+qa.meta.date=new Date().toISOString().slice(0,10);
+
+/* ---------- parsing ---------- */
+function qaClock(s){ if(s==null) return ""; s=Math.max(0,Math.round(s)); const m=Math.floor(s/60), r=s%60; return m+":"+String(r).padStart(2,"0"); }
+function qaSecs(str){ const p=str.replace(",",".").split(":").map(Number); if(p.some(isNaN)) return null; return p.length===3? p[0]*3600+p[1]*60+p[2] : p[0]*60+p[1]; }
+function qaRole(label){
+  const l=String(label||"").toLowerCase().trim();
+  if(!l) return "";
+  if(/^(agent|rep|representative|consultant|advisor|adviser|sales|operator|innovate|me|spk_?0|speaker ?0|speaker ?1$|outbound|user)/.test(l)) return "agent";
+  if(/^(client|customer|caller|cust|lead|prospect|contact|spk_?1|speaker ?2|inbound|participant)/.test(l)) return "client";
+  if(qa.meta.agent && l===qa.meta.agent.toLowerCase().trim()) return "agent";
+  if(qa.meta.client && l===qa.meta.client.toLowerCase().trim()) return "client";
+  return "?"+l;
+}
+function qaFinish(raw){
+  // map unknown labels: with exactly two distinct labels and no known role, first speaker is the agent
+  const unk=[...new Set(raw.filter(t=>t.spk.startsWith("?")).map(t=>t.spk))];
+  const known=raw.some(t=>t.spk==="agent"||t.spk==="client");
+  raw.forEach(t=>{
+    if(t.spk.startsWith("?")) t.spk = (!known && unk.length===2) ? (t.spk===unk[0]?"agent":"client") : "unknown";
+    else if(!t.spk) t.spk="unknown";
+  });
+  return raw;
+}
+function qaParse(text,name){
+  text=text.replace(/^\uFEFF/,"").trim();
+  const raw=[];
+  if(/^[\[{]/.test(text)){
+    try{
+      let j=JSON.parse(text);
+      if(!Array.isArray(j)) j=j.dialogue||j.transcript||j.segments||j.utterances||j.data||[];
+      if(Array.isArray(j)){
+        j.forEach(o=>{
+          if(typeof o==="string"){ raw.push({spk:"",text:o,t:null}); return; }
+          const tx=o.content||o.text||o.transcript||o.message||""; if(!tx) return;
+          const st=o.start??o.startTime??o.start_time??o.timestamp??o.offset;
+          raw.push({spk:qaRole(o.identifier||o.speaker||o.role||o.participant||o.name||""),text:String(tx).trim(),t:typeof st==="number"?st:(typeof st==="string"&&/[:]/.test(st)?qaSecs(st):null)});
+        });
+        if(raw.length) return qaFinish(raw);
+      }
+    }catch(e){}
+  }
+  const lines=text.split(/\r?\n/);
+  const isCue=/-->/;
+  const label=/^\s*(?:[\[(]?(\d{1,2}:\d{2}(?::\d{2})?(?:[.,]\d+)?)[\])]?\s*[-–]?\s*)?([A-Za-z][A-Za-z0-9 _.'-]{0,28}?)\s*[:\-–]\s+(\S.*)$/;
+  let cur=null, cueT=null;
+  for(let ln of lines){
+    ln=ln.trim();
+    if(!ln){ if(cueT!=null) cueT=null; continue; }
+    if(/^WEBVTT/i.test(ln)||/^\d+$/.test(ln)||/^NOTE\b/.test(ln)) continue;
+    if(isCue.test(ln)){ const m=ln.match(/(\d{1,2}:\d{2}(?::\d{2})?[.,]?\d*)\s*-->/); cueT=m?qaSecs(m[1]):null; cur=null; continue; }
+    const m=ln.match(label);
+    if(m && m[2].split(/\s+/).length<=3 && !/^(note|time|date|call|duration|ref|reference)$/i.test(m[2].trim())){
+      cur={spk:qaRole(m[2]),text:m[3].trim(),t:m[1]?qaSecs(m[1]):cueT};
+      raw.push(cur);
+    }else if(cur && cueT==null){ cur.text+=" "+ln; }
+    else { cur={spk:"",text:ln,t:cueT}; raw.push(cur); }
+  }
+  // merge consecutive unlabelled lines from same cue are already separate; fine
+  return qaFinish(raw);
+}
+
+/* ---------- assessment engine ---------- */
+function qaScope(){
+  const labelled=qa.turns.some(t=>t.spk==="agent");
+  const client=qa.turns.some(t=>t.spk==="client");
+  return {labelled,client};
+}
+function qaFind(rx,onlyAgent){
+  const g=new RegExp(rx.source,rx.flags.replace("g",""));
+  for(let i=0;i<qa.turns.length;i++){
+    const t=qa.turns[i];
+    if(onlyAgent && t.spk==="client") continue;
+    const m=t.text.match(g);
+    if(m) return {i,hit:m[0]};
+  }
+  return null;
+}
+function qaAll(rx,onlyAgent){
+  const g=new RegExp(rx.source,rx.flags.includes("g")?rx.flags:rx.flags+"g"); const out=[];
+  qa.turns.forEach((t,i)=>{ if(onlyAgent&&t.spk==="client") return; g.lastIndex=0; let m; while((m=g.exec(t.text))){ out.push({i,hit:m[0]}); if(m[0].length===0) g.lastIndex++; } });
+  return out;
+}
+function qaAssessItem(it,sc){
+  const R=(status,why,ev)=>({status,why:why||"",ev:ev||[]});
+  if(it.manual) return R("review","Needs a listen: this can't be judged from the words alone.");
+  const noClient = !sc.client;
+  if(it.rx){
+    const found=it.rx.map(r=>qaFind(r,true)).filter(Boolean);
+    const need=it.need||it.rx.length;
+    if(found.length>=need) return R("pass","Heard in the call.",found);
+    if(found.length>0) return R("review","Only part of this was heard.",found);
+    if(it.cond) return R("review","Not heard. Only required if it applied to this client; mark N/A if not needed.");
+    return R("fail","Not heard anywhere in the agent's words.");
+  }
+  switch(it.custom){
+    case "benefits":{
+      const all=qaAll(QA_BENEFITS,true), set=[...new Set(all.map(a=>a.hit.toLowerCase().replace(/ing$/,"")))];
+      const ev=set.map(s=>all.find(a=>a.hit.toLowerCase().replace(/ing$/,"")===s)).slice(0,4);
+      if(set.length>=3) return R("pass",set.length+" benefit terms heard.",ev);
+      if(set.length>0) return R("review","Only "+set.length+" benefit term(s) heard. Check whether 3 were really explained.",ev);
+      return R("fail","No benefits heard.");
+    }
+    case "working":{
+      const f=qaFind(/(full(y)? )?working order/i,true);
+      if(!f) return R("fail","Not heard.");
+      if(noClient) return R("review","Heard, but no client speaker labels, so a clear YES can't be confirmed.",[f]);
+      for(let k=f.i+1;k<=Math.min(f.i+3,qa.turns.length-1);k++) if(qa.turns[k].spk==="client" && QA_YES.test(qa.turns[k].text)) return R("pass","Client answered YES.",[f,{i:k,hit:qa.turns[k].text.slice(0,20)}]);
+      return R("review","Asked, but no clear YES found straight after.",[f]);
+    }
+    case "recap":{
+      const set={name:/full name|your name/i,id:/\bid number|identity number/i,contact:/(email|cell(phone)?|contact) (number|address)?|cell number/i,addr:/(physical |residential )?address/i,veh:/registration|make and model|vehicle details/i};
+      const ev=[]; let n=0; for(const k in set){ const f=qaFind(set[k],true); if(f){ n++; ev.push(f); } }
+      if(n>=4) return R("pass",n+" of 5 detail types recapped.",ev);
+      if(n>=2) return R("review",n+" of 5 detail types recapped.",ev);
+      return R("fail","Details were not recapped.",ev);
+    }
+    case "declaration":{
+      const ev=[]; QA_DECL.forEach(r=>{ const f=qaFind(r,true); if(f) ev.push(f); });
+      if(ev.length>=7) return R("pass","All 7 declaration points heard.",ev);
+      if(ev.length>=4) return R("review",ev.length+" of 7 declaration points heard. Check none were skipped.",ev);
+      return R("fail",ev.length+" of 7 declaration points heard.",ev);
+    }
+    case "declyes":{
+      const d=qaFind(/declaration|audibly answer|yes or no/i,true);
+      if(noClient) return R("review","No client speaker labels, so the YES answers can't be counted. Label the speakers or listen to the call.");
+      const start=d?d.i:0; let n=0; const ev=[];
+      for(let k=start;k<qa.turns.length;k++) if(qa.turns[k].spk==="client" && QA_YES.test(qa.turns[k].text)){ n++; if(ev.length<3) ev.push({i:k,hit:qa.turns[k].text.slice(0,20)}); }
+      if(!d && n<7) return R("fail","Declaration was not found.");
+      if(n>=7) return R("pass",n+" clear YES answers after the declaration started.",ev);
+      if(n>=4) return R("review",n+" YES answers found, 7 expected.",ev);
+      return R("fail",n+" YES answers found, 7 expected.",ev);
+    }
+    case "listen":{
+      const rx=/\b(i understand|i hear you|i see|noted|thank you for (that|sharing|letting)|sorry to hear|that makes sense|no problem|of course|absolutely|i appreciate)\b/i;
+      const a=qaAll(rx,true);
+      if(a.length>=3) return R("review",a.length+" acknowledgements heard. Confirm by listening.",a.slice(0,3));
+      return R("review","Only "+a.length+" acknowledgement phrases heard. Listen to confirm.",a);
+    }
+    case "nameuse":{
+      const nm=qa.meta.client.trim();
+      if(!nm) return R("review","Enter the client's name above so uses of it can be counted.");
+      const first=nm.split(/\s+/).pop(); // surname or single name
+      const parts=[...new Set(nm.split(/\s+/).filter(p=>p.length>2))];
+      const rx=new RegExp("\\b("+parts.map(p=>p.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).join("|")+")\\b","gi");
+      const a=qaAll(rx,true);
+      if(a.length>3) return R("pass","Name used "+a.length+" times.",a.slice(0,3));
+      return R("fail","Name used "+a.length+" time(s); needs more than 3.",a);
+    }
+    case "slang":{
+      const a=qaAll(QA_SLANG,true);
+      if(!a.length) return R("pass","No slang terms found.");
+      return R("fail",a.length+" slang term(s) found: "+[...new Set(a.map(x=>'"'+x.hit.toLowerCase()+'"'))].join(", ")+". Check they were not the client's words.",a.slice(0,4));
+    }
+    case "requests":{
+      if(noClient) return R("review","No client speaker labels. Listen for specific requests (callbacks, dates, language).");
+      const rx=/\b(please|can you|could you|i('d| would) like|i want|call me|rather|prefer|only (on|after|before))\b/i;
+      const a=qa.turns.map((t,i)=>({t,i})).filter(o=>o.t.spk==="client"&&rx.test(o.t.text)).map(o=>({i:o.i,hit:(o.t.text.match(rx)||[""])[0]}));
+      return R("review",a.length?a.length+" possible client request(s) found. Check the agent noted them.":"No obvious client requests heard.",a.slice(0,3));
+    }
+  }
+  return R("review","");
+}
+function qaRun(){
+  const sc=qaScope(); qa.res={};
+  QA_CARD.forEach(it=>{ qa.res[it.id]=qa.turns.length? qaAssessItem(it,sc) : {status:"review",why:"Add a transcript to auto-check this item, or mark it manually.",ev:[]}; });
+}
+function qaStatus(it){ return qa.manual[it.id] || (qa.res[it.id]&&qa.res[it.id].status) || "review"; }
+function qaScore(){
+  let got=0,tot=0,open=0,critFail=[],n={pass:0,fail:0,review:0,na:0};
+  QA_CARD.forEach(it=>{
+    const s=qaStatus(it); n[s]++;
+    if(s==="na") return;
+    if(s==="review"){ open++; return; }
+    tot+=it.w; if(s==="pass") got+=it.w;
+    if(s==="fail" && it.crit) critFail.push(it.label);
+  });
+  const pct=tot? Math.round(got/tot*100) : null;
+  let v="none",vt="Not assessed";
+  if(pct!==null){
+    if(critFail.length){ v="fail"; vt="Critical fail"; }
+    else if(pct>=85){ v="pass"; vt="Pass"; }
+    else if(pct>=70){ v="coach"; vt="Needs coaching"; }
+    else { v="fail"; vt="Fail"; }
+  }
+  return {pct,v,vt,open,n,critFail};
+}
+
+/* ---------- rendering ---------- */
+function renderQA(){
+  $app.innerHTML=`
+  <div class="qa">
+    <h1>QA Assessment</h1>
+    <p class="lead">Upload or record a call, add the transcript, and score it against the Cartrack QA scorecard. Items are auto-checked from the transcript; anything marked <b>Review</b> needs your ear. Audio and transcripts stay in this browser.</p>
+    <div class="qa-grid">
+      <div>
+        <section class="qa-card qa-noprint">
+          <h3>1. Call details</h3>
+          <div class="qa-row">
+            <div><label for="qaAgent">Agent</label><input type="text" id="qaAgent" autocomplete="off"></div>
+            <div><label for="qaClient">Client name (for the "name used 3+ times" check)</label><input type="text" id="qaClient" autocomplete="off"></div>
+            <div><label for="qaDate">Call date</label><input type="date" id="qaDate"></div>
+            <div><label for="qaRef">Reference (optional)</label><input type="text" id="qaRef" autocomplete="off" placeholder="e.g. CART00001"></div>
+          </div>
+        </section>
+        <section class="qa-card qa-noprint">
+          <h3>2. Add the call <small>audio, transcript, or both</small></h3>
+          <div class="qa-drop" id="qaDrop"><b>Drop files here</b> or <button class="btn small" id="qaPick" type="button">Choose files</button>
+            <div class="qa-note">Audio: mp3, wav, m4a, ogg, webm. Transcript: .txt, .srt, .vtt, .json</div>
+            <input type="file" id="qaFile" multiple hidden accept="audio/*,video/*,.txt,.srt,.vtt,.json,.csv"></div>
+          <div class="qa-actions">
+            <button class="btn small rec" id="qaRec" type="button">&#9679; Record a call</button>
+            <button class="btn small teal" id="qaTrans" type="button" hidden>Transcribe audio in browser (beta)</button>
+            <span class="qa-note" id="qaStatus"></span>
+          </div>
+          <div class="qa-prog" id="qaProg" hidden><i></i></div>
+          <div id="qaAudioBox"></div>
+          <label class="qa-lab" for="qaPaste" style="margin-top:12px">Transcript <small style="font-weight:400">(paste, one turn per line, e.g. "Agent: Hello..." / "Client: Yes")</small></label>
+          <textarea id="qaPaste" placeholder="Agent: Hello! You are speaking to Sam, I am calling you from Innovate on behalf of Cartrack...&#10;Client: Hi&#10;..."></textarea>
+          <div class="qa-actions"><button class="btn primary small" id="qaRunBtn" type="button">Assess transcript</button>
+            <button class="btn ghost small" id="qaReset" type="button">Clear all</button></div>
+          <div id="qaWarn"></div>
+        </section>
+        <section class="qa-card">
+          <h3>Transcript <small id="qaTrMeta"></small></h3>
+          <div id="qaTr"></div>
+        </section>
+      </div>
+      <div>
+        <section class="qa-card" id="qaSummary"></section>
+        <section class="qa-card" id="qaItems"></section>
+        <section class="qa-card qa-noprint" id="qaHistBox"></section>
+      </div>
+    </div>
+  </div>`;
+  const m=qa.meta;
+  qaEl("qaAgent").value=m.agent; qaEl("qaClient").value=m.client; qaEl("qaDate").value=m.date; qaEl("qaRef").value=m.ref;
+  qaEl("qaPaste").value=qa.turns.length? qa.turns.map(t=>(t.spk==="unknown"?"":(t.spk==="agent"?"Agent: ":"Client: "))+t.text).join("\n") : "";
+  qaEl("qaRec").classList.toggle("on",!!qa.rec);
+  qaEl("qaRec").innerHTML=qa.rec?"&#9632; Stop recording":"&#9679; Record a call";
+  paintQAAudio(); paintQA();
+}
+const qaEl=id=>document.getElementById(id);
+function paintQAAudio(){
+  const box=qaEl("qaAudioBox"); if(!box) return;
+  box.innerHTML = qa.audioUrl ? `<audio id="qaAudio" controls preload="metadata" src="${qa.audioUrl}"></audio><div class="qa-note">${esc(qa.fileName||"")}</div>` : "";
+  qaEl("qaTrans").hidden=!qa.audioUrl;
+}
+function paintQA(){
+  if(!qaEl("qaItems")) return;
+  const S=qaScore(), pct=S.pct;
+  const col=S.v==="pass"?"var(--green)":S.v==="coach"?"#E0A800":S.v==="fail"?"var(--red)":"var(--line)";
+  qaEl("qaSummary").innerHTML=`
+    <div class="qa-score">
+      <div class="qa-big">${pct===null?"&ndash;":pct+"<small>%</small>"}</div>
+      <div><span class="qa-verdict ${S.v}">${S.vt}${S.open&&S.pct!==null?" (provisional)":""}</span>
+      <div class="qa-note">${S.n.pass} pass &middot; ${S.n.fail} fail &middot; ${S.n.review} to review &middot; ${S.n.na} N/A</div></div>
+    </div>
+    <div class="qa-bar"><i style="width:${pct||0}%;background:${col}"></i></div>
+    ${S.open? `<div class="qa-note">Provisional: ${S.open} item(s) still need a decision and are not counted yet.</div>`:""}
+    ${S.critFail.length? `<div class="qa-warn" style="border-color:var(--red);background:var(--red-bg)"><b>Critical items failed:</b> ${S.critFail.map(esc).join("; ")}</div>`:""}
+    <div class="qa-actions qa-noprint">
+      <button class="btn small" data-qa="copy" type="button">Copy report</button>
+      <button class="btn small" data-qa="csv" type="button">Download CSV</button>
+      <button class="btn small" data-qa="print" type="button">Print</button>
+      <button class="btn small primary" data-qa="save" type="button">Save to history</button>
+    </div>
+    <div class="qa-note">Pass 85%+ &middot; Coaching 70&ndash;84% &middot; below 70% or any critical item failed = Fail. Weights: critical items count 3&times;.</div>`;
+  let html="";
+  ["Verification","Behaviour"].forEach(g=>{
+    const items=QA_CARD.filter(i=>i.g===g);
+    const p=items.filter(i=>qaStatus(i)==="pass").length, a=items.filter(i=>qaStatus(i)!=="na").length;
+    html+=`<div class="qa-grp"><b>${g} items</b><span>${p}/${a} passed</span></div>`;
+    items.forEach(it=>{
+      const s=qaStatus(it), r=qa.res[it.id]||{why:"",ev:[]}, man=qa.manual[it.id];
+      html+=`<div class="qa-item ${s}" data-item="${it.id}">
+        <div class="qa-ih"><div class="qa-il">${esc(it.label)}${it.crit?'<span class="qa-crit">CRITICAL</span>':""}</div>
+          <div class="qa-st qa-noprint">${["pass","fail","na"].map(k=>`<button type="button" data-set="${k}" class="${k} ${man===k?"on":""}">${k==="na"?"N/A":k[0].toUpperCase()+k.slice(1)}</button>`).join("")}</div></div>
+        <div class="qa-why"><span class="qa-pill ${s}">${s==="na"?"N/A":s}</span>${man?"Set by you. ":""}${esc(r.why)}</div>
+        ${(r.ev||[]).slice(0,4).map(e=>{ const t=qa.turns[e.i]; return t?`<button type="button" class="qa-ev" data-turn="${e.i}"><em>${t.t!=null?qaClock(t.t):"#"+(e.i+1)}</em>${esc(t.text.length>150?t.text.slice(0,150)+"…":t.text)}</button>`:""; }).join("")}
+        <input type="text" class="qa-nt qa-noprint" data-note="${it.id}" placeholder="Note (optional)" value="${esc(qa.notes[it.id]||"")}">
+        ${qa.notes[it.id]?`<div class="qa-why" style="display:none" class="qa-printnote">${esc(qa.notes[it.id])}</div>`:""}
+      </div>`;
+    });
+  });
+  qaEl("qaItems").innerHTML=`<h3>Scorecard</h3>`+html;
+  // transcript
+  const hits=new Set(); Object.values(qa.res).forEach(r=>(r.ev||[]).forEach(e=>hits.add(e.i)));
+  const hasAudio=!!qa.audioUrl;
+  qaEl("qaTrMeta").textContent=qa.turns.length? qa.turns.length+" turns"+(qaScope().labelled?"":" · no speaker labels (click a label to set agent/client)"):"";
+  qaEl("qaTr").innerHTML=qa.turns.length? `<div class="qa-tr">${qa.turns.map((t,i)=>`
+    <div class="qa-turn ${hits.has(i)?"hit":""}" id="qaT${i}">
+      ${t.t!=null&&hasAudio?`<button type="button" class="qa-time" data-seek="${t.t}">${qaClock(t.t)}</button>`:`<span class="qa-time">${t.t!=null?qaClock(t.t):"#"+(i+1)}</span>`}
+      <button type="button" class="qa-spk ${t.spk}" data-spk="${i}" title="Click to change speaker">${t.spk==="unknown"?"?":t.spk}</button>
+      <span>${esc(t.text)}</span></div>`).join("")}</div>` : `<div class="qa-note">No transcript yet.</div>`;
+  qaHist();
+}
+function qaHist(){
+  const box=qaEl("qaHistBox"); if(!box) return;
+  let h=[]; try{ h=JSON.parse(localStorage.getItem("innovate_qa_history")||"[]"); }catch(e){}
+  box.innerHTML=`<h3>Saved assessments <small>this browser only</small></h3>`+(h.length?
+    `<table class="qa-hist"><tr><th>Date</th><th>Agent</th><th>Ref</th><th>Score</th><th>Result</th></tr>${h.slice().reverse().map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.agent||"")}</td><td>${esc(x.ref||x.client||"")}</td><td>${x.pct===null?"–":x.pct+"%"}</td><td>${esc(x.vt)}</td></tr>`).join("")}</table>
+     <div class="qa-actions"><button class="btn small ghost" data-qa="clearhist" type="button">Clear history</button></div>`
+    : `<div class="qa-note">Nothing saved yet. Scores only are stored, never audio or transcripts.</div>`);
+}
+
+/* ---------- report ---------- */
+function qaReport(){
+  const S=qaScore(), m=qa.meta;
+  let t=`QA ASSESSMENT: Cartrack verification call\nAgent: ${m.agent||"-"}\nClient: ${m.client||"-"}\nDate: ${m.date}\nRef: ${m.ref||"-"}\nScore: ${S.pct===null?"n/a":S.pct+"%"} (${S.vt})${S.open?` [provisional, ${S.open} to review]`:""}\n`;
+  if(S.critFail.length) t+=`Critical fails: ${S.critFail.join("; ")}\n`;
+  ["Verification","Behaviour"].forEach(g=>{ t+=`\n${g.toUpperCase()}\n`; QA_CARD.filter(i=>i.g===g).forEach(i=>{ const s=qaStatus(i); t+=`[${s==="na"?"N/A":s.toUpperCase()}] ${i.label}${i.crit?" (critical)":""}${qa.notes[i.id]?" – "+qa.notes[i.id]:""}\n`; }); });
+  return t;
+}
+function qaCSV(){
+  const q=s=>'"'+String(s).replace(/"/g,'""')+'"', m=qa.meta;
+  const rows=[["Agent","Client","Date","Ref","Group","Item","Critical","Status","Auto note","Your note"]];
+  QA_CARD.forEach(i=>rows.push([m.agent,m.client,m.date,m.ref,i.g,i.label,i.crit?"yes":"",qaStatus(i),(qa.res[i.id]||{}).why||"",qa.notes[i.id]||""]));
+  return rows.map(r=>r.map(q).join(",")).join("\r\n");
+}
+
+/* ---------- loading files / audio ---------- */
+function qaSetAudio(file){
+  if(qa.audioUrl) URL.revokeObjectURL(qa.audioUrl);
+  qa.audioUrl=URL.createObjectURL(file); qa.fileName=file.name; qa._audio=file; paintQAAudio(); paintQA();
+}
+function qaSetTranscript(text,name){
+  const turns=qaParse(text,name);
+  if(!turns.length){ toast("No text found in that transcript"); return; }
+  qa.turns=turns; qaEl("qaPaste").value=text; qaRun(); paintQA();
+  toast("Transcript loaded: "+turns.length+" turns");
+}
+function qaWarnMsg(m){ const w=qaEl("qaWarn"); if(w) w.innerHTML=m?`<div class="qa-warn">${m}</div>`:""; }
+async function qaHandleFiles(files){
+  for(const f of files){
+    if(/^audio\//.test(f.type)||/^video\//.test(f.type)||/\.(mp3|wav|m4a|ogg|oga|webm|aac|flac|mp4)$/i.test(f.name)){
+      qaSetAudio(f);
+      qaWarnMsg("Audio loaded. To score it, add a transcript (paste or upload), or try <b>Transcribe audio in browser</b>. The checklist's behaviour items are marked for your review while you listen.");
+      if(!qa.turns.length) qaRun(), paintQA();
+    }else{
+      qaSetTranscript(await f.text(),f.name);
+      if(qa.audioUrl) qaWarnMsg(""); 
+    }
+  }
+}
+/* ---------- recording (+ live captions where the browser supports them) ---------- */
+async function qaToggleRec(){
+  if(qa.rec){ qa.rec.stop(); return; }
+  if(!navigator.mediaDevices||!window.MediaRecorder){ toast("Recording isn't supported in this browser"); return; }
+  let stream; try{ stream=await navigator.mediaDevices.getUserMedia({audio:true}); }catch(e){ toast("Microphone access was blocked"); return; }
+  const mr=new MediaRecorder(stream), chunks=[], t0=Date.now(), turns=[];
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition; let sr=null;
+  if(SR){ try{ sr=new SR(); sr.continuous=true; sr.interimResults=false; sr.lang="en-ZA";
+    sr.onresult=e=>{ for(let i=e.resultIndex;i<e.results.length;i++) if(e.results[i].isFinal) turns.push({spk:"unknown",text:e.results[i][0].transcript.trim(),t:(Date.now()-t0)/1000}); };
+    sr.onend=()=>{ if(qa.rec&&qa.rec.sr===sr) try{sr.start();}catch(e){} }; sr.start(); }catch(e){ sr=null; } }
+  mr.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); };
+  mr.onstop=()=>{
+    stream.getTracks().forEach(t=>t.stop()); if(sr){ const s=sr; qa.rec.sr=null; try{s.stop();}catch(e){} }
+    qa.rec=null; const type=mr.mimeType||"audio/webm";
+    const f=new File(chunks,"recording-"+new Date().toISOString().slice(0,16).replace(/[:T]/g,"-")+"."+(type.includes("mp4")?"m4a":type.includes("ogg")?"ogg":"webm"),{type});
+    if(qaEl("qaRec")){ qaEl("qaRec").classList.remove("on"); qaEl("qaRec").innerHTML="&#9679; Record a call"; qaEl("qaStatus").textContent=""; }
+    qaSetAudio(f);
+    if(turns.length){ qa.turns=turns; qaRun(); paintQA(); qaWarnMsg("Live captions came from your browser and have no speaker labels. Click each speaker tag to mark agent or client, then the checks update."); }
+    else qaWarnMsg("Recording saved. Add a transcript to auto-score it.");
+  };
+  mr.start(); qa.rec={mr,sr};
+  qaEl("qaRec").classList.add("on"); qaEl("qaRec").innerHTML="&#9632; Stop recording"; qaEl("qaStatus").textContent="Recording… (microphone only picks up your side unless the client is on speaker)";
+}
+/* ---------- in-browser transcription (beta, downloads a speech model on first use) ---------- */
+async function qaTranscribe(){
+  if(!qa._audio||qa.busy) return;
+  const st=qaEl("qaStatus"), pg=qaEl("qaProg"), bar=pg.firstElementChild;
+  qa.busy="t"; pg.hidden=false; bar.style.width="3%"; st.textContent="Loading speech model (one-off download, ~40 MB)…";
+  try{
+    const {pipeline,env}=await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2");
+    env.allowLocalModels=false;
+    const asr=await pipeline("automatic-speech-recognition","Xenova/whisper-tiny.en",{progress_callback:p=>{ if(p.status==="progress"&&p.progress) bar.style.width=Math.min(40,p.progress*0.4)+"%"; }});
+    st.textContent="Decoding audio…"; bar.style.width="45%";
+    const ctx=new (window.AudioContext||window.webkitAudioContext)({sampleRate:16000});
+    const buf=await ctx.decodeAudioData(await qa._audio.arrayBuffer());
+    const mono=buf.numberOfChannels>1? buf.getChannelData(0).map((v,i)=>(v+buf.getChannelData(1)[i])/2) : buf.getChannelData(0);
+    st.textContent="Transcribing… this can take a few minutes for long calls."; bar.style.width="55%";
+    const out=await asr(mono,{chunk_length_s:30,stride_length_s:5,return_timestamps:true});
+    const turns=(out.chunks||[]).map(c=>({spk:"unknown",text:c.text.trim(),t:c.timestamp[0]})).filter(t=>t.text);
+    if(!turns.length) throw new Error("empty result");
+    qa.turns=turns; qaRun(); paintQA(); bar.style.width="100%";
+    qaEl("qaPaste").value=turns.map(t=>t.text).join("\n");
+    qaWarnMsg("Machine transcript (no speaker labels, may contain errors). Click each speaker tag to mark agent or client, then review the Review items.");
+    st.textContent="Done.";
+  }catch(e){ console.error(e); st.textContent=""; qaWarnMsg("Couldn't transcribe in the browser ("+esc(e.message||e)+"). This needs internet access to download the model. You can paste or upload a transcript instead."); }
+  qa.busy=""; setTimeout(()=>{ if(pg) pg.hidden=true; },800);
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{
+  if(state.tab!=="qa"||!e.target.closest(".qa")) return;
+  let el, t=e.target;
+  if(t.closest("#qaPick")){ qaEl("qaFile").click(); return; }
+  if(t.closest("#qaRec")){ qaToggleRec(); return; }
+  if(t.closest("#qaTrans")){ qaTranscribe(); return; }
+  if(t.closest("#qaRunBtn")){ const v=qaEl("qaPaste").value.trim(); if(!v){ toast("Paste a transcript first"); return; } qaSetTranscript(v); return; }
+  if(t.closest("#qaReset")){ if(!confirm("Clear this assessment, transcript and audio?")) return; if(qa.audioUrl) URL.revokeObjectURL(qa.audioUrl); Object.assign(qa,{turns:[],fileName:"",audioUrl:"",manual:{},notes:{},res:{},_audio:null}); qaWarnMsg(""); renderQA(); return; }
+  if((el=t.closest("[data-set]"))){ const id=el.closest("[data-item]").dataset.item, k=el.dataset.set; if(qa.manual[id]===k) delete qa.manual[id]; else qa.manual[id]=k; paintQA(); return; }
+  if((el=t.closest("[data-spk]"))){ const tr=qa.turns[+el.dataset.spk], order=["unknown","agent","client"]; tr.spk=order[(order.indexOf(tr.spk)+1)%3]; qaRun(); const sc=qaEl("qaTr").firstElementChild.scrollTop; paintQA(); qaEl("qaTr").firstElementChild.scrollTop=sc; return; }
+  if((el=t.closest("[data-turn]"))){ const row=qaEl("qaT"+el.dataset.turn); if(row){ const box=row.parentElement; box.scrollTo({top:row.offsetTop-box.offsetTop-40,behavior:"smooth"}); row.classList.remove("flash"); void row.offsetWidth; row.classList.add("flash"); const tm=qa.turns[+el.dataset.turn].t, a=qaEl("qaAudio"); if(a&&tm!=null){ a.currentTime=tm; } } return; }
+  if((el=t.closest("[data-seek]"))){ const a=qaEl("qaAudio"); if(a){ a.currentTime=+el.dataset.seek; a.play().catch(()=>{}); } return; }
+  if((el=t.closest("[data-qa]"))){
+    switch(el.dataset.qa){
+      case "copy": copyText(qaReport(),"QA report copied"); break;
+      case "csv":{ const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([qaCSV()],{type:"text/csv"})); a.download="qa-assessment-"+(qa.meta.ref||qa.meta.date)+".csv"; document.body.appendChild(a); a.click(); a.remove(); break; }
+      case "print": window.print(); break;
+      case "save":{ const S=qaScore(); if(S.pct===null){ toast("Nothing to save yet"); break; }
+        let h=[]; try{ h=JSON.parse(localStorage.getItem("innovate_qa_history")||"[]"); }catch(err){}
+        h.push({date:qa.meta.date,agent:qa.meta.agent,client:qa.meta.client,ref:qa.meta.ref,pct:S.pct,vt:S.vt+(S.open?" (provisional)":"")});
+        try{ localStorage.setItem("innovate_qa_history",JSON.stringify(h.slice(-100))); toast("Saved to history"); }catch(err){ toast("Couldn't save in this browser"); }
+        qaHist(); break; }
+      case "clearhist": if(confirm("Delete all saved QA scores from this browser?")){ try{ localStorage.removeItem("innovate_qa_history"); }catch(err){} qaHist(); } break;
+    }
+  }
+});
+document.addEventListener("input",e=>{
+  const t=e.target; if(state.tab!=="qa") return;
+  const map={qaAgent:"agent",qaClient:"client",qaDate:"date",qaRef:"ref"};
+  if(map[t.id]){ qa.meta[map[t.id]]=t.value; if(t.id==="qaClient"&&qa.turns.length){ qaRun(); paintQA(); } if(t.id==="qaAgent"){ try{ localStorage.setItem("innovate_agent",t.value); }catch(err){} } }
+  if(t.dataset&&t.dataset.note){ qa.notes[t.dataset.note]=t.value; }
+});
+document.addEventListener("change",e=>{ if(e.target.id==="qaFile"){ qaHandleFiles([...e.target.files]); e.target.value=""; } });
+["dragover","dragleave","drop"].forEach(ev=>document.addEventListener(ev,e=>{
+  const d=e.target.closest&&e.target.closest("#qaDrop"); if(!d) return;
+  e.preventDefault(); d.classList.toggle("over",ev==="dragover");
+  if(ev==="drop") qaHandleFiles([...e.dataTransfer.files]);
+}));
 
 render();
 </script>
