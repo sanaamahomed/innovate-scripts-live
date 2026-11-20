@@ -108,6 +108,25 @@ def apply_speakers(turns, raw):
     return ""
 
 
+def _norm(t):
+    return " ".join("".join(c.lower() if c.isalnum() else " " for c in t).split())
+
+
+def quote_in_transcript(quote, turns):
+    """Return the 0-based turn holding the quote (whitespace/punctuation/case-insensitive), or -1."""
+    q = _norm(quote)
+    if len(q) < 4:
+        return -1
+    for i, t in enumerate(turns):
+        if q in _norm(t["text"]):
+            return i
+    # allow a quote that spans two adjacent turns
+    for i in range(len(turns) - 1):
+        if q in _norm(turns[i]["text"] + " " + turns[i + 1]["text"]):
+            return i
+    return -1
+
+
 def normalise(raw, product, turns):
     """Turn Claude's JSON into the stored result: per-item status/reason/evidence plus insights."""
     items = {}
@@ -126,8 +145,15 @@ def normalise(raw, product, turns):
                 n = -1
             q = str(e.get("quote", "")).strip()
             if q:
-                ev.append({"turn": n if 0 <= n < len(turns) else -1, "quote": q})
-        items[it["id"]] = {"status": st, "reason": str(x.get("reason", "")), "evidence": ev[:2]}
+                found = quote_in_transcript(q, turns)
+                ev.append({"turn": found if found >= 0 else (n if 0 <= n < len(turns) else -1), "quote": q, "verified": found >= 0})
+        reason = str(x.get("reason", ""))
+        # Hallucination control: a PASS must be backed by at least one quote that really is in the transcript.
+        if st == "pass" and not any(e["verified"] for e in ev):
+            st, reason = "review", "Claude marked this Pass but gave no quote that appears in the transcript, so a person needs to check. " + reason
+        elif st == "pass" and any(not e["verified"] for e in ev):
+            reason += " (One quoted line was not found word-for-word in the transcript.)"
+        items[it["id"]] = {"status": st, "reason": reason, "evidence": ev[:2]}
     ins = {k: [str(v) for v in raw.get(k, []) if v] for k in ("strengths", "improvements", "coaching", "risks")}
     moments = []
     for k in raw.get("key_moments") or []:

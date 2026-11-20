@@ -75,6 +75,14 @@ def merge(turns, gap):
 
 
 def transcribe(path, progress=lambda f: None):
+    """Dispatch on TRANSCRIBER: whisper (default, local), deepgram or assemblyai (cloud)."""
+    engine = os.environ.get("TRANSCRIBER", "whisper").lower()
+    if engine in ("deepgram", "assemblyai"):
+        import providers
+        turns = getattr(providers, engine)(path, progress)
+        if not turns:
+            raise ValueError("No speech was found in that recording.")
+        return turns
     a = decode(path)
     if is_true_stereo(a):
         turns = []

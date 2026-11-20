@@ -4,5 +4,6 @@ python-multipart>=0.0.9
 anthropic>=0.40
 faster-whisper>=1.0.3
 numpy
+httpx
 reportlab>=4.0
 svglib>=1.5

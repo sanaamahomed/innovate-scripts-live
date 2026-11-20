@@ -33,6 +33,8 @@ Without Docker: install `ffmpeg`, then `pip install -r requirements.txt` and
 | `ANTHROPIC_API_KEY` | required | Claude access. Stays on the server. |
 | `APP_PASSWORD` | none | Shared password. **Set this**: the app holds call recordings and spends API credit. |
 | `CLAUDE_MODEL` | `claude-sonnet-5-5` | Model used for marking. |
+| `TRANSCRIBER` | `whisper` | `whisper` (built in, free, private), `deepgram` or `assemblyai` (cloud, usually more accurate; needs `DEEPGRAM_API_KEY` or `ASSEMBLYAI_API_KEY`). Audio is sent to that vendor. |
+| `STT_KEYTERMS` | product names | Comma-separated words the speech engine should expect (Netstar, StarTag, DebiCheck...). Cloud engines only. |
 | `WHISPER_MODEL` | `small` | `tiny`/`base` faster, `medium`/`large-v3` more accurate (needs more RAM and time). |
 | `RETAIN_AUDIO` | `true` | `false` deletes the recording once transcribed. |
 | `MAX_UPLOAD_MB` | `200` | Upload limit. |
@@ -46,6 +48,16 @@ Without Docker: install `ffmpeg`, then `pip install -r requirements.txt` and
   instead of the audio.
 - Mono recordings work too; Claude works out who is the agent. If it gets a speaker wrong, click the
   tag in the transcript and press *Re-run assessment*.
+
+## How accuracy is protected
+- Claude must give word-for-word quotes for every item. The app checks each quote really appears in the
+  transcript; a **Pass with no verifiable quote is automatically downgraded to Review**.
+- Tone, pace and interruptions can't be judged from text, so they always come back as Review.
+- Speech-to-text engines mishear numbers most. Check prices, IDs and the customer's verbal YES against
+  the audio (click a quote or timestamp to jump there) before a score affects an agent.
+- The Deepgram and AssemblyAI connectors follow the vendors' public documentation but have only been
+  tested against simulated responses. Try each on a few real calls first. No vendor publishes accuracy
+  for South African English with Zulu/Afrikaans on phone audio, so compare engines on your own calls.
 
 ## Changing the scorecards
 Edit `scorecards.py` (wording, points, critical flags, pass marks), then restart. Add a new product by

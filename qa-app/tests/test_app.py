@@ -17,7 +17,7 @@ from scorecards import PRODUCTS  # noqa: E402
 def fake_claude(prompt, client=None):
     ids = [i["id"] for i in PRODUCTS["ns"]["items"]]
     items = [{"id": i, "status": "fail" if i == "n_kyc" else "pass", "reason": "r " + i,
-              "evidence": [{"turn": 1, "quote": "on behalf of Netstar"}]} for i in ids]
+              "evidence": [{"turn": 1, "quote": "calling on behalf of Netstar"}]} for i in ids]
     return {"summary": "S", "outcome": "Sale", "client_sentiment": "ok", "agent_tone": "pro", "items": items,
             "strengths": ["a"], "improvements": ["b"], "coaching": ["c"], "risks": [], "key_moments": [{"turn": 2, "note": "n"}],
             "speakers": ["A", "C", "A", "C"], "agent_speaker": ""}
@@ -144,3 +144,49 @@ def test_merge():
     segs = [{"spk": "a", "text": "x", "t": 0, "e": 1}, {"spk": "a", "text": "y", "t": 1.5, "e": 2}, {"spk": "b", "text": "z", "t": 2, "e": 3}]
     assert [t["text"] for t in stt.merge(segs, 1.5)] == ["x y", "z"]
     assert len(stt.merge(segs, 0)) == 3
+
+
+def test_unverified_quote_downgrades_pass():
+    turns = [{"spk": "agent", "text": "Hello, calling on behalf of Netstar.", "t": 0}]
+    raw = {"items": [{"id": "n_intro", "status": "pass", "reason": "r", "evidence": [{"turn": 1, "quote": "I am from Netstar Cubix"}]},
+                     {"id": "n_disc", "status": "pass", "reason": "r", "evidence": [{"turn": 5, "quote": "calling on behalf of netstar"}]}]}
+    res = engine.normalise(raw, "ns", turns)
+    assert res["items"]["n_intro"]["status"] == "review" and "no quote" in res["items"]["n_intro"]["reason"]
+    d = res["items"]["n_disc"]  # wrong turn number but quote is real: turn corrected, stays pass
+    assert d["status"] == "pass" and d["evidence"][0]["turn"] == 0 and d["evidence"][0]["verified"]
+
+
+def _wav(tmp_path, stereo):
+    p = str(tmp_path / "c.wav")
+    _tone(p, [440, 1330] if stereo else [440])
+    return p
+
+
+def test_deepgram_provider(tmp_path, monkeypatch):
+    import httpx, providers
+    monkeypatch.setenv("DEEPGRAM_API_KEY", "k")
+    seen = {}
+    def handler(req):
+        seen["q"] = dict(req.url.params.multi_items()) if False else str(req.url)
+        return httpx.Response(200, json={"results": {"utterances": [
+            {"channel": 0, "transcript": "Hello", "start": 0.5}, {"channel": 1, "transcript": "Hi", "start": 2.0}, {"channel": 1, "transcript": "there", "start": 3.0}]}})
+    c = httpx.Client(transport=httpx.MockTransport(handler))
+    turns = providers.deepgram(_wav(tmp_path, True), client=c)
+    assert "multichannel=true" in seen["q"] and "keyterm=Netstar" in seen["q"]
+    assert [(t["spk"], t["text"]) for t in turns] == [("Speaker 1", "Hello"), ("Speaker 2", "Hi there")]
+
+
+def test_assemblyai_provider(tmp_path, monkeypatch):
+    import httpx, providers
+    monkeypatch.setenv("ASSEMBLYAI_API_KEY", "k")
+    def handler(req):
+        if req.url.path == "/v2/upload":
+            return httpx.Response(200, json={"upload_url": "u"})
+        if req.method == "POST":
+            import json as j
+            assert j.loads(req.content)["speaker_labels"] is True  # mono -> diarization
+            return httpx.Response(200, json={"id": "t1"})
+        return httpx.Response(200, json={"status": "completed", "utterances": [
+            {"speaker": "A", "text": "Hello", "start": 500}, {"speaker": "B", "text": "Hi", "start": 2500}]})
+    turns = providers.assemblyai(_wav(tmp_path, False), client=httpx.Client(transport=httpx.MockTransport(handler)), poll=0)
+    assert [(t["spk"], t["t"]) for t in turns] == [("Speaker 1", 0.5), ("Speaker 2", 2.5)]

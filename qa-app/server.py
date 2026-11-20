@@ -120,7 +120,7 @@ def run(rid):
 @app.get("/api/health")
 def health(_=Depends(auth)):
     return {"ok": True, "claude_key": bool(os.environ.get("ANTHROPIC_API_KEY")), "model": engine.MODEL,
-            "whisper_model": stt.MODEL_NAME, "password_protected": bool(os.environ.get("APP_PASSWORD"))}
+            "transcriber": os.environ.get("TRANSCRIBER", "whisper"), "whisper_model": stt.MODEL_NAME, "password_protected": bool(os.environ.get("APP_PASSWORD"))}
 
 
 @app.get("/api/scorecards")
