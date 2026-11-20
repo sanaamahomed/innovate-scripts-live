@@ -445,6 +445,47 @@ button.qa-time:hover{color:var(--navy);text-decoration:underline}
 .qa-hist{width:100%;border-collapse:collapse;font-size:13.5px}
 .qa-hist th,.qa-hist td{text-align:left;padding:5px 6px;border-bottom:1px solid var(--line)}
 @media print{.qa-noprint{display:none!important}.qa-grid{display:block}.qa-tr{max-height:none}}
+
+.qa-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.qa-tag{background:var(--navy);color:#fff;border-radius:99px;padding:2px 12px;font-size:13px;font-weight:600}
+.qa-ins{border-left:4px solid var(--teal);background:var(--bg);border-radius:6px;padding:8px 12px;margin-top:10px}
+.qa-ins.good{border-color:var(--green)}.qa-ins.warn{border-color:var(--yellow)}.qa-ins.bad{border-color:var(--red);background:var(--red-bg)}
+.qa-ins b{color:var(--navy)}.qa-ins ul{margin:4px 0 0;padding-left:20px}.qa-ins li{margin:3px 0}
+.qa-link{background:var(--navy);color:#fff;border:0;border-radius:99px;font-size:12px;padding:0 8px;font-weight:700}
+#qaPrint{display:none}
+@media print{
+  body.qaprint>*:not(#qaPrint){display:none!important}
+  body.qaprint #qaPrint{display:block!important}
+  body.qaprint{background:#fff}
+  @page{margin:14mm}
+}
+#qaPrint{font-size:12.5px;color:#111;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+#qaPrint .pr-head{background:var(--navy);color:#fff;padding:14px 18px;border-bottom:5px solid var(--yellow);display:flex;align-items:center;gap:18px;border-radius:8px 8px 0 0}
+#qaPrint .pr-head svg{height:38px;width:auto}
+#qaPrint .pr-t{font-size:22px;font-weight:800}#qaPrint .pr-s{color:var(--yellow);font-size:13px}
+#qaPrint .pr-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0;background:var(--bg);padding:10px 12px;border-radius:8px}
+#qaPrint .pr-meta span{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+#qaPrint .pr-score{display:flex;gap:18px;align-items:center;margin:8px 0 12px}
+#qaPrint .pr-pct{font-size:52px;font-weight:800;line-height:1}
+#qaPrint .pr-verd{display:inline-block;color:#fff;padding:3px 14px;border-radius:99px;font-weight:700}
+#qaPrint h3{color:var(--navy);font-size:16px;margin:16px 0 6px;border-bottom:2px solid var(--yellow);padding-bottom:3px}
+#qaPrint .pr-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+#qaPrint .pr-box{border-left:4px solid var(--teal);background:var(--bg);padding:6px 10px;border-radius:5px;break-inside:avoid}
+#qaPrint .pr-box.good{border-color:var(--green)}#qaPrint .pr-box.warn{border-color:var(--yellow)}#qaPrint .pr-box.bad{border-color:var(--red);background:var(--red-bg)}
+#qaPrint h4{margin:0 0 2px;color:var(--navy);font-size:13px}#qaPrint ul{margin:2px 0;padding-left:18px}
+#qaPrint .pr-tb{width:100%;border-collapse:collapse}
+#qaPrint .pr-tb td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+#qaPrint .pr-tb tr{break-inside:avoid}
+#qaPrint .pr-tb td.st{width:62px;font-weight:800;text-transform:uppercase;font-size:11px}
+#qaPrint tr.pass td.st{color:var(--green)}#qaPrint tr.fail td.st{color:var(--red)}#qaPrint tr.review td.st{color:#B58900}#qaPrint tr.na td.st{color:var(--muted)}
+#qaPrint .pr-crit{font-size:9.5px;color:var(--red);font-weight:800}
+#qaPrint .pr-why{color:var(--muted);font-size:11.5px}#qaPrint .pr-q{font-style:italic;font-size:11.5px;border-left:3px solid var(--teal);padding-left:6px;margin-top:2px}
+#qaPrint .pr-break{break-before:page}
+#qaPrint .pr-tr p{margin:0 0 4px;break-inside:avoid}
+#qaPrint .pr-sp{display:inline-block;min-width:46px;text-align:center;font-size:9.5px;font-weight:800;text-transform:uppercase;border-radius:99px;padding:0 6px;margin-right:6px;background:var(--line);color:var(--muted)}
+#qaPrint .pr-sp.agent{background:var(--navy);color:#fff}#qaPrint .pr-sp.client{background:var(--teal);color:var(--navy)}
+#qaPrint .pr-tm{color:var(--muted);font-size:10.5px;margin-right:4px}
+#qaPrint .pr-foot{margin-top:18px;border-top:2px solid var(--yellow);padding-top:6px;font-size:10.5px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -1682,7 +1723,7 @@ document.addEventListener("input",e=>{
    scorecard from the Info Centre. Everything runs in this browser:
    audio and transcripts are never uploaded anywhere.
 ===================================================================== */
-const QA_CARD = [
+const QA_CARD_CT = [
  /* group, id, label, weight, crit(ical), rx = regexes that must be heard from the agent, need = how many */
  {g:"Verification",id:"v_name",   label:"Agent introduced themselves by name", w:1, rx:[/\b(my name is|speaking (to|with)|this is [a-z]+ (from|calling)|you are speaking)\b/i]},
  {g:"Verification",id:"v_broker", label:"Said they are calling from the brokerage (Innovate)", w:1, rx:[/\b(innovate|brokerage|broker)\b/i]},
@@ -1713,12 +1754,32 @@ const QA_CARD = [
  {g:"Behaviour",id:"b_rep",   label:"Repeated a clause if interrupted", w:1, manual:1},
  {g:"Behaviour",id:"b_req",   label:"Noted the client's specific requests", w:1, custom:"requests"}
 ];
+const QA_PRODUCTS={ct:{name:"Cartrack",title:"Cartrack verification scorecard"},ns:{name:"Netstar",title:"Netstar sales scorecard"}};
+/* Netstar scorecard: weights are the points from the QA sheet (total 220). "Compliance Critical Result" is applied to the INTRO question; change crit:1 to move it. */
+const QA_CARD_NS = [
+ {g:"Netstar scorecard",id:"n_intro",label:"INTRO: Did the rep clearly identify themselves as calling on behalf of Netstar from Cubix?",w:10,crit:1,rx:[/on behalf of netstar/i]},
+ {g:"Netstar scorecard",id:"n_disc",label:"DISCLAIMER: Did the agent read the disclaimer verbatim or include all relevant disclosures (calls are recorded)?",w:15,rx:[/(call is|calls are|call will be|being) recorded/i]},
+ {g:"Netstar scorecard",id:"n_pitch",label:"PITCH: Did the agent pitch the product correctly, allowing the client to make an informed decision?",w:15,custom:"pitch"},
+ {g:"Netstar scorecard",id:"n_prem",label:"PREM: Was the correct pro-rata and monthly premium given to the client?",w:20,rx:[/\br\s?(239|259)\b/i,/pro[\s-]?rata/i],need:1},
+ {g:"Netstar scorecard",id:"n_kyc",label:"KYC: Client name, surname, ID number, contact numbers, postal address, including alternative numbers captured",w:10,custom:"recap"},
+ {g:"Netstar scorecard",id:"n_bank",label:"BANK: Correct banking details captured and relevant information asked (salary/debit date; monetary obligations assumed by the client; manner of payment)",w:20,rx:[/salary (date)?|debit (order )?date/i,/(account|bank|branch|cheque|savings)/i],need:2},
+ {g:"Netstar scorecard",id:"n_bankcl",label:"BANK: Were the banking clauses correctly done with the client?",w:20,rx:[/authori[sz]e/i,/(debit (your )?account|debit order)/i],need:2},
+ {g:"Netstar scorecard",id:"n_veh",label:"KYC: Were the client's VEHICLE details captured correctly? (double or triple deal)",w:20,rx:[/registration|reg number|vin|chassis|make and model|colour|color/i]},
+ {g:"Netstar scorecard",id:"n_brand",label:"BRAND: Was the agent professional throughout the call?",w:10,custom:"slang"},
+ {g:"Netstar scorecard",id:"n_obj",label:"OBJ: Did the agent attempt to objection handle, if applicable?",w:10,cond:1,manual:1},
+ {g:"Netstar scorecard",id:"n_fais",label:"FAIS: Were the terms and conditions read verbatim or correctly? (including the rental clause)",w:20,rx:[/36[\s-]?months?/i,/(terms and conditions|t's and c's)/i,/20 \(?twenty\)? working days|settlement fee|written notice/i],need:3},
+ {g:"Netstar scorecard",id:"n_inst",label:"CLOSE: Did the agent ask \"Where would you prefer to have installation done, at home or work?\" and get a clear response (ask for address and Google verify)?",w:15,rx:[/(at )?(home|work).{0,40}(home|work)|installed at (work|home)/i,/address/i],need:2},
+ {g:"Netstar scorecard",id:"n_dev",label:"CLOSE: Did the agent capture the correct device for the client?",w:20,rx:[/early warning|startag|star tag|back-?up device/i]},
+ {g:"Netstar scorecard",id:"n_fit",label:"CLOSE: Was the fitment date and time confirmed by the agent with the client?",w:15,rx:[/(monday|tuesday|wednesday|thursday|friday|\d{1,2}\s?(:|h)\s?\d{2}|\d{1,2}\s?(am|pm)).{0,80}/i,/(which|prefer|confirm).{0,60}(date|time|slot|day)|(fit|install)(ment|ed)? (on|at)/i],need:1}
+];
+let QA_CARD=QA_CARD_CT;
+const QA_GROUPS=()=>[...new Set(QA_CARD.map(i=>i.g))];
 const QA_BENEFITS=/\b(stolen vehicle|recover|recovery|theft|track(ing)?|alerts?|app\b|roadside|emergency|panic|crash|accident|driver behaviour|location|insurance|discount|24\/?7|monitor)/gi;
 const QA_SLANG=/\b(lekker|bru|boet|bra|my china|ja nee|howzit|yoh|eish|sharp sharp|dude|bro|mate|buddy|gonna|wanna|gotta|kinda|nope|yup|yep|cool|awesome|no worries|no probs?|hey there|guys|stuff|whatever|chill)\b/gi;
 const QA_DECL=[/debit order/i,/in advance|pro[\s-]?rata/i,/available for (the )?(unit )?install/i,/24 hours|r\s?600|call[\s-]?out/i,/terms and conditions/i,/(share|insurer).{0,40}(install|insurer|party)|installation proof/i,/verbal agreement|contractually binding/i];
 const QA_YES=/^\W*(yes|yep|yeah|yebo|ja|i agree|agreed|i do|correct|that'?s correct|sure|okay yes|ok yes)\b/i;
 
-const qa = { turns:[], fileName:"", audioUrl:"", manual:{}, notes:{}, res:{}, busy:"", rec:null, warn:"", meta:{agent:"",client:"",date:"",ref:""} };
+const qa = { product:"ct", turns:[], fileName:"", audioUrl:"", manual:{}, notes:{}, res:{}, ai:null, busy:"", rec:null, warn:"", meta:{agent:"",client:"",date:"",ref:""} };
 try{ qa.meta.agent=localStorage.getItem("innovate_agent")||""; }catch(e){}
 qa.meta.date=new Date().toISOString().slice(0,10);
 
@@ -1853,6 +1914,13 @@ function qaAssessItem(it,sc){
       if(n>=4) return R("review",n+" YES answers found, 7 expected.",ev);
       return R("fail",n+" YES answers found, 7 expected.",ev);
     }
+    case "pitch":{
+      const set=[/insurance|premium|discount/i,/(stolen|theft|recover|tracking|track)/i,/(app|website|my\.netstar)/i,/back-?up device|startag|early warning/i,/\br\s?(239|259)\b/i];
+      const ev=[]; set.forEach(r=>{ const f=qaFind(r,true); if(f) ev.push(f); });
+      if(ev.length>=4) return R("review",ev.length+" of 5 pitch elements heard (benefits, price, device). Confirm the client could make an informed decision.",ev);
+      if(ev.length>=2) return R("review",ev.length+" of 5 pitch elements heard.",ev);
+      return R("fail","Pitch elements not heard.",ev);
+    }
     case "listen":{
       const rx=/\b(i understand|i hear you|i see|noted|thank you for (that|sharing|letting)|sorry to hear|that makes sense|no problem|of course|absolutely|i appreciate)\b/i;
       const a=qaAll(rx,true);
@@ -1884,6 +1952,7 @@ function qaAssessItem(it,sc){
   return R("review","");
 }
 function qaRun(){
+  if(qa.ai){ qaApplyAI(); return; }
   const sc=qaScope(); qa.res={};
   QA_CARD.forEach(it=>{ qa.res[it.id]=qa.turns.length? qaAssessItem(it,sc) : {status:"review",why:"Add a transcript to auto-check this item, or mark it manually.",ev:[]}; });
 }
@@ -1897,7 +1966,7 @@ function qaScore(){
     tot+=it.w; if(s==="pass") got+=it.w;
     if(s==="fail" && it.crit) critFail.push(it.label);
   });
-  const pct=tot? Math.round(got/tot*100) : null;
+  const pct=tot? Math.round(got/tot*100) : null; const allw=QA_CARD.reduce((a,i)=>a+i.w,0);
   let v="none",vt="Not assessed";
   if(pct!==null){
     if(critFail.length){ v="fail"; vt="Critical fail"; }
@@ -1905,7 +1974,7 @@ function qaScore(){
     else if(pct>=70){ v="coach"; vt="Needs coaching"; }
     else { v="fail"; vt="Fail"; }
   }
-  return {pct,v,vt,open,n,critFail};
+  return {pct,v,vt,open,n,critFail,got,tot,allw};
 }
 
 /* ---------- rendering ---------- */
@@ -1913,12 +1982,13 @@ function renderQA(){
   $app.innerHTML=`
   <div class="qa">
     <h1>QA Assessment</h1>
-    <p class="lead">Upload or record a call, add the transcript, and score it against the Cartrack QA scorecard. Items are auto-checked from the transcript; anything marked <b>Review</b> needs your ear. Audio and transcripts stay in this browser.</p>
+    <p class="lead">Upload or record a call, add the transcript, and score it against the QA scorecard for the product (Cartrack or Netstar). Items are auto-checked from the transcript; anything marked <b>Review</b> needs your ear. Audio and transcripts stay in this browser.</p>
     <div class="qa-grid">
       <div>
         <section class="qa-card qa-noprint">
           <h3>1. Call details</h3>
           <div class="qa-row">
+            <div style="grid-column:1/-1"><label for="qaProd">Scorecard</label><select id="qaProd"><option value="ct">Cartrack verification call</option><option value="ns">Netstar sales call (220 points)</option></select></div>
             <div><label for="qaAgent">Agent</label><input type="text" id="qaAgent" autocomplete="off"></div>
             <div><label for="qaClient">Client name (for the "name used 3+ times" check)</label><input type="text" id="qaClient" autocomplete="off"></div>
             <div><label for="qaDate">Call date</label><input type="date" id="qaDate"></div>
@@ -1943,6 +2013,14 @@ function renderQA(){
             <button class="btn ghost small" id="qaReset" type="button">Clear all</button></div>
           <div id="qaWarn"></div>
         </section>
+        <section class="qa-card qa-noprint">
+          <h3>3. Assess with Claude <small>marks the scorecard and writes insights</small></h3>
+          <label class="qa-lab" for="qaKey">Claude API key</label>
+          <input type="password" id="qaKey" autocomplete="off" placeholder="sk-ant-...">
+          <label class="qa-note" style="display:block"><input type="checkbox" id="qaKeep"> Remember on this device</label>
+          <div class="qa-actions"><button class="btn primary" id="qaAI" type="button">Assess with Claude</button><span class="qa-note" id="qaAIst"></span></div>
+          <div class="qa-note">The transcript text is sent to Anthropic to be assessed. Audio never leaves this browser. Claude reads the transcript, it does not hear audio, so tone and pace are marked Review unless the words show them.</div>
+        </section>
         <section class="qa-card">
           <h3>Transcript <small id="qaTrMeta"></small></h3>
           <div id="qaTr"></div>
@@ -1950,14 +2028,16 @@ function renderQA(){
       </div>
       <div>
         <section class="qa-card" id="qaSummary"></section>
+        <section class="qa-card" id="qaInsights" hidden></section>
         <section class="qa-card" id="qaItems"></section>
         <section class="qa-card qa-noprint" id="qaHistBox"></section>
       </div>
     </div>
   </div>`;
   const m=qa.meta;
-  qaEl("qaAgent").value=m.agent; qaEl("qaClient").value=m.client; qaEl("qaDate").value=m.date; qaEl("qaRef").value=m.ref;
+  qaEl("qaProd").value=qa.product; qaEl("qaAgent").value=m.agent; qaEl("qaClient").value=m.client; qaEl("qaDate").value=m.date; qaEl("qaRef").value=m.ref;
   qaEl("qaPaste").value=qa.turns.length? qa.turns.map(t=>(t.spk==="unknown"?"":(t.spk==="agent"?"Agent: ":"Client: "))+t.text).join("\n") : "";
+  try{ const k=localStorage.getItem("innovate_claude_key")||sessionStorage.getItem("innovate_claude_key")||""; qaEl("qaKey").value=k; qaEl("qaKeep").checked=!!localStorage.getItem("innovate_claude_key"); }catch(e){}
   qaEl("qaRec").classList.toggle("on",!!qa.rec);
   qaEl("qaRec").innerHTML=qa.rec?"&#9632; Stop recording":"&#9679; Record a call";
   paintQAAudio(); paintQA();
@@ -1976,7 +2056,7 @@ function paintQA(){
     <div class="qa-score">
       <div class="qa-big">${pct===null?"&ndash;":pct+"<small>%</small>"}</div>
       <div><span class="qa-verdict ${S.v}">${S.vt}${S.open&&S.pct!==null?" (provisional)":""}</span>
-      <div class="qa-note">${S.n.pass} pass &middot; ${S.n.fail} fail &middot; ${S.n.review} to review &middot; ${S.n.na} N/A</div></div>
+      <div class="qa-note">${S.tot?`${S.got}/${S.tot} points &middot; `:""}${S.n.pass} pass &middot; ${S.n.fail} fail &middot; ${S.n.review} to review &middot; ${S.n.na} N/A</div></div>
     </div>
     <div class="qa-bar"><i style="width:${pct||0}%;background:${col}"></i></div>
     ${S.open? `<div class="qa-note">Provisional: ${S.open} item(s) still need a decision and are not counted yet.</div>`:""}
@@ -1984,22 +2064,22 @@ function paintQA(){
     <div class="qa-actions qa-noprint">
       <button class="btn small" data-qa="copy" type="button">Copy report</button>
       <button class="btn small" data-qa="csv" type="button">Download CSV</button>
-      <button class="btn small" data-qa="print" type="button">Print</button>
-      <button class="btn small primary" data-qa="save" type="button">Save to history</button>
+      <button class="btn small primary" data-qa="pdf" type="button">Download PDF</button>
+      <button class="btn small" data-qa="save" type="button">Save to history</button>
     </div>
-    <div class="qa-note">Pass 85%+ &middot; Coaching 70&ndash;84% &middot; below 70% or any critical item failed = Fail. Weights: critical items count 3&times;.</div>`;
+    <div class="qa-note">Pass 85%+ &middot; Coaching 70&ndash;84% &middot; below 70% or any critical item failed = Fail. Items are weighted by points.</div>`;
   let html="";
-  ["Verification","Behaviour"].forEach(g=>{
+  QA_GROUPS().forEach(g=>{
     const items=QA_CARD.filter(i=>i.g===g);
     const p=items.filter(i=>qaStatus(i)==="pass").length, a=items.filter(i=>qaStatus(i)!=="na").length;
-    html+=`<div class="qa-grp"><b>${g} items</b><span>${p}/${a} passed</span></div>`;
+    html+=`<div class="qa-grp"><b>${g}${g.endsWith("scorecard")?"":" items"}</b><span>${p}/${a} passed</span></div>`;
     items.forEach(it=>{
       const s=qaStatus(it), r=qa.res[it.id]||{why:"",ev:[]}, man=qa.manual[it.id];
       html+=`<div class="qa-item ${s}" data-item="${it.id}">
         <div class="qa-ih"><div class="qa-il">${esc(it.label)}${it.crit?'<span class="qa-crit">CRITICAL</span>':""}</div>
           <div class="qa-st qa-noprint">${["pass","fail","na"].map(k=>`<button type="button" data-set="${k}" class="${k} ${man===k?"on":""}">${k==="na"?"N/A":k[0].toUpperCase()+k.slice(1)}</button>`).join("")}</div></div>
         <div class="qa-why"><span class="qa-pill ${s}">${s==="na"?"N/A":s}</span>${man?"Set by you. ":""}${esc(r.why)}</div>
-        ${(r.ev||[]).slice(0,4).map(e=>{ const t=qa.turns[e.i]; return t?`<button type="button" class="qa-ev" data-turn="${e.i}"><em>${t.t!=null?qaClock(t.t):"#"+(e.i+1)}</em>${esc(t.text.length>150?t.text.slice(0,150)+"…":t.text)}</button>`:""; }).join("")}
+        ${(r.ev||[]).slice(0,4).map(e=>{ const t=qa.turns[e.i]; const txt=e.q||(t&&t.text)||""; if(!txt) return ""; return `<button type="button" class="qa-ev" ${t?`data-turn="${e.i}"`:""}><em>${t&&t.t!=null?qaClock(t.t):(t?"#"+(e.i+1):"")}</em>${esc(txt.length>170?txt.slice(0,170)+"…":txt)}</button>`; }).join("")}
         <input type="text" class="qa-nt qa-noprint" data-note="${it.id}" placeholder="Note (optional)" value="${esc(qa.notes[it.id]||"")}">
         ${qa.notes[it.id]?`<div class="qa-why" style="display:none" class="qa-printnote">${esc(qa.notes[it.id])}</div>`:""}
       </div>`;
@@ -2007,7 +2087,7 @@ function paintQA(){
   });
   qaEl("qaItems").innerHTML=`<h3>Scorecard</h3>`+html;
   // transcript
-  const hits=new Set(); Object.values(qa.res).forEach(r=>(r.ev||[]).forEach(e=>hits.add(e.i)));
+  const hits=new Set(); Object.values(qa.res).forEach(r=>(r.ev||[]).forEach(e=>{ if(e.i>=0) hits.add(e.i); }));
   const hasAudio=!!qa.audioUrl;
   qaEl("qaTrMeta").textContent=qa.turns.length? qa.turns.length+" turns"+(qaScope().labelled?"":" · no speaker labels (click a label to set agent/client)"):"";
   qaEl("qaTr").innerHTML=qa.turns.length? `<div class="qa-tr">${qa.turns.map((t,i)=>`
@@ -2015,7 +2095,7 @@ function paintQA(){
       ${t.t!=null&&hasAudio?`<button type="button" class="qa-time" data-seek="${t.t}">${qaClock(t.t)}</button>`:`<span class="qa-time">${t.t!=null?qaClock(t.t):"#"+(i+1)}</span>`}
       <button type="button" class="qa-spk ${t.spk}" data-spk="${i}" title="Click to change speaker">${t.spk==="unknown"?"?":t.spk}</button>
       <span>${esc(t.text)}</span></div>`).join("")}</div>` : `<div class="qa-note">No transcript yet.</div>`;
-  qaHist();
+  paintInsights(); qaHist();
 }
 function qaHist(){
   const box=qaEl("qaHistBox"); if(!box) return;
@@ -2029,9 +2109,11 @@ function qaHist(){
 /* ---------- report ---------- */
 function qaReport(){
   const S=qaScore(), m=qa.meta;
-  let t=`QA ASSESSMENT: Cartrack verification call\nAgent: ${m.agent||"-"}\nClient: ${m.client||"-"}\nDate: ${m.date}\nRef: ${m.ref||"-"}\nScore: ${S.pct===null?"n/a":S.pct+"%"} (${S.vt})${S.open?` [provisional, ${S.open} to review]`:""}\n`;
+  let t=`QA ASSESSMENT: ${QA_PRODUCTS[qa.product].title}\nAgent: ${m.agent||"-"}\nClient: ${m.client||"-"}\nDate: ${m.date}\nRef: ${m.ref||"-"}\nScore: ${S.pct===null?"n/a":S.pct+"%"} (${S.vt})${S.open?` [provisional, ${S.open} to review]`:""}\n`;
   if(S.critFail.length) t+=`Critical fails: ${S.critFail.join("; ")}\n`;
-  ["Verification","Behaviour"].forEach(g=>{ t+=`\n${g.toUpperCase()}\n`; QA_CARD.filter(i=>i.g===g).forEach(i=>{ const s=qaStatus(i); t+=`[${s==="na"?"N/A":s.toUpperCase()}] ${i.label}${i.crit?" (critical)":""}${qa.notes[i.id]?" – "+qa.notes[i.id]:""}\n`; }); });
+  if(qa.ai){ const a=qa.ai, L=(h,x)=>x&&x.length?`\n${h}\n`+x.map(y=>"- "+y).join("\n")+"\n":"";
+    t+=`\nSUMMARY\n${a.summary||""}\nOutcome: ${a.outcome||"-"}\n`+L("STRENGTHS",a.strengths)+L("IMPROVEMENTS",a.improvements)+L("COACHING ACTIONS",a.coaching)+L("RISK AND COMPLIANCE FLAGS",a.risks); }
+  QA_GROUPS().forEach(g=>{ t+=`\n${g.toUpperCase()}\n`; QA_CARD.filter(i=>i.g===g).forEach(i=>{ const s=qaStatus(i); t+=`[${s==="na"?"N/A":s.toUpperCase()}] ${i.label}${i.crit?" (critical)":""}${qa.notes[i.id]?" – "+qa.notes[i.id]:""}\n`; }); });
   return t;
 }
 function qaCSV(){
@@ -2049,7 +2131,7 @@ function qaSetAudio(file){
 function qaSetTranscript(text,name){
   const turns=qaParse(text,name);
   if(!turns.length){ toast("No text found in that transcript"); return; }
-  qa.turns=turns; qaEl("qaPaste").value=text; qaRun(); paintQA();
+  qa.turns=turns; qa.ai=null; qaEl("qaPaste").value=text; qaRun(); paintQA();
   toast("Transcript loaded: "+turns.length+" turns");
 }
 function qaWarnMsg(m){ const w=qaEl("qaWarn"); if(w) w.innerHTML=m?`<div class="qa-warn">${m}</div>`:""; }
@@ -2105,12 +2187,118 @@ async function qaTranscribe(){
     const out=await asr(mono,{chunk_length_s:30,stride_length_s:5,return_timestamps:true});
     const turns=(out.chunks||[]).map(c=>({spk:"unknown",text:c.text.trim(),t:c.timestamp[0]})).filter(t=>t.text);
     if(!turns.length) throw new Error("empty result");
-    qa.turns=turns; qaRun(); paintQA(); bar.style.width="100%";
+    qa.turns=turns; qa.ai=null; qaRun(); paintQA(); bar.style.width="100%";
     qaEl("qaPaste").value=turns.map(t=>t.text).join("\n");
     qaWarnMsg("Machine transcript (no speaker labels, may contain errors). Click each speaker tag to mark agent or client, then review the Review items.");
     st.textContent="Done.";
   }catch(e){ console.error(e); st.textContent=""; qaWarnMsg("Couldn't transcribe in the browser ("+esc(e.message||e)+"). This needs internet access to download the model. You can paste or upload a transcript instead."); }
   qa.busy=""; setTimeout(()=>{ if(pg) pg.hidden=true; },800);
+}
+
+
+/* ---------- Claude assessment ---------- */
+const QA_MODEL="claude-sonnet-5-5";
+const QA_FACTS_NS=`Product: Netstar vehicle tracking sold by Innovate (the brokerage, part of Cubix) on behalf of Netstar. Options: Early Warning at R239 per month, or Early Warning with StarTag back-up device at R259 per month (back-up battery lasts max 3 years and must be replaced). 36-month rental contract with free installation. Debit order normally on the client's salary date; first debit includes the month's premium plus a pro-rata amount for the rest of the month; client must confirm banking details are their own (otherwise written authority from the account holder) and authorise Netstar to debit monthly. Cancellation: 20 working days written notice plus a reasonable settlement fee. Full T&Cs are on the Netstar website and emailed; the call forms the basis of the contract. The call must state it is recorded. Close: ask whether installation is at home or work and get the street address (Google verify), confirm the device, and confirm the fitment date and time (Mon-Fri 8am-5pm, safe private area). An optional Repair Assist upsell may follow (Gold R149 per month, Motordrive SA debit). Marking guidance: judge each question as a whole (these are broad questions, not single phrases); BRAND is about professionalism and avoiding slang; OBJ is na if the client raised no objection; "Compliance critical" means a fail on the INTRO question is a critical failure.`;
+const QA_FACTS=`Product: Cartrack tracking, "Quick Gold with Cartrack Tag", R239 incl VAT per month, free installation, 36 month contract, 10% escalation in year 2 and again in year 3, then CPI. Early cancellation: individuals R2,650 incl VAT or the balance of the contract (whichever is lesser); business clients the full balance. Admin fee R19. Payment by DebiCheck debit order (mandate sent to the client's banking app). The agent works for Innovate, a brokerage, on behalf of Cartrack/Motordrive SA. The verbal declaration has 7 points that the client must each answer with a clear YES: (1) debit order collection, (2) fees payable in advance plus pro-rata, (3) vehicle available for installation, (4) 24 hours notice or R600 call-out, (5) T&Cs on Cartrack's website, (6) installation proof shared with insurer, (7) verbal agreement accepted and binding. Agents must avoid slang, use the client's name more than 3 times, verify in English then explain in the client's preferred language.`;
+function qaPrompt(){
+  const items=QA_CARD.map(i=>`- ${i.id} [${i.g}${i.crit?", CRITICAL":""}]: ${i.label}`).join("\n");
+  const tr=qa.turns.map((t,i)=>`[${i+1}]${t.t!=null?" ("+qaClock(t.t)+")":""} ${t.spk==="agent"?"Agent":t.spk==="client"?"Client":"Speaker?"}: ${t.text}`).join("\n");
+  const unl=!qa.turns.some(t=>t.spk==="agent");
+  return `You are a strict, fair call-centre QA analyst. Assess this sales verification call transcript against the scorecard.
+
+SCORECARD: ${QA_PRODUCTS[qa.product].title}
+BACKGROUND FACTS
+${qa.product==="ns"?QA_FACTS_NS:QA_FACTS}
+${qa.meta.agent?"Agent name: "+qa.meta.agent:""} ${qa.meta.client?"Client name: "+qa.meta.client:""}
+
+SCORECARD ITEMS (use these ids exactly)
+${items}
+
+RULES
+- status is "pass", "fail", "review" or "na". Pass only with clear evidence in the transcript. A wrong price, term or fee is a fail. Missing is a fail, except the pro-rata item which is "na" if it clearly wasn't needed.
+- You only have text, not audio. For tone, pace, language switching, interruptions or anything the words cannot show, use "review" and say why.
+- evidence: up to 2 short VERBATIM quotes with their turn number. Give a one-sentence reason for every item.
+${unl?"- The transcript has no speaker labels. Infer who is Agent and who is Client and return speakers: an array with one entry per turn, \"A\" or \"C\" (exactly "+qa.turns.length+" entries).":"- Speakers are already labelled; return speakers as an empty array."}
+- Insights must be specific to THIS call, referencing what was actually said. No generic advice.
+
+Return ONLY one JSON object, no markdown, in this shape:
+{"summary":"3-4 sentence summary of the call","outcome":"e.g. Sale completed / Declined / Incomplete","client_sentiment":"short phrase","agent_tone":"short phrase",
+"items":[{"id":"v_name","status":"pass","reason":"...","evidence":[{"turn":1,"quote":"..."}]}],
+"strengths":["..."],"improvements":["..."],"coaching":["concrete action the agent can take next call"],"risks":["compliance or customer risks, empty if none"],
+"key_moments":[{"turn":12,"note":"..."}],"speakers":[]}
+
+TRANSCRIPT
+${tr}`;
+}
+function qaApplyAI(){
+  const a=qa.ai; qa.res={};
+  QA_CARD.forEach(it=>{
+    const x=(a.items||[]).find(o=>o.id===it.id);
+    if(!x){ qa.res[it.id]={status:"review",why:"Claude did not return a result for this item.",ev:[]}; return; }
+    const st=["pass","fail","review","na"].includes(x.status)?x.status:"review";
+    qa.res[it.id]={status:st,why:x.reason||"",ev:(x.evidence||[]).map(e=>{ const i=(+e.turn||0)-1; return {i:(i>=0&&i<qa.turns.length)?i:-1,q:e.quote||""}; }).filter(e=>e.q)};
+  });
+}
+async function qaClaude(){
+  if(qa.busy) return;
+  const key=qaEl("qaKey").value.trim(), st=qaEl("qaAIst");
+  if(!qa.turns.length){ const v=qaEl("qaPaste").value.trim(); if(v) qaSetTranscript(v); }
+  if(!qa.turns.length){ toast("Add a transcript first"); return; }
+  if(!key){ toast("Paste your Claude API key first"); return; }
+  try{ localStorage.removeItem("innovate_claude_key"); sessionStorage.removeItem("innovate_claude_key"); (qaEl("qaKeep").checked?localStorage:sessionStorage).setItem("innovate_claude_key",key); }catch(e){}
+  qa.busy="ai"; qaEl("qaAI").disabled=true; st.textContent="Claude is reading the call… this takes about a minute for a long call.";
+  try{
+    const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body:JSON.stringify({model:QA_MODEL,max_tokens:12000,messages:[{role:"user",content:qaPrompt()}]})});
+    const d=await r.json();
+    if(!r.ok) throw new Error((d.error&&d.error.message)||("HTTP "+r.status));
+    const txt=(d.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("");
+    const j=JSON.parse(txt.slice(txt.indexOf("{"),txt.lastIndexOf("}")+1));
+    if(Array.isArray(j.speakers) && j.speakers.length===qa.turns.length) qa.turns.forEach((t,i)=>{ t.spk=/^c/i.test(j.speakers[i])?"client":"agent"; });
+    else if(Array.isArray(j.speakers)&&j.speakers.length) qaWarnMsg("Claude's speaker labels didn't line up with the transcript, so they were not applied. You can set them by clicking the tags.");
+    qa.ai=j; qa.aiAt=new Date(); qaApplyAI(); qaEl("qaPaste").value=qa.turns.map(t=>(t.spk==="unknown"?"":(t.spk==="agent"?"Agent: ":"Client: "))+t.text).join("\n");
+    paintQA(); st.textContent="Done."; toast("Claude assessment complete");
+    qaEl("qaSummary").scrollIntoView({behavior:"smooth",block:"start"});
+  }catch(e){ console.error(e); st.textContent=""; qaWarnMsg("Claude assessment failed: "+esc(e.message||e)+". Check the API key and your internet connection; the quick rule-based check is still shown."); }
+  qa.busy=""; qaEl("qaAI").disabled=false;
+}
+function qaList(h,arr,cls){ return arr&&arr.length? `<div class="qa-ins ${cls||""}"><b>${h}</b><ul>${arr.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""; }
+function paintInsights(){
+  const box=qaEl("qaInsights"); if(!box) return;
+  const a=qa.ai; box.hidden=!a; if(!a) return;
+  const mom=(a.key_moments||[]).map(k=>`<li><button type="button" class="qa-link" data-turn="${(+k.turn||1)-1}">#${+k.turn||"?"}</button> ${esc(k.note||"")}</li>`).join("");
+  box.innerHTML=`<h3>Call insights <small>by Claude</small></h3>
+    <p style="margin:0 0 8px">${esc(a.summary||"")}</p>
+    <div class="qa-tags">${a.outcome?`<span class="qa-tag">Outcome: ${esc(a.outcome)}</span>`:""}${a.client_sentiment?`<span class="qa-tag">Client: ${esc(a.client_sentiment)}</span>`:""}${a.agent_tone?`<span class="qa-tag">Agent: ${esc(a.agent_tone)}</span>`:""}</div>
+    ${qaList("Strengths",a.strengths,"good")}${qaList("Areas to improve",a.improvements,"warn")}${qaList("Coaching actions",a.coaching,"")}${qaList("Risk and compliance flags",a.risks,"bad")}
+    ${mom?`<div class="qa-ins"><b>Key moments</b><ul>${mom}</ul></div>`:""}`;
+}
+
+/* ---------- PDF (branded report, saved through the browser's Save as PDF) ---------- */
+function qaPrintHtml(){
+  const S=qaScore(), m=qa.meta, a=qa.ai;
+  const logo=(document.querySelector(".brand svg")||{outerHTML:""}).outerHTML;
+  const L=(h,x,c)=>x&&x.length?`<div class="pr-box ${c||""}"><h4>${h}</h4><ul>${x.map(y=>`<li>${esc(y)}</li>`).join("")}</ul></div>`:"";
+  const rows=g=>QA_CARD.filter(i=>i.g===g).map(i=>{ const s=qaStatus(i), r=qa.res[i.id]||{ev:[]}; const q=(r.ev||[])[0]; const qt=q?(q.q||(qa.turns[q.i]||{}).text||""):"";
+    return `<tr class="${s}"><td class="st">${s==="na"?"N/A":s}</td><td><b>${esc(i.label)}</b>${i.crit?' <span class="pr-crit">CRITICAL</span>':""}<div class="pr-why">${esc(r.why||"")}${qa.manual[i.id]?" (set by reviewer)":""}</div>${qt?`<div class="pr-q">&ldquo;${esc(qt.length>200?qt.slice(0,200)+"…":qt)}&rdquo;</div>`:""}${qa.notes[i.id]?`<div class="pr-why">Note: ${esc(qa.notes[i.id])}</div>`:""}</td></tr>`; }).join("");
+  const col=S.v==="pass"?"#16805A":S.v==="coach"?"#B58900":"#B3261E";
+  return `<div class="pr-head">${logo}<div><div class="pr-t">Call QA Assessment</div><div class="pr-s">${QA_PRODUCTS[qa.product].title}</div></div></div>
+  <div class="pr-meta"><div><span>Agent</span>${esc(m.agent||"–")}</div><div><span>Client</span>${esc(m.client||"–")}</div><div><span>Call date</span>${esc(m.date||"–")}</div><div><span>Reference</span>${esc(m.ref||"–")}</div></div>
+  <div class="pr-score"><div class="pr-pct" style="color:${col}">${S.pct===null?"–":S.pct+"%"}</div><div><div class="pr-verd" style="background:${col}">${S.vt}${S.open&&S.pct!==null?" (provisional)":""}</div><div class="pr-why">${S.tot?`${S.got}/${S.tot} points · `:""}${S.n.pass} pass · ${S.n.fail} fail · ${S.n.review} to review · ${S.n.na} N/A${S.critFail.length?`<br><b>Critical items failed:</b> ${S.critFail.map(esc).join("; ")}`:""}</div></div></div>
+  ${a?`<h3>Summary</h3><p>${esc(a.summary||"")}</p><p class="pr-why">${[a.outcome&&"Outcome: "+a.outcome,a.client_sentiment&&"Client: "+a.client_sentiment,a.agent_tone&&"Agent: "+a.agent_tone].filter(Boolean).map(esc).join(" · ")}</p>
+  <div class="pr-cols">${L("Strengths",a.strengths,"good")}${L("Areas to improve",a.improvements,"warn")}</div><div class="pr-cols">${L("Coaching actions",a.coaching)}${L("Risk and compliance flags",a.risks,"bad")}</div>`:""}
+  ${QA_GROUPS().map(g=>`<h3>${g}${g.endsWith("scorecard")?"":" items"}</h3><table class="pr-tb">${rows(g)}</table>`).join("")}
+  ${qa.turns.length?`<h3 class="pr-break">Transcript</h3><div class="pr-tr">${qa.turns.map((t,i)=>`<p><span class="pr-sp ${t.spk}">${t.spk==="unknown"?"?":t.spk}</span>${t.t!=null?`<span class="pr-tm">${qaClock(t.t)}</span>`:""} ${esc(t.text)}</p>`).join("")}</div>`:""}
+  <div class="pr-foot">Innovate &middot; Where Strategy Meets People And Growth. Generated ${new Date().toLocaleString()}${a?" · Assessment by Claude from the transcript; behaviour items marked Review need a human listen.":" · Rule-based check of the transcript."}</div>`;
+}
+function qaPdf(){
+  if(qaScore().pct===null){ toast("Run an assessment first"); return; }
+  let d=document.getElementById("qaPrint"); if(!d){ d=document.createElement("div"); d.id="qaPrint"; document.body.appendChild(d); }
+  d.innerHTML=qaPrintHtml(); document.body.classList.add("qaprint");
+  const old=document.title; document.title="QA Assessment - "+(qa.meta.agent||"agent")+" - "+qa.meta.date;
+  const done=()=>{ document.body.classList.remove("qaprint"); document.title=old; window.removeEventListener("afterprint",done); };
+  window.addEventListener("afterprint",done); setTimeout(()=>window.print(),50);
+  toast("In the print window, choose Save as PDF");
 }
 
 /* ---------- events ---------- */
@@ -2120,8 +2308,9 @@ document.addEventListener("click",e=>{
   if(t.closest("#qaPick")){ qaEl("qaFile").click(); return; }
   if(t.closest("#qaRec")){ qaToggleRec(); return; }
   if(t.closest("#qaTrans")){ qaTranscribe(); return; }
+  if(t.closest("#qaAI")){ qaClaude(); return; }
   if(t.closest("#qaRunBtn")){ const v=qaEl("qaPaste").value.trim(); if(!v){ toast("Paste a transcript first"); return; } qaSetTranscript(v); return; }
-  if(t.closest("#qaReset")){ if(!confirm("Clear this assessment, transcript and audio?")) return; if(qa.audioUrl) URL.revokeObjectURL(qa.audioUrl); Object.assign(qa,{turns:[],fileName:"",audioUrl:"",manual:{},notes:{},res:{},_audio:null}); qaWarnMsg(""); renderQA(); return; }
+  if(t.closest("#qaReset")){ if(!confirm("Clear this assessment, transcript and audio?")) return; if(qa.audioUrl) URL.revokeObjectURL(qa.audioUrl); Object.assign(qa,{turns:[],fileName:"",audioUrl:"",manual:{},notes:{},res:{},ai:null,_audio:null}); qaWarnMsg(""); renderQA(); return; }
   if((el=t.closest("[data-set]"))){ const id=el.closest("[data-item]").dataset.item, k=el.dataset.set; if(qa.manual[id]===k) delete qa.manual[id]; else qa.manual[id]=k; paintQA(); return; }
   if((el=t.closest("[data-spk]"))){ const tr=qa.turns[+el.dataset.spk], order=["unknown","agent","client"]; tr.spk=order[(order.indexOf(tr.spk)+1)%3]; qaRun(); const sc=qaEl("qaTr").firstElementChild.scrollTop; paintQA(); qaEl("qaTr").firstElementChild.scrollTop=sc; return; }
   if((el=t.closest("[data-turn]"))){ const row=qaEl("qaT"+el.dataset.turn); if(row){ const box=row.parentElement; box.scrollTo({top:row.offsetTop-box.offsetTop-40,behavior:"smooth"}); row.classList.remove("flash"); void row.offsetWidth; row.classList.add("flash"); const tm=qa.turns[+el.dataset.turn].t, a=qaEl("qaAudio"); if(a&&tm!=null){ a.currentTime=tm; } } return; }
@@ -2130,7 +2319,7 @@ document.addEventListener("click",e=>{
     switch(el.dataset.qa){
       case "copy": copyText(qaReport(),"QA report copied"); break;
       case "csv":{ const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([qaCSV()],{type:"text/csv"})); a.download="qa-assessment-"+(qa.meta.ref||qa.meta.date)+".csv"; document.body.appendChild(a); a.click(); a.remove(); break; }
-      case "print": window.print(); break;
+      case "pdf": qaPdf(); break;
       case "save":{ const S=qaScore(); if(S.pct===null){ toast("Nothing to save yet"); break; }
         let h=[]; try{ h=JSON.parse(localStorage.getItem("innovate_qa_history")||"[]"); }catch(err){}
         h.push({date:qa.meta.date,agent:qa.meta.agent,client:qa.meta.client,ref:qa.meta.ref,pct:S.pct,vt:S.vt+(S.open?" (provisional)":"")});
@@ -2146,7 +2335,11 @@ document.addEventListener("input",e=>{
   if(map[t.id]){ qa.meta[map[t.id]]=t.value; if(t.id==="qaClient"&&qa.turns.length){ qaRun(); paintQA(); } if(t.id==="qaAgent"){ try{ localStorage.setItem("innovate_agent",t.value); }catch(err){} } }
   if(t.dataset&&t.dataset.note){ qa.notes[t.dataset.note]=t.value; }
 });
-document.addEventListener("change",e=>{ if(e.target.id==="qaFile"){ qaHandleFiles([...e.target.files]); e.target.value=""; } });
+document.addEventListener("change",e=>{ if(e.target.id==="qaProd"){
+  const v=e.target.value; if(v===qa.product) return;
+  if((Object.keys(qa.manual).length||qa.ai) && !confirm("Switching scorecard clears the current marks. Continue?")){ e.target.value=qa.product; return; }
+  qa.product=v; QA_CARD=v==="ns"?QA_CARD_NS:QA_CARD_CT; qa.manual={}; qa.notes={}; qa.ai=null; qa.res={}; qaRun(); paintQA(); return; }
+  if(e.target.id==="qaFile"){ qaHandleFiles([...e.target.files]); e.target.value=""; } });
 ["dragover","dragleave","drop"].forEach(ev=>document.addEventListener(ev,e=>{
   const d=e.target.closest&&e.target.closest("#qaDrop"); if(!d) return;
   e.preventDefault(); d.classList.toggle("over",ev==="dragover");
