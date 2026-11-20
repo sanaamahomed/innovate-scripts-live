@@ -1,0 +1,146 @@
+import os
+import subprocess
+import sys
+import time
+
+import pytest
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+os.environ["ANTHROPIC_API_KEY"] = "test"
+
+import engine  # noqa: E402
+import parsing  # noqa: E402
+import transcribe as stt  # noqa: E402
+from scorecards import PRODUCTS  # noqa: E402
+
+
+def fake_claude(prompt, client=None):
+    ids = [i["id"] for i in PRODUCTS["ns"]["items"]]
+    items = [{"id": i, "status": "fail" if i == "n_kyc" else "pass", "reason": "r " + i,
+              "evidence": [{"turn": 1, "quote": "on behalf of Netstar"}]} for i in ids]
+    return {"summary": "S", "outcome": "Sale", "client_sentiment": "ok", "agent_tone": "pro", "items": items,
+            "strengths": ["a"], "improvements": ["b"], "coaching": ["c"], "risks": [], "key_moments": [{"turn": 2, "note": "n"}],
+            "speakers": ["A", "C", "A", "C"], "agent_speaker": ""}
+
+
+@pytest.fixture()
+def client(tmp_path, monkeypatch):
+    monkeypatch.setenv("DATA_DIR", str(tmp_path))
+    import importlib
+    import server
+    importlib.reload(server)
+    monkeypatch.setattr(server.engine, "call_claude", fake_claude)
+    monkeypatch.setattr(server.stt, "transcribe", lambda p, prog=lambda f: None: [
+        {"spk": "unknown", "text": "calling on behalf of Netstar", "t": 1.0}, {"spk": "unknown", "text": "yes", "t": 5.0},
+        {"spk": "unknown", "text": "it is R259", "t": 8.0}, {"spk": "unknown", "text": "ok", "t": 12.0}])
+    from fastapi.testclient import TestClient
+    with TestClient(server.app) as c:
+        yield c, server
+
+
+def wait(c, rid):
+    for _ in range(100):
+        r = c.get(f"/api/assessments/{rid}").json()
+        if r["status"] in ("done", "error"):
+            return r
+        time.sleep(0.05)
+    raise AssertionError("timeout")
+
+
+def test_audio_flow_scores_overrides_and_pdf(client):
+    c, _ = client
+    r = c.post("/api/assessments", data={"product": "ns", "agent": "Sam", "client": "Dlamini"},
+               files={"audio": ("call.mp3", b"fake", "audio/mpeg")})
+    assert r.status_code == 202
+    rec = wait(c, r.json()["id"])
+    assert rec["status"] == "done", rec.get("error")
+    assert [t["spk"] for t in rec["turns"]] == ["agent", "client", "agent", "client"]  # speakers applied from Claude
+    assert rec["score"]["points"] == 220 - 10 and rec["score"]["pct"] == 95 and rec["score"]["verdict"] == "Pass"
+    assert rec["audio_url"]
+    # reviewer override of the failed KYC to pass -> 100%
+    rec = c.patch(f"/api/assessments/{rec['id']}", json={"overrides": {"n_kyc": "pass"}, "notes": {"n_kyc": "ok on call"}}).json()
+    assert rec["score"]["pct"] == 100
+    pdf = c.get(f"/api/assessments/{rec['id']}/pdf")
+    assert pdf.status_code == 200 and pdf.content[:4] == b"%PDF" and len(pdf.content) > 4000
+    assert len(c.get("/api/assessments").json()) == 1
+    assert c.delete(f"/api/assessments/{rec['id']}").status_code == 200
+
+
+def test_transcript_only_and_critical_fail(client, monkeypatch):
+    c, server = client
+    def bad(prompt, client=None):
+        d = fake_claude(prompt)
+        for i in d["items"]:
+            if i["id"] == "n_intro":
+                i["status"] = "fail"
+        return d
+    monkeypatch.setattr(server.engine, "call_claude", bad)
+    r = c.post("/api/assessments", data={"product": "ns", "transcript": "Agent: Hi\nClient: Hello\nAgent: Bye\nClient: Bye"})
+    rec = wait(c, r.json()["id"])
+    assert rec["score"]["verdict"] == "Critical fail" and rec["score"]["critical_fails"]
+
+
+def test_validation(client):
+    c, _ = client
+    assert c.post("/api/assessments", data={"product": "ns"}).status_code == 400
+    assert c.post("/api/assessments", data={"product": "zz", "transcript": "x"}).status_code == 400
+    assert c.post("/api/assessments", data={"product": "ns"}, files={"audio": ("a.exe", b"x")}).status_code == 400
+
+
+def test_error_is_recorded(client, monkeypatch):
+    c, server = client
+    monkeypatch.setattr(server.engine, "call_claude", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom")))
+    rec = wait(c, c.post("/api/assessments", data={"transcript": "Agent: Hi\nClient: Yo"}).json()["id"])
+    assert rec["status"] == "error" and "boom" in rec["error"]
+
+
+def test_password(client, monkeypatch):
+    c, _ = client
+    monkeypatch.setenv("APP_PASSWORD", "pw")
+    assert c.get("/api/scorecards").status_code == 401
+    assert c.get("/api/scorecards", auth=("x", "pw")).status_code == 200
+
+
+def test_parsing():
+    t = parsing.parse("Agent: Hello there\nClient: Hi\ncontinued line\nAgent: Bye")
+    assert [x["spk"] for x in t] == ["agent", "client", "agent"] and "continued" in t[1]["text"]
+    t = parsing.parse("00:05 Sam: hi\n00:09 Mr D: hello")  # two unknown labels -> first is agent
+    assert [x["spk"] for x in t] == ["agent", "client"] and t[1]["t"] == 9
+    t = parsing.parse('[{"speaker":"Agent","text":"a","start":1.5},{"speaker":"Customer","text":"b"}]')
+    assert [x["spk"] for x in t] == ["agent", "client"] and t[0]["t"] == 1.5
+    t = parsing.parse("WEBVTT\n\n00:00:01.000 --> 00:00:03.000\nAgent: Hello\n")
+    assert t[0]["t"] == 1 and t[0]["spk"] == "agent"
+
+
+def test_engine_helpers():
+    assert engine.extract_json('Sure! {"a": 1} done') == {"a": 1}
+    turns = [{"spk": "Speaker 1", "text": "a", "t": 0}, {"spk": "Speaker 2", "text": "b", "t": 1}]
+    assert engine.apply_speakers(turns, {"agent_speaker": "Speaker 2"}) == ""
+    assert [t["spk"] for t in turns] == ["client", "agent"]
+    assert "Speaker 1" in engine.build_prompt("ns", {}, [{"spk": "Speaker 1", "text": "a", "t": 0}, {"spk": "Speaker 2", "text": "b", "t": 1}])
+
+
+def _tone(path, freqs):
+    args = ["ffmpeg", "-v", "error", "-y"]
+    for f in freqs:
+        args += ["-f", "lavfi", "-i", f"sine=frequency={f}:duration=2"]
+    if len(freqs) == 2:
+        args += ["-filter_complex", "[0][1]amerge=inputs=2"]
+    subprocess.run(args + [path], check=True)
+
+
+def test_audio_decode_and_stereo_detection(tmp_path):
+    mono, stereo, dup = (str(tmp_path / n) for n in ("m.wav", "s.wav", "d.wav"))
+    _tone(mono, [440]); _tone(stereo, [440, 1330])
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", mono, "-ac", "2", dup], check=True)
+    assert stt.decode(mono).shape[0] == 1 and not stt.is_true_stereo(stt.decode(mono))
+    assert stt.is_true_stereo(stt.decode(stereo))
+    assert not stt.is_true_stereo(stt.decode(dup))  # mono duplicated to 2 channels
+    with pytest.raises(ValueError):
+        open(tmp_path / "x.mp3", "wb").write(b"junk"); stt.decode(str(tmp_path / "x.mp3"))
+
+
+def test_merge():
+    segs = [{"spk": "a", "text": "x", "t": 0, "e": 1}, {"spk": "a", "text": "y", "t": 1.5, "e": 2}, {"spk": "b", "text": "z", "t": 2, "e": 3}]
+    assert [t["text"] for t in stt.merge(segs, 1.5)] == ["x y", "z"]
+    assert len(stt.merge(segs, 0)) == 3

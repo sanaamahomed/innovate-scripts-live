@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Innovate QA Assessment</title>
+<style>
+:root{--navy:#18305E;--yellow:#FFC709;--teal:#2CCCC4;--ink:#111;--bg:#F5F7FA;--line:#E0E5EB;--white:#fff;--muted:#5b6678;--red:#B3261E;--red-bg:#FDECEA;--green:#16805A;--green-bg:#E5F6EE;--yellow-bg:#FFF7D6;--teal-bg:#E4F8F7;--radius:12px;--shadow:0 1px 2px rgba(16,34,74,.06),0 4px 14px rgba(16,34,74,.07)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;font-size:16px;line-height:1.55}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}[hidden]{display:none!important}
+.topbar{background:var(--navy);border-bottom:4px solid var(--yellow);position:sticky;top:0;z-index:20}
+.topbar-in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}.brand img{height:40px}
+.brand b{color:#fff;border-left:2px solid rgba(255,255,255,.3);padding-left:12px;line-height:1.2;font-size:15px}.brand b small{display:block;font-weight:400;color:var(--yellow);font-size:12px}
+.tabs{margin-left:auto;display:flex;gap:6px}
+.tab{background:transparent;border:2px solid transparent;color:#dbe3f3;padding:8px 16px;border-radius:999px;font-weight:600}
+.tab:hover{background:rgba(255,255,255,.1);color:#fff}.tab.active{background:var(--yellow);color:var(--navy)}
+.wrap{max-width:1240px;margin:0 auto;padding:20px}
+h1,h2,h3{color:var(--navy);line-height:1.2;margin:0 0 .4em}h1{font-size:30px}h3{font-size:18px}
+.lead{color:var(--muted);max-width:75ch}
+.grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:18px;align-items:start;margin-top:16px}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;margin-bottom:16px}
+.card h3 small{font-weight:400;color:var(--muted);font-size:13px;margin-left:6px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row .full{grid-column:1/-1}
+label,.lab{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:3px}
+input[type=text],input[type=date],select,textarea{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:7px 10px;background:#fff}
+textarea{min-height:120px;resize:vertical;font-size:14px}
+.btn{border:2px solid var(--navy);background:#fff;color:var(--navy);padding:9px 18px;border-radius:10px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn:hover{background:var(--navy);color:#fff}.btn.primary{background:var(--yellow);border-color:var(--yellow)}.btn.primary:hover{background:#ffd43d;color:var(--navy)}
+.btn.small{padding:5px 12px;font-size:13px;border-radius:8px}.btn.ghost{border-color:var(--line);color:var(--muted)}.btn:disabled{opacity:.5;cursor:default}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
+.note{font-size:13px;color:var(--muted);margin:6px 0 0}
+.drop{border:2px dashed #b9c3d4;border-radius:10px;padding:18px;text-align:center;background:var(--bg);color:var(--muted)}
+.drop.over{border-color:var(--teal);background:var(--teal-bg)}.drop b{color:var(--navy)}
+.warn{background:var(--yellow-bg);border-left:4px solid var(--yellow);padding:8px 12px;border-radius:6px;font-size:14px;margin-top:10px}
+.warn.bad{background:var(--red-bg);border-color:var(--red)}
+.prog{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 0}.prog i{display:block;height:100%;background:var(--teal);width:0;transition:width .4s}
+.big{font-size:54px;font-weight:800;line-height:1;color:var(--navy)}.big small{font-size:22px}
+.score{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.verdict{display:inline-block;padding:4px 14px;border-radius:99px;font-weight:700;font-size:14px}
+.verdict.pass{background:var(--green-bg);color:var(--green)}.verdict.coach{background:var(--yellow-bg);color:#7a5d00}.verdict.fail{background:var(--red-bg);color:var(--red)}.verdict.none{background:var(--bg);color:var(--muted)}
+.bar{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:10px 0 4px}.bar i{display:block;height:100%}
+.tag{background:var(--navy);color:#fff;border-radius:99px;padding:2px 12px;font-size:13px;font-weight:600;display:inline-block;margin:0 6px 6px 0}
+.ins{border-left:4px solid var(--teal);background:var(--bg);border-radius:6px;padding:8px 12px;margin-top:10px}
+.ins.good{border-color:var(--green)}.ins.warn2{border-color:var(--yellow)}.ins.bad{border-color:var(--red);background:var(--red-bg)}
+.ins b{color:var(--navy)}.ins ul{margin:4px 0 0;padding-left:20px}
+.grp{display:flex;justify-content:space-between;margin:14px 0 6px;border-bottom:2px solid var(--line);padding-bottom:4px}.grp b{color:var(--navy)}.grp span{font-size:13px;color:var(--muted)}
+.item{border:1px solid var(--line);border-left:5px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px}
+.item.pass{border-left-color:var(--green)}.item.fail{border-left-color:var(--red)}.item.review{border-left-color:var(--yellow)}.item.na{border-left-color:#9aa5b8;background:var(--bg)}
+.ih{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}.il{font-weight:600;flex:1 1 220px}
+.crit{font-size:11px;font-weight:700;color:var(--red);background:var(--red-bg);border-radius:99px;padding:1px 7px;margin-left:6px}
+.st{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
+.st button{border:0;background:#fff;padding:3px 10px;font-size:13px;font-weight:700;color:var(--muted);border-right:1px solid var(--line)}.st button:last-child{border-right:0}
+.st button.on.pass{background:var(--green);color:#fff}.st button.on.fail{background:var(--red);color:#fff}.st button.on.na{background:#6b7790;color:#fff}
+.why{font-size:13.5px;color:var(--muted);margin-top:4px}
+.pill{display:inline-block;font-size:11.5px;font-weight:700;border-radius:99px;padding:1px 8px;margin-right:6px;text-transform:uppercase}
+.pill.pass{background:var(--green-bg);color:var(--green)}.pill.fail{background:var(--red-bg);color:var(--red)}.pill.review{background:var(--yellow-bg);color:#7a5d00}.pill.na{background:var(--line);color:var(--muted)}
+.ev{display:block;width:100%;text-align:left;background:var(--bg);border:0;border-left:3px solid var(--teal);border-radius:4px;padding:3px 8px;margin-top:4px;font-size:13px}.ev:hover{background:var(--teal-bg)}.ev em{color:var(--muted);font-style:normal;margin-right:6px}
+.nt{margin-top:6px;font-size:13px!important;padding:4px 8px!important}
+audio{width:100%;margin-bottom:10px}
+.tr{max-height:480px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+.turn{display:grid;grid-template-columns:50px 64px 1fr;gap:8px;padding:6px 10px;border-bottom:1px solid var(--line);font-size:14px;align-items:start}.turn:last-child{border-bottom:0}
+.turn.hit{background:var(--yellow-bg)}.turn.flash{animation:fl 1.4s}@keyframes fl{0%{background:var(--teal-bg)}100%{background:transparent}}
+.time{color:var(--muted);font-size:12.5px;background:none;border:0;padding:0;text-align:left}button.time:hover{color:var(--navy);text-decoration:underline}
+.spk{border:0;border-radius:99px;font-size:11.5px;font-weight:700;padding:2px 8px;text-transform:uppercase;background:var(--line);color:var(--muted)}.spk.agent{background:var(--navy);color:#fff}.spk.client{background:var(--teal);color:var(--navy)}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}tr.click{cursor:pointer}tr.click:hover{background:var(--teal-bg)}
+.footer{max-width:1240px;margin:20px auto 40px;padding:0 20px;color:var(--muted);font-size:13.5px;text-align:center}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-in">
+  <div class="brand"><img src="logo.svg" alt="Innovate"><b>QA Assessment<small>Call scoring and coaching</small></b></div>
+  <nav class="tabs"><button class="tab active" data-view="new">New assessment</button><button class="tab" data-view="history">History</button></nav>
+</div></header>
+<main class="wrap" id="app"></main>
+<footer class="footer"><b>Innovate</b> &middot; Where Strategy Meets People And Growth. &middot; Call recordings and transcripts are stored on this company server only.</footer>
+<script>
+"use strict";
+const $=s=>document.querySelector(s), app=$("#app");
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const clock=s=>{ if(s==null) return ""; s=Math.round(s); return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); };
+let cards={}, cur=null, poll=null, health={};
+async function api(url,opt){ const r=await fetch(url,opt); if(!r.ok){ let m=r.statusText; try{ m=(await r.json()).detail||m; }catch(e){} throw new Error(m); } return r.json(); }
+function setView(v){ clearInterval(poll); document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===v)); (v==="history"?viewHistory:viewNew)(); }
+document.addEventListener("click",e=>{ const t=e.target.closest("[data-view]"); if(t) setView(t.dataset.view); });
+
+/* ---------- new ---------- */
+function viewNew(){
+  const sel=Object.entries(cards).map(([k,v])=>`<option value="${k}">${esc(v.title)}</option>`).join("");
+  app.innerHTML=`<h1>New assessment</h1><p class="lead">Upload a call recording or paste a transcript. The server transcribes the audio, Claude marks it against the scorecard and writes insights, then you review and download the PDF.</p>
+  ${health.claude_key===false?`<div class="warn bad">The server has no Claude API key set (ANTHROPIC_API_KEY), so assessments will fail.</div>`:""}
+  <div class="grid"><section class="card"><h3>Call details</h3>
+   <div class="row"><div class="full"><label>Scorecard</label><select id="product">${sel}</select></div>
+   <div><label>Agent</label><input type="text" id="agent" value="${esc(localStorage.getItem("qa_agent")||"")}"></div>
+   <div><label>Client name</label><input type="text" id="client"></div>
+   <div><label>Call date</label><input type="date" id="cdate" value="${new Date().toISOString().slice(0,10)}"></div>
+   <div><label>Reference (optional)</label><input type="text" id="ref"></div></div></section>
+  <section class="card"><h3>The call <small>recording, transcript, or both</small></h3>
+   <div class="drop" id="drop"><b>Drop the recording here</b> or <button class="btn small" id="pick" type="button">choose a file</button>
+    <div class="note">mp3, wav, m4a, ogg, webm, aac, flac. Recordings with the agent and client on separate channels (stereo) give the best speaker separation.</div>
+    <div id="fname" class="note"></div><input type="file" id="file" hidden accept="audio/*,video/mp4,.m4a,.amr,.opus"></div>
+   <label style="margin-top:12px">Transcript <small style="font-weight:400">(optional. If you add one, it is used instead of transcribing the audio)</small></label>
+   <textarea id="tx" placeholder="Agent: Hello! You are speaking to Sam...&#10;Client: Hi"></textarea>
+   <div class="actions"><button class="btn primary" id="go" type="button">Assess call</button></div><div id="msg"></div></section></div>`;
+  let file=null; const setFile=f=>{ file=f; $("#fname").textContent=f?f.name+" ("+(f.size/1048576).toFixed(1)+" MB)":""; };
+  $("#pick").onclick=()=>$("#file").click(); $("#file").onchange=e=>setFile(e.target.files[0]||null);
+  const d=$("#drop"); ["dragover","dragleave","drop"].forEach(ev=>d.addEventListener(ev,e=>{ e.preventDefault(); d.classList.toggle("over",ev==="dragover"); if(ev==="drop"&&e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]); }));
+  $("#go").onclick=async()=>{
+    const fd=new FormData(); fd.append("product",$("#product").value); fd.append("agent",$("#agent").value); fd.append("client",$("#client").value);
+    fd.append("call_date",$("#cdate").value); fd.append("ref",$("#ref").value); fd.append("transcript",$("#tx").value); if(file) fd.append("audio",file);
+    localStorage.setItem("qa_agent",$("#agent").value);
+    $("#go").disabled=true; $("#msg").innerHTML=`<div class="note">Uploading…</div>`;
+    try{ const r=await api("/api/assessments",{method:"POST",body:fd}); openRec(r.id); }
+    catch(e){ $("#msg").innerHTML=`<div class="warn bad">${esc(e.message)}</div>`; $("#go").disabled=false; }
+  };
+}
+
+/* ---------- history ---------- */
+async function viewHistory(){
+  app.innerHTML=`<h1>History</h1><section class="card" id="hist">Loading…</section>`;
+  const list=await api("/api/assessments");
+  $("#hist").innerHTML=list.length?`<table><tr><th>Date</th><th>Agent</th><th>Client / Ref</th><th>Scorecard</th><th>Score</th><th>Result</th></tr>${list.map(x=>`<tr class="click" data-open="${x.id}"><td>${esc(x.meta.date)}</td><td>${esc(x.meta.agent)}</td><td>${esc(x.meta.ref||x.meta.client)}</td><td>${esc((cards[x.product]||{}).name||x.product)}</td><td>${x.score&&x.score.pct!=null?x.score.pct+"%":"–"}</td><td>${x.status==="done"?esc(x.score.verdict)+(x.score.provisional?" (provisional)":""):esc(x.status)}</td></tr>`).join("")}</table>`:`<div class="note">No assessments yet.</div>`;
+  $("#hist").onclick=e=>{ const r=e.target.closest("[data-open]"); if(r) openRec(r.dataset.open); };
+}
+
+/* ---------- result ---------- */
+function openRec(id){ clearInterval(poll); cur=null; app.innerHTML=`<h1>Assessment</h1><section class="card" id="run"></section>`; const tick=async()=>{ try{ const r=await api("/api/assessments/"+id); if(r.status==="done"){ clearInterval(poll); cur=r; paintRec(); } else if(r.status==="error"){ clearInterval(poll); paintError(r); } else paintRun(r); }catch(e){ clearInterval(poll); app.innerHTML=`<div class="warn bad">${esc(e.message)}</div>`; } }; tick(); poll=setInterval(tick,2000); }
+function paintRun(r){
+  const msg={queued:"Waiting in the queue…",transcribing:"Transcribing the recording… long calls take a few minutes.",assessing:"Claude is reading the call and marking the scorecard…"}[r.status]||r.status;
+  const pct=r.status==="transcribing"?Math.max(5,r.progress*80):r.status==="assessing"?90:3;
+  $("#run").innerHTML=`<h3>${msg}</h3><div class="prog"><i style="width:${pct}%"></i></div><div class="note">You can leave this page; the result will be in History.</div>`;
+}
+function paintError(r){ app.innerHTML=`<h1>Assessment</h1><div class="warn bad"><b>This assessment failed.</b><br>${esc(r.error)}</div><div class="actions"><button class="btn" id="re">Re-run</button><button class="btn ghost" data-view="new">Back</button></div>`; $("#re").onclick=async()=>{ await api(`/api/assessments/${r.id}/reassess`,{method:"POST"}); openRec(r.id); }; }
+function paintRec(){
+  const r=cur, s=r.score, res=r.result, card=cards[r.product];
+  const vc=s.verdict==="Pass"?"pass":s.verdict==="Needs coaching"?"coach":s.pct==null?"none":"fail";
+  const col=vc==="pass"?"var(--green)":vc==="coach"?"#E0A800":vc==="fail"?"var(--red)":"var(--line)";
+  const L=(h,a,c)=>a&&a.length?`<div class="ins ${c||""}"><b>${h}</b><ul>${a.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:"";
+  const hits=new Set(); Object.values(res.items).forEach(i=>i.evidence.forEach(e=>{ if(e.turn>=0) hits.add(e.turn); }));
+  const groups=[...new Set(card.items.map(i=>i.group))];
+  const items=groups.map(g=>{ const its=card.items.filter(i=>i.group===g); const st=i=>r.overrides[i.id]||res.items[i.id].status;
+    return `<div class="grp"><b>${esc(g)}${g.endsWith("scorecard")?"":" items"}</b><span>${its.filter(i=>st(i)==="pass").length}/${its.filter(i=>st(i)!=="na").length} passed</span></div>`+its.map(i=>{ const x=res.items[i.id], s2=st(i), man=r.overrides[i.id];
+      return `<div class="item ${s2}" data-id="${i.id}"><div class="ih"><div class="il">${esc(i.label)}${i.critical?'<span class="crit">CRITICAL</span>':""}</div>
+       <div class="st">${["pass","fail","na"].map(k=>`<button class="${k} ${man===k?"on":""}" data-set="${k}">${k==="na"?"N/A":k[0].toUpperCase()+k.slice(1)}</button>`).join("")}</div></div>
+       <div class="why"><span class="pill ${s2}">${s2==="na"?"N/A":s2}</span>${man?"Set by reviewer. ":""}${esc(x.reason)}</div>
+       ${x.evidence.map(e=>`<button class="ev" ${e.turn>=0?`data-turn="${e.turn}"`:""}><em>${e.turn>=0&&r.turns[e.turn].t!=null?clock(r.turns[e.turn].t):""}</em>${esc(e.quote)}</button>`).join("")}
+       <input type="text" class="nt" data-note="${i.id}" placeholder="Note (optional)" value="${esc(r.notes[i.id]||"")}"></div>`; }).join(""); }).join("");
+  app.innerHTML=`<h1>${esc(card.name)} call: ${esc(r.meta.agent||"agent")}</h1>
+  <p class="lead">${esc(r.meta.date)}${r.meta.client?" · client "+esc(r.meta.client):""}${r.meta.ref?" · ref "+esc(r.meta.ref):""}</p>
+  ${r.warning?`<div class="warn">${esc(r.warning)}</div>`:""}
+  <div class="grid"><div>
+    <section class="card"><h3>Call</h3>${r.audio_url?`<audio id="aud" controls preload="metadata" src="${r.audio_url}"></audio>`:""}
+     <div class="tr" id="tr">${r.turns.map((t,i)=>`<div class="turn ${hits.has(i)?"hit":""}" id="t${i}">${t.t!=null&&r.audio_url?`<button class="time" data-seek="${t.t}">${clock(t.t)}</button>`:`<span class="time">${t.t!=null?clock(t.t):"#"+(i+1)}</span>`}<button class="spk ${t.spk}" data-spk="${i}" title="Click to change speaker">${t.spk==="unknown"?"?":t.spk}</button><span>${esc(t.text)}</span></div>`).join("")}</div>
+     <div class="note">Wrong speaker? Click the tag to change it, then Re-run assessment.</div></section>
+  </div><div>
+    <section class="card"><div class="score"><div class="big">${s.pct==null?"–":s.pct+"<small>%</small>"}</div><div><span class="verdict ${vc}">${esc(s.verdict)}${s.provisional&&s.pct!=null?" (provisional)":""}</span>
+     <div class="note">${s.points}/${s.of} points · ${s.counts.pass} pass · ${s.counts.fail} fail · ${s.counts.review} to review · ${s.counts.na} N/A</div></div></div>
+     <div class="bar"><i style="width:${s.pct||0}%;background:${col}"></i></div>
+     ${s.provisional?`<div class="note">Provisional: ${s.counts.review} item(s) need your decision and are not counted yet.</div>`:""}
+     ${s.critical_fails.length?`<div class="warn bad"><b>Critical items failed:</b> ${s.critical_fails.map(esc).join("; ")}</div>`:""}
+     <div class="actions"><a class="btn primary" href="/api/assessments/${r.id}/pdf">Download PDF</a><button class="btn" id="rerun">Re-run assessment</button><button class="btn ghost" id="del">Delete</button></div></section>
+    <section class="card"><h3>Call insights <small>by Claude</small></h3><p style="margin:0 0 8px">${esc(res.summary)}</p>
+     ${res.outcome?`<span class="tag">Outcome: ${esc(res.outcome)}</span>`:""}${res.client_sentiment?`<span class="tag">Client: ${esc(res.client_sentiment)}</span>`:""}${res.agent_tone?`<span class="tag">Agent: ${esc(res.agent_tone)}</span>`:""}
+     ${L("Strengths",res.insights.strengths,"good")}${L("Areas to improve",res.insights.improvements,"warn2")}${L("Coaching actions",res.insights.coaching)}${L("Risk and compliance flags",res.insights.risks,"bad")}
+     ${res.key_moments.length?`<div class="ins"><b>Key moments</b><ul>${res.key_moments.map(k=>`<li><a href="#" data-turn="${k.turn}">#${k.turn+1}</a> ${esc(k.note)}</li>`).join("")}</ul></div>`:""}</section>
+    <section class="card"><h3>Scorecard</h3>${items}</section>
+  </div></div>`;
+}
+document.addEventListener("click",async e=>{
+  if(!cur||!e.target.closest("#app")) return; const t=e.target; let el;
+  if((el=t.closest("[data-set]"))){ const id=el.closest("[data-id]").dataset.id, k=el.dataset.set, v=cur.overrides[id]===k?null:k; const keep=scrollY; cur=await api("/api/assessments/"+cur.id,{method:"PATCH",headers:{"content-type":"application/json"},body:JSON.stringify({overrides:{[id]:v}})}); paintRec(); scrollTo(0,keep); return; }
+  if((el=t.closest("[data-spk]"))){ const i=+el.dataset.spk, o=["unknown","agent","client"], n=o[(o.indexOf(cur.turns[i].spk)+1)%3]; const sc=$("#tr").scrollTop; cur=await api("/api/assessments/"+cur.id,{method:"PATCH",headers:{"content-type":"application/json"},body:JSON.stringify({speakers:{[i]:n}})}); paintRec(); $("#tr").scrollTop=sc; return; }
+  if((el=t.closest("[data-turn]"))){ e.preventDefault(); const row=$("#t"+el.dataset.turn); if(row){ const box=$("#tr"); box.scrollTo({top:row.offsetTop-box.offsetTop-40,behavior:"smooth"}); row.classList.remove("flash"); void row.offsetWidth; row.classList.add("flash"); const tm=cur.turns[+el.dataset.turn].t, a=$("#aud"); if(a&&tm!=null) a.currentTime=tm; } return; }
+  if((el=t.closest("[data-seek]"))){ const a=$("#aud"); if(a){ a.currentTime=+el.dataset.seek; a.play().catch(()=>{}); } return; }
+  if(t.closest("#rerun")){ await api(`/api/assessments/${cur.id}/reassess`,{method:"POST"}); openRec(cur.id); return; }
+  if(t.closest("#del")){ if(confirm("Delete this assessment and its recording?")){ await api("/api/assessments/"+cur.id,{method:"DELETE"}); cur=null; setView("history"); } }
+});
+document.addEventListener("change",e=>{ if(cur&&e.target.dataset&&e.target.dataset.note){ cur.notes[e.target.dataset.note]=e.target.value; api("/api/assessments/"+cur.id,{method:"PATCH",headers:{"content-type":"application/json"},body:JSON.stringify({notes:{[e.target.dataset.note]:e.target.value}})}); } });
+(async()=>{ try{ [cards,health]=await Promise.all([api("/api/scorecards"),api("/api/health")]); }catch(e){} viewNew(); })();
+</script>
+</body>
+</html>
