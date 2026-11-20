@@ -190,3 +190,24 @@ def test_assemblyai_provider(tmp_path, monkeypatch):
             {"speaker": "A", "text": "Hello", "start": 500}, {"speaker": "B", "text": "Hi", "start": 2500}]})
     turns = providers.assemblyai(_wav(tmp_path, False), client=httpx.Client(transport=httpx.MockTransport(handler)), poll=0)
     assert [(t["spk"], t["t"]) for t in turns] == [("Speaker 1", 0.5), ("Speaker 2", 2.5)]
+
+
+def test_wer_and_terms():
+    from tools.compare_engines import wer, term_recall
+    assert wer("the price is R 239 a month", "the price is r239 a month")[0] == 0
+    rate, errs, n = wer("the price is 239 a month", "the prize is 239 month")
+    assert errs == 2 and n == 6
+    assert term_recall("it is r239 for netstar", "it is r239 for net star")[0] == 0.5
+
+
+def test_elevenlabs_provider(tmp_path, monkeypatch):
+    import httpx, providers
+    monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
+    def handler(req):
+        assert b"use_multi_channel" in req.content
+        w = lambda t, s, e, ty="word": {"text": t, "start": s, "end": e, "type": ty}
+        return httpx.Response(200, json={"transcripts": [
+            {"words": [w("Hello", 0.5, 0.9), w(" ", 0.9, 1.0, "spacing"), w("there", 1.0, 1.4)]},
+            {"words": [w("Hi", 2.0, 2.2)]}]})
+    turns = providers.elevenlabs(_wav(tmp_path, True), client=httpx.Client(transport=httpx.MockTransport(handler)))
+    assert [(t["spk"], t["text"]) for t in turns] == [("Speaker 1", "Hello there"), ("Speaker 2", "Hi")]

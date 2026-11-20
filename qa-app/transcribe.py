@@ -77,7 +77,7 @@ def merge(turns, gap):
 def transcribe(path, progress=lambda f: None):
     """Dispatch on TRANSCRIBER: whisper (default, local), deepgram or assemblyai (cloud)."""
     engine = os.environ.get("TRANSCRIBER", "whisper").lower()
-    if engine in ("deepgram", "assemblyai"):
+    if engine in ("deepgram", "assemblyai", "elevenlabs"):
         import providers
         turns = getattr(providers, engine)(path, progress)
         if not turns:

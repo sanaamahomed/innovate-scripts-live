@@ -84,3 +84,48 @@ def assemblyai(path, progress=lambda f: None, client=None, poll=3.0):
         sp = str(u.get("speaker", "A"))
         return _label(ord(sp[0].upper()) - 65 if sp[:1].isalpha() else int(sp))
     return _merge([{"spk": who(u), "text": u["text"].strip(), "t": u["start"] / 1000.0} for u in utts if u.get("text", "").strip()])
+
+
+def elevenlabs(path, progress=lambda f: None, client=None):
+    """ElevenLabs Scribe. ELEVENLABS_MODEL defaults to scribe_v1; set it to a newer Scribe model id if you have one."""
+    key = os.environ["ELEVENLABS_API_KEY"]
+    from transcribe import decode, is_true_stereo
+    stereo = is_true_stereo(decode(path))
+    data = {"model_id": os.environ.get("ELEVENLABS_MODEL", "scribe_v1"), "tag_audio_events": "false",
+            "timestamps_granularity": "word", "diarize": "false" if stereo else "true"}
+    if stereo:
+        data["use_multi_channel"] = "true"
+    if os.environ.get("STT_LANGUAGE", "").strip() and os.environ["STT_LANGUAGE"] != "multi":
+        data["language_code"] = os.environ["STT_LANGUAGE"]
+    c = client or httpx.Client(timeout=1800)
+    progress(0.1)
+    with open(path, "rb") as f:
+        r = c.post("https://api.elevenlabs.io/v1/speech-to-text", headers={"xi-api-key": key}, data=data,
+                   files={"file": (os.path.basename(path), f)})
+    r.raise_for_status()
+    j = r.json()
+    progress(1.0)
+    blocks = j.get("transcripts") or [j]  # multichannel returns one transcript per channel
+    turns = []
+    for ch, b in enumerate(blocks):
+        cur = None
+        for w in b.get("words", []):
+            if w.get("type") == "audio_event":
+                continue
+            spk = w.get("speaker_id") or (f"speaker_{ch}" if stereo else "speaker_0")
+            if w.get("type") == "spacing":
+                if cur:
+                    cur["text"] += w["text"]
+                continue
+            if cur is None or cur["key"] != spk or w["start"] - cur["end"] > 1.5:
+                if cur:
+                    turns.append(cur)
+                cur = {"key": spk, "spk": spk, "text": "", "t": float(w["start"]), "end": float(w["end"])}
+            cur["text"] += ("" if not cur["text"] or cur["text"].endswith(" ") else " ") + w["text"].strip() if w.get("text") else ""
+            cur["end"] = float(w.get("end", cur["end"]))
+        if cur:
+            turns.append(cur)
+    names = {}
+    for t in sorted(turns, key=lambda x: x["t"]):
+        names.setdefault(t["spk"], _label(len(names)))
+    return _merge([{"spk": names[t["spk"]], "text": t["text"].strip(), "t": t["t"]} for t in sorted(turns, key=lambda x: x["t"]) if t["text"].strip()])

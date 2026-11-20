@@ -33,7 +33,7 @@ Without Docker: install `ffmpeg`, then `pip install -r requirements.txt` and
 | `ANTHROPIC_API_KEY` | required | Claude access. Stays on the server. |
 | `APP_PASSWORD` | none | Shared password. **Set this**: the app holds call recordings and spends API credit. |
 | `CLAUDE_MODEL` | `claude-sonnet-5-5` | Model used for marking. |
-| `TRANSCRIBER` | `whisper` | `whisper` (built in, free, private), `deepgram` or `assemblyai` (cloud, usually more accurate; needs `DEEPGRAM_API_KEY` or `ASSEMBLYAI_API_KEY`). Audio is sent to that vendor. |
+| `TRANSCRIBER` | `whisper` | `whisper` (built in, free, private), `deepgram`, `assemblyai` or `elevenlabs` (cloud, usually more accurate; needs `DEEPGRAM_API_KEY`, `ASSEMBLYAI_API_KEY` or `ELEVENLABS_API_KEY`). Audio is sent to that vendor. |
 | `STT_KEYTERMS` | product names | Comma-separated words the speech engine should expect (Netstar, StarTag, DebiCheck...). Cloud engines only. |
 | `WHISPER_MODEL` | `small` | `tiny`/`base` faster, `medium`/`large-v3` more accurate (needs more RAM and time). |
 | `RETAIN_AUDIO` | `true` | `false` deletes the recording once transcribed. |
@@ -48,6 +48,16 @@ Without Docker: install `ffmpeg`, then `pip install -r requirements.txt` and
   instead of the audio.
 - Mono recordings work too; Claude works out who is the agent. If it gets a speaker wrong, click the
   tag in the transcript and press *Re-run assessment*.
+
+## Finding the most accurate engine for your calls
+No vendor publishes accuracy for South African English with Zulu/Afrikaans on phone audio, so measure it:
+1. Pick 20-30 typical calls (stereo if you can). For a few, correct the transcript by hand and save as text.
+2. Set the API keys for the engines you want to try, then run
+   `python tools/compare_engines.py call.mp3 corrected.txt` (from `qa-app/`).
+3. It prints each engine's word error rate and how many key terms (R239, StarTag, DebiCheck...) it got right,
+   and saves every transcript in `compare_out/`. Use the engine with the lowest error, then set `TRANSCRIBER` to it.
+Published (vendor-run, unverified) hint: ElevenLabs Scribe reports far better Zulu than Whisper; Deepgram added
+Afrikaans in Aug 2026. Treat both as claims to test, not facts.
 
 ## How accuracy is protected
 - Claude must give word-for-word quotes for every item. The app checks each quote really appears in the
