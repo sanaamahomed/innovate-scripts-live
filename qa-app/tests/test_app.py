@@ -84,6 +84,9 @@ def test_validation(client):
     c, _ = client
     assert c.post("/api/assessments", data={"product": "ns"}).status_code == 400
     assert c.post("/api/assessments", data={"product": "zz", "transcript": "x"}).status_code == 400
+    assert c.post("/api/assessments", data={"product": "ct", "transcript": "x"}).status_code == 400  # Cartrack is switched off
+    cards = c.get("/api/scorecards").json()
+    assert cards["ns"]["enabled"] and not cards["ct"]["enabled"]
     assert c.post("/api/assessments", data={"product": "ns"}, files={"audio": ("a.exe", b"x")}).status_code == 400
 
 

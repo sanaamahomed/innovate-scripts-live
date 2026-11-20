@@ -89,6 +89,11 @@ NETSTAR = [
     _i("n_fit", "CLOSE: Was the fitment date and time confirmed by the agent with the client?", 15, N),
 ]
 
+import os
+
+# Which scorecards are switched on. Netstar only for now; set ENABLED_PRODUCTS=ns,ct to bring Cartrack back.
+ENABLED = [p.strip() for p in os.environ.get("ENABLED_PRODUCTS", "ns").split(",") if p.strip()]
+
 PRODUCTS = {
     "ct": {"name": "Cartrack", "title": "Cartrack verification scorecard", "facts": CARTRACK_FACTS, "items": CARTRACK},
     "ns": {"name": "Netstar", "title": "Netstar sales scorecard", "facts": NETSTAR_FACTS, "items": NETSTAR},

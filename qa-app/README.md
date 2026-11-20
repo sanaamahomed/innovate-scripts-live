@@ -99,6 +99,9 @@ Afrikaans in Aug 2026. Treat both as claims to test, not facts.
   tested against simulated responses. Try each on a few real calls first. No vendor publishes accuracy
   for South African English with Zulu/Afrikaans on phone audio, so compare engines on your own calls.
 
+## Scorecards
+Netstar is the only scorecard switched on for now. To bring Cartrack back set `ENABLED_PRODUCTS=ns,ct`.
+
 ## Changing the scorecards
 Edit `scorecards.py` (wording, points, critical flags, pass marks), then restart. Add a new product by
 adding an entry to `PRODUCTS`.

@@ -29,6 +29,7 @@ import engine
 import parsing
 import pdf_report
 import transcribe as stt
+import scorecards
 from scorecards import PRODUCTS
 
 DATA = Path(os.environ.get("DATA_DIR", Path(__file__).parent / "data"))
@@ -176,7 +177,7 @@ def health(_=Depends(auth)):
 
 @app.get("/api/scorecards")
 def scorecards(_=Depends(auth)):
-    return {k: {"name": v["name"], "title": v["title"], "items": v["items"]} for k, v in PRODUCTS.items()}
+    return {k: {"name": v["name"], "title": v["title"], "items": v["items"], "enabled": k in scorecards.ENABLED} for k, v in PRODUCTS.items()}
 
 
 async def save_audio(rid, up):
@@ -196,11 +197,11 @@ async def save_audio(rid, up):
 
 
 @app.post("/api/assessments", status_code=202)
-async def create(product: str = Form("ct"), agent: str = Form(""), client: str = Form(""), call_date: str = Form(""),
+async def create(product: str = Form("ns"), agent: str = Form(""), client: str = Form(""), call_date: str = Form(""),
                  ref: str = Form(""), transcript: str = Form(""), audio: list[UploadFile] = File(default=[]), _=Depends(auth)):
     """One call per audio file (batch upload), or one call from a pasted transcript."""
-    if product not in PRODUCTS:
-        raise HTTPException(400, "Unknown scorecard")
+    if product not in PRODUCTS or product not in scorecards.ENABLED:
+        raise HTTPException(400, "That scorecard is not switched on")
     if mode() == "api" and not os.environ.get("ANTHROPIC_API_KEY"):
         raise HTTPException(503, "The server has no ANTHROPIC_API_KEY set (or set ANALYSIS_MODE=cowork).")
     files = [a for a in audio if a.filename]

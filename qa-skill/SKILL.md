@@ -8,7 +8,7 @@ description: Assess a recorded sales call (Netstar or Cartrack) against the Inno
 Goal: from a call (audio or transcript) produce a scored scorecard, specific insights and coaching, and a PDF.
 
 ## 1. Get the basics
-Work out from the user's message or the call itself: **which scorecard** (Netstar sales call, or Cartrack verification call), the **agent name**, **client name**, **call date** and an optional **reference**. Only ask for what you cannot work out.
+Work out from the user's message or the call itself: **which scorecard** (Netstar sales call is the one in use for now; Cartrack verification is available if asked), the **agent name**, **client name**, **call date** and an optional **reference**. Only ask for what you cannot work out.
 
 ## 2. Get a transcript
 - **Transcript supplied** (text, .srt, .vtt, .json): use it.

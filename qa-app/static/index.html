@@ -91,12 +91,12 @@ document.addEventListener("click",e=>{ const t=e.target.closest("[data-view]"); 
 
 /* ---------- new ---------- */
 function viewNew(){
-  const sel=Object.entries(cards).map(([k,v])=>`<option value="${k}">${esc(v.title)}</option>`).join("");
+  const on=Object.entries(cards).filter(([k,v])=>v.enabled); const sel=on.map(([k,v])=>`<option value="${k}">${esc(v.title)}</option>`).join("");
   app.innerHTML=`<h1>Call quality assurance</h1><p class="lead">Drop in your call recordings. Assure transcribes them, Claude marks each one against the scorecard and writes the coaching insights, then you review, override anything you disagree with, and download the PDF or Excel.</p>
   ${health.claude_key===false?`<div class="warn bad">The server has no Claude API key set (ANTHROPIC_API_KEY), so assessments will fail.</div>`:""}
   ${health.mode==="cowork"?`<div class="note">Cowork mode: calls are transcribed here, then Claude (scheduled task in Cowork) analyses them, usually within 15 minutes.</div>`:""}
   <div class="grid"><section class="card"><h3>Call details</h3>
-   <div class="row"><div class="full"><label>Scorecard</label><select id="product">${sel}</select></div>
+   <div class="row"><div class="full"><label>Scorecard</label>${on.length>1?`<select id="product">${sel}</select>`:`<input type="hidden" id="product" value="${on[0]?on[0][0]:"ns"}"><div class="tag" style="margin:0">${esc(on[0]?on[0][1].title:"Netstar sales scorecard")}</div>`}</div>
    <div><label>Agent</label><input type="text" id="agent" value="${esc(localStorage.getItem("qa_agent")||"")}"></div>
    <div><label>Client name</label><input type="text" id="client"></div>
    <div><label>Call date</label><input type="date" id="cdate" value="${new Date().toISOString().slice(0,10)}"></div>
