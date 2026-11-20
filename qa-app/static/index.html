@@ -69,13 +69,30 @@ audio{width:100%;margin-bottom:10px}
 .time{color:var(--muted);font-size:12.5px;background:none;border:0;padding:0;text-align:left}button.time:hover{color:var(--navy);text-decoration:underline}
 .spk{border:0;border-radius:99px;font-size:11.5px;font-weight:700;padding:2px 8px;text-transform:uppercase;background:var(--line);color:var(--muted)}.spk.agent{background:var(--navy);color:#fff}.spk.client{background:var(--teal);color:var(--navy)}
 table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}tr.click{cursor:pointer}tr.click:hover{background:var(--teal-bg)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow)}
+.tile small{display:block;color:var(--muted);font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.tile b{font-size:30px;color:var(--navy);line-height:1.2;font-variant-numeric:tabular-nums}
+.tile.bad b{color:var(--red)}.tile.good b{color:var(--green)}
+.stack{display:flex;height:16px;border-radius:99px;overflow:hidden;background:var(--line);margin:8px 0}
+.stack i{display:block;height:100%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:var(--c)}
+.hrow{display:grid;grid-template-columns:minmax(0,1fr) 120px 52px;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+.hrow:last-child{border-bottom:0}
+.hbar{height:10px;background:var(--line);border-radius:99px;overflow:hidden}.hbar i{display:block;height:100%}
+.hnum{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}@media(max-width:900px){.two{grid-template-columns:1fr}}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin:0 0 14px}.filters div{min-width:150px}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font-size:11px}
+a.lnk{color:var(--navy);font-weight:600;cursor:pointer;text-decoration:underline}
 .footer{max-width:1240px;margin:20px auto 40px;padding:0 20px;color:var(--muted);font-size:13.5px;text-align:center}
 </style>
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
   <div class="brand"><img src="logo.svg" alt="Innovate"><b>Assure<small>Call quality assurance</small></b></div>
-  <nav class="tabs"><button class="tab active" data-view="new">New assessment</button><button class="tab" data-view="history">History</button></nav>
+  <nav class="tabs"><button class="tab active" data-view="new">New assessment</button><button class="tab" data-view="dash">Dashboard</button><button class="tab" data-view="agents">Agents</button><button class="tab" data-view="history">History</button></nav>
 </div></header>
 <main class="wrap" id="app"></main>
 <footer class="footer"><b>Innovate</b> &middot; Where Strategy Meets People And Growth. &middot; Assure &middot; call recordings and transcripts are stored on this company machine only.</footer>
@@ -86,7 +103,7 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const clock=s=>{ if(s==null) return ""; s=Math.round(s); return Math.floor(s/60)+":"+String(s%60).padStart(2,"0"); };
 let cards={}, cur=null, poll=null, health={};
 async function api(url,opt){ const r=await fetch(url,opt); if(!r.ok){ let m=r.statusText; try{ m=(await r.json()).detail||m; }catch(e){} throw new Error(m); } return r.json(); }
-function setView(v){ clearInterval(poll); document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===v)); (v==="history"?viewHistory:viewNew)(); }
+function setView(v){ clearInterval(poll); document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view===v)); ({history:viewHistory,dash:viewDash,agents:viewAgents}[v]||viewNew)(); }
 document.addEventListener("click",e=>{ const t=e.target.closest("[data-view]"); if(t) setView(t.dataset.view); });
 
 /* ---------- new ---------- */
@@ -119,6 +136,52 @@ function viewNew(){
     try{ const r=await api("/api/assessments",{method:"POST",body:fd}); if(r.ids.length>1){ setView("history"); } else openRec(r.id); }
     catch(e){ $("#msg").innerHTML=`<div class="warn bad">${esc(e.message)}</div>`; $("#go").disabled=false; }
   };
+}
+
+/* ---------- dashboard and agents ---------- */
+const VCOL={"Pass":"var(--green)","Needs coaching":"#E0A800","Fail":"#e0662b","Critical fail":"var(--red)"};
+const tile=(k,v,c)=>`<div class="tile ${c||""}"><small>${k}</small><b>${v}</b></div>`;
+const rateCol=p=>p==null?"var(--line)":p>=85?"var(--green)":p>=70?"#E0A800":"var(--red)";
+function trendSvg(tr){
+  if(tr.length<2) return `<div class="note">The trend appears once calls from two or more days are scored.</div>`;
+  const W=560,H=170,L=34,R=28,T=10,B=26, xs=tr.map((_,i)=>L+i*(W-L-R)/(tr.length-1)), y=v=>T+(100-v)/100*(H-T-B);
+  const pts=tr.map((t,i)=>`${xs[i].toFixed(1)},${y(t.avg).toFixed(1)}`).join(" ");
+  const grid=[0,50,70,85,100].map(v=>`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1" ${v===85?'stroke-dasharray="4 3"':""}/><text x="${L-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`).join("");
+  const step=Math.ceil(tr.length/6), lab=tr.map((t,i)=>i%step===0||i===tr.length-1?`<text x="${xs[i]}" y="${H-8}" text-anchor="middle">${esc(t.date.slice(5))}</text>`:"").join("");
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Average score by day">${grid}<polyline points="${pts}" fill="none" stroke="var(--navy)" stroke-width="2.5" stroke-linejoin="round"/>${tr.map((t,i)=>`<circle cx="${xs[i]}" cy="${y(t.avg)}" r="3.5" fill="${rateCol(t.avg)}" stroke="var(--navy)" stroke-width="1.5"><title>${esc(t.date)}: ${t.avg}% (${t.calls} call${t.calls>1?"s":""})</title></circle>`).join("")}${lab}</svg><div class="note">Average score per day. Dashed line = pass mark (85%).</div>`;
+}
+const qRows=(qs,n)=>qs.filter(q=>q.pass+q.fail>0).slice(0,n).map(q=>`<div class="hrow"><div>${esc(q.label.length>110?q.label.slice(0,110)+"…":q.label)}${q.critical?'<span class="crit">CRITICAL</span>':""}</div><div class="hbar" title="${q.pass} pass, ${q.fail} fail"><i style="width:${q.pass_rate??0}%;background:${rateCol(q.pass_rate)}"></i></div><div class="hnum">${q.pass_rate==null?"–":q.pass_rate+"%"}<br>${q.fail} fail</div></div>`).join("")||`<div class="note">No data yet.</div>`;
+async function viewDash(){
+  const f=window._dashF||{from:"",to:""};
+  app.innerHTML=`<h1>Dashboard</h1><div class="filters"><div><label>From</label><input type="date" id="df" value="${esc(f.from)}"></div><div><label>To</label><input type="date" id="dt" value="${esc(f.to)}"></div><button class="btn small" id="dapply">Apply</button><a class="btn small" href="/api/export.xlsx">Download Excel</a></div><div id="dbody">Loading…</div>`;
+  $("#dapply").onclick=()=>{ window._dashF={from:$("#df").value,to:$("#dt").value}; viewDash(); };
+  const q=new URLSearchParams({date_from:f.from,date_to:f.to}); const d=await api("/api/stats?"+q);
+  if(!d.calls){ $("#dbody").innerHTML=`<section class="card"><div class="note">No scored calls in this period yet. Upload a call, then it will appear here once Claude has analysed it.</div></section>`; return; }
+  const order=["Pass","Needs coaching","Fail","Critical fail"];
+  $("#dbody").innerHTML=`<div class="tiles">${tile("Calls scored",d.calls)}${tile("Average score",(d.avg??"–")+"%",d.avg>=85?"good":d.avg<70?"bad":"")}${tile("Pass rate",(d.pass_rate??"–")+"%")}${tile("Critical fails",d.critical_fails,d.critical_fails?"bad":"")}</div>
+  <section class="card"><h3>Results</h3><div class="stack">${order.map(k=>d.verdicts[k]?`<i style="width:${d.verdicts[k]/d.calls*100}%;background:${VCOL[k]}" title="${k}: ${d.verdicts[k]}"></i>`:"").join("")}</div><div class="legend">${order.map(k=>`<span style="--c:${VCOL[k]}">${k} ${d.verdicts[k]||0}</span>`).join("")}</div></section>
+  <div class="two"><section class="card"><h3>Most-missed questions</h3><div class="note" style="margin:0 0 6px">Where agents lose points most often. Coach on these first.</div>${qRows(d.questions,8)}</section>
+  <section class="card"><h3>Trend</h3>${trendSvg(d.trend)}</section></div>
+  <section class="card"><h3>Agents</h3><table><tr><th>Agent</th><th>Calls</th><th>Average</th><th>Lowest</th><th>Critical fails</th><th>Weakest question</th></tr>${d.agents.map(a=>`<tr class="click" data-agent="${esc(a.agent)}"><td><a class="lnk">${esc(a.agent)}</a></td><td>${a.calls}</td><td>${a.avg==null?"–":a.avg+"%"}</td><td>${a.lowest==null?"–":a.lowest+"%"}</td><td>${a.critical_fails}</td><td>${a.weakest[0]?esc(a.weakest[0].label.slice(0,60))+" ("+a.weakest[0].fail+")":"–"}</td></tr>`).join("")}</table></section>`;
+  $("#dbody").onclick=e=>{ const r=e.target.closest("[data-agent]"); if(r) viewAgent(r.dataset.agent); };
+}
+async function viewAgents(){
+  app.innerHTML=`<h1>Agent scorecards</h1><section class="card" id="ag">Loading…</section>`;
+  const d=await api("/api/stats");
+  $("#ag").innerHTML=d.agents.length?`<table><tr><th>Agent</th><th>Calls</th><th>Average</th><th>Lowest</th><th>Highest</th><th>Critical fails</th></tr>${d.agents.map(a=>`<tr class="click" data-agent="${esc(a.agent)}"><td><a class="lnk">${esc(a.agent)}</a></td><td>${a.calls}</td><td>${a.avg==null?"–":a.avg+"%"}</td><td>${a.lowest==null?"–":a.lowest+"%"}</td><td>${a.highest==null?"–":a.highest+"%"}</td><td>${a.critical_fails}</td></tr>`).join("")}</table>`:`<div class="note">No scored calls yet.</div>`;
+  $("#ag").onclick=e=>{ const r=e.target.closest("[data-agent]"); if(r) viewAgent(r.dataset.agent); };
+}
+async function viewAgent(name){
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.view==="agents"));
+  app.innerHTML=`<h1>${esc(name)}</h1><div id="ab">Loading…</div>`;
+  const d=await api("/api/stats?agent="+encodeURIComponent(name)); const a=d.agents[0];
+  if(!a){ $("#ab").innerHTML=`<div class="note">No scored calls for this agent.</div>`; return; }
+  $("#ab").innerHTML=`<div class="actions" style="margin:0 0 12px"><button class="btn small ghost" data-view="agents">&larr; All agents</button></div>
+  <div class="tiles">${tile("Calls scored",a.calls)}${tile("Average",(a.avg??"–")+"%",a.avg>=85?"good":a.avg<70?"bad":"")}${tile("Lowest",(a.lowest??"–")+"%")}${tile("Highest",(a.highest??"–")+"%")}${tile("Critical fails",a.critical_fails,a.critical_fails?"bad":"")}</div>
+  <div class="two"><section class="card"><h3>Coaching focus</h3>${a.weakest.length?a.weakest.map(w=>`<div class="ins warn2"><b>${esc(w.label.length>120?w.label.slice(0,120)+"…":w.label)}</b><br><span class="note">Missed on ${w.fail} call${w.fail>1?"s":""}</span></div>`).join(""):`<div class="note">No failed questions. Nothing to coach on yet.</div>`}
+   <h3 style="margin-top:16px">Coaching lines from recent calls</h3>${a.coaching.length?`<ul style="margin:0;padding-left:20px">${a.coaching.map(c=>`<li>${esc(c.text)} <span class="note">(${esc(c.date)}${c.ref?", "+esc(c.ref):""})</span></li>`).join("")}</ul>`:`<div class="note">None yet.</div>`}</section>
+  <section class="card"><h3>Trend</h3>${trendSvg(d.trend)}</section></div>
+  <section class="card"><h3>Pass rate by question</h3>${qRows(a.questions.slice().sort((x,y)=>(x.pass_rate??101)-(y.pass_rate??101)),14)}</section>`;
 }
 
 /* ---------- history ---------- */

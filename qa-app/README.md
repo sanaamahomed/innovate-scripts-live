@@ -107,7 +107,7 @@ Edit `scorecards.py` (wording, points, critical flags, pass marks), then restart
 adding an entry to `PRODUCTS`.
 
 ## Reports
-History shows agent averages; **Download Excel** gives every call (and every scorecard item) in a workbook; each call has a PDF.
+**Dashboard** shows calls scored, average score, pass rate, critical fails, the most-missed questions and the daily trend (filter by date). **Agents** gives each agent a scorecard: average, lowest/highest, coaching focus, recent coaching lines and pass rate per question. History lists every call; **Download Excel** gives every call (and every scorecard item) in a workbook; each call has a PDF.
 
 ## Tests
 `pip install pytest httpx && python -m pytest qa-app/tests` (speech-to-text and Claude are faked).

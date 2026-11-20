@@ -240,6 +240,62 @@ def list_all(_=Depends(auth)):
     return sorted(out, key=lambda x: -x["created"])
 
 
+def stats_for(agent="", dfrom="", dto=""):
+    """Dashboard numbers over finished assessments (reviewer overrides included)."""
+    recs = []
+    for p in RECS.glob("*.json"):
+        r = maybe_ingest(json.loads(p.read_text()))
+        if r["status"] != "done" or not r.get("result"):
+            continue
+        d = r["meta"].get("date", "")
+        if (dfrom and d < dfrom) or (dto and d > dto) or (agent and (r["meta"].get("agent") or "(no agent)") != agent):
+            continue
+        recs.append(r)
+    pcts, verd, per_q, by_day, by_agent = [], {}, {}, {}, {}
+    for r in recs:
+        sc = engine.score(r["product"], r["result"]["items"], r.get("overrides"))
+        a = r["meta"].get("agent") or "(no agent)"
+        ag = by_agent.setdefault(a, {"agent": a, "calls": 0, "pcts": [], "critical_fails": 0, "q": {}, "coaching": []})
+        ag["calls"] += 1
+        verd[sc["verdict"]] = verd.get(sc["verdict"], 0) + 1
+        if sc["pct"] is not None:
+            pcts.append(sc["pct"])
+            ag["pcts"].append(sc["pct"])
+            by_day.setdefault(r["meta"].get("date", ""), []).append(sc["pct"])
+        if sc["verdict"] == "Critical fail":
+            ag["critical_fails"] += 1
+        for it in PRODUCTS[r["product"]]["items"]:
+            st = (r.get("overrides") or {}).get(it["id"]) or r["result"]["items"][it["id"]]["status"]
+            for bucket in (per_q.setdefault(it["id"], {"id": it["id"], "label": it["label"], "weight": it["weight"], "critical": it["critical"], "pass": 0, "fail": 0, "review": 0, "na": 0}),
+                           ag["q"].setdefault(it["id"], {"id": it["id"], "label": it["label"], "pass": 0, "fail": 0, "review": 0, "na": 0})):
+                bucket[st] += 1
+        for line in (r["result"].get("insights", {}).get("coaching") or [])[:3]:
+            ag["coaching"].append({"date": r["meta"].get("date", ""), "ref": r["meta"].get("ref", ""), "text": line})
+
+    def rate(b):
+        done = b["pass"] + b["fail"]
+        return round(b["pass"] / done * 100) if done else None
+    questions = sorted(({**b, "pass_rate": rate(b)} for b in per_q.values()), key=lambda b: (-b["fail"], b["pass_rate"] if b["pass_rate"] is not None else 101))
+    agents = []
+    for ag in by_agent.values():
+        weak = sorted((b for b in ag["q"].values() if b["fail"]), key=lambda b: -b["fail"])[:3]
+        agents.append({"agent": ag["agent"], "calls": ag["calls"], "avg": round(sum(ag["pcts"]) / len(ag["pcts"])) if ag["pcts"] else None,
+                       "lowest": min(ag["pcts"]) if ag["pcts"] else None, "highest": max(ag["pcts"]) if ag["pcts"] else None,
+                       "critical_fails": ag["critical_fails"], "weakest": [{"label": b["label"], "fail": b["fail"]} for b in weak],
+                       "questions": sorted(({**b, "pass_rate": rate(b)} for b in ag["q"].values()), key=lambda b: (-b["fail"], b["id"])),
+                       "coaching": sorted(ag["coaching"], key=lambda c: c["date"], reverse=True)[:8]})
+    agents.sort(key=lambda a: (a["avg"] is None, -(a["avg"] or 0)))
+    return {"calls": len(recs), "avg": round(sum(pcts) / len(pcts)) if pcts else None,
+            "pass_rate": round(verd.get("Pass", 0) / len(recs) * 100) if recs else None,
+            "critical_fails": verd.get("Critical fail", 0), "verdicts": verd, "questions": questions, "agents": agents,
+            "trend": [{"date": d, "avg": round(sum(v) / len(v)), "calls": len(v)} for d, v in sorted(by_day.items()) if d]}
+
+
+@app.get("/api/stats")
+def stats(agent: str = "", date_from: str = "", date_to: str = "", _=Depends(auth)):
+    return stats_for(agent, date_from, date_to)
+
+
 @app.get("/api/export.xlsx")
 def export_xlsx(_=Depends(auth)):
     from io import BytesIO

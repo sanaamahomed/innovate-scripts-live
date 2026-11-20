@@ -308,3 +308,35 @@ def test_env_file_loader(tmp_path, monkeypatch):
     assert "EMPTY" not in os.environ and os.environ["KEEP"] == "fromenv"
     for k in ("APP_X", "QUOTED"):
         monkeypatch.delenv(k)
+
+
+def test_stats_dashboard_and_agents(client, monkeypatch):
+    c, server = client
+    # Sam: one clean call; Erin: KYC fails and intro (critical) fails
+    def maker(fail_ids):
+        def f(prompt, client=None):
+            d = fake_claude(prompt)
+            for i in d["items"]:
+                i["status"] = "fail" if i["id"] in fail_ids else "pass"
+            return d
+        return f
+    ids = []
+    for agent, day, fails in (("Sam", "2026-11-01", set()), ("Sam", "2026-11-02", {"n_kyc"}), ("Erin", "2026-11-02", {"n_intro", "n_kyc"})):
+        monkeypatch.setattr(server.engine, "call_claude", maker(fails))
+        r = c.post("/api/assessments", data={"product": "ns", "agent": agent, "call_date": day, "transcript": "Agent: calling on behalf of Netstar\nClient: ok\nAgent: bye\nClient: bye"})
+        ids.append(r.json()["id"])
+        wait(c, r.json()["id"])
+    s = c.get("/api/stats").json()
+    assert s["calls"] == 3 and s["verdicts"]["Pass"] == 2 and s["verdicts"]["Critical fail"] == 1 and s["critical_fails"] == 1
+    kyc = next(q for q in s["questions"] if q["id"] == "n_kyc")
+    assert kyc["fail"] == 2 and kyc["pass"] == 1 and kyc["pass_rate"] == 33
+    assert s["questions"][0]["id"] == "n_kyc"  # most-missed first
+    assert [a["agent"] for a in s["agents"]] == ["Sam", "Erin"] and s["agents"][0]["calls"] == 2
+    assert s["agents"][1]["weakest"][0]["fail"] == 1 and [t["date"] for t in s["trend"]] == ["2026-11-01", "2026-11-02"]
+    only = c.get("/api/stats", params={"agent": "Erin"}).json()
+    assert only["calls"] == 1 and only["agents"][0]["agent"] == "Erin"
+    day = c.get("/api/stats", params={"date_from": "2026-11-02"}).json()
+    assert day["calls"] == 2
+    # a reviewer override feeds the numbers
+    c.patch(f"/api/assessments/{ids[1]}", json={"overrides": {"n_kyc": "pass"}})
+    assert next(q for q in c.get("/api/stats").json()["questions"] if q["id"] == "n_kyc")["fail"] == 1
