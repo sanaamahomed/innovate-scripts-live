@@ -3,7 +3,7 @@
 # elevenlabs, a smaller plan is enough.
 services:
   - type: web
-    name: innovate-qa-guru
+    name: innovate-assure
     runtime: docker
     dockerfilePath: ./qa-app/Dockerfile
     dockerContext: ./qa-app

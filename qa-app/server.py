@@ -1,4 +1,4 @@
-"""Innovate QA Guru: call QA scoring app.
+"""Innovate Assure: call quality assurance app.
 
 Upload a call recording (or paste a transcript) -> speech-to-text -> Claude marks it against the
 scorecard and writes insights -> review/override -> download a branded PDF.
@@ -61,7 +61,7 @@ async def lifespan(_):
     yield
 
 
-app = FastAPI(title="Innovate QA Guru", lifespan=lifespan)
+app = FastAPI(title="Innovate Assure", lifespan=lifespan)
 
 
 def auth(creds: HTTPBasicCredentials = Depends(basic)):

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Innovate QA Guru</title>
+<title>Innovate Assure</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
 :root{--navy:#18305E;--yellow:#FFC709;--teal:#2CCCC4;--ink:#111;--bg:#F5F7FA;--line:#E0E5EB;--white:#fff;--muted:#5b6678;--red:#B3261E;--red-bg:#FDECEA;--green:#16805A;--green-bg:#E5F6EE;--yellow-bg:#FFF7D6;--teal-bg:#E4F8F7;--radius:12px;--shadow:0 1px 2px rgba(16,34,74,.06),0 4px 14px rgba(16,34,74,.07)}
@@ -74,11 +74,11 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;p
 </head>
 <body>
 <header class="topbar"><div class="topbar-in">
-  <div class="brand"><img src="logo.svg" alt="Innovate"><b>QA Guru<small>Call scoring and coaching</small></b></div>
+  <div class="brand"><img src="logo.svg" alt="Innovate"><b>Assure<small>Call quality assurance</small></b></div>
   <nav class="tabs"><button class="tab active" data-view="new">New assessment</button><button class="tab" data-view="history">History</button></nav>
 </div></header>
 <main class="wrap" id="app"></main>
-<footer class="footer"><b>Innovate</b> &middot; Where Strategy Meets People And Growth. &middot; QA Guru &middot; call recordings and transcripts are stored on this company machine only.</footer>
+<footer class="footer"><b>Innovate</b> &middot; Where Strategy Meets People And Growth. &middot; Assure &middot; call recordings and transcripts are stored on this company machine only.</footer>
 <script>
 "use strict";
 const $=s=>document.querySelector(s), app=$("#app");
@@ -92,7 +92,7 @@ document.addEventListener("click",e=>{ const t=e.target.closest("[data-view]"); 
 /* ---------- new ---------- */
 function viewNew(){
   const sel=Object.entries(cards).map(([k,v])=>`<option value="${k}">${esc(v.title)}</option>`).join("");
-  app.innerHTML=`<h1>Welcome to QA Guru</h1><p class="lead">Drop in your call recordings. QA Guru transcribes them, Claude marks each one against the scorecard and writes the coaching insights, then you review, override anything you disagree with, and download the PDF or Excel.</p>
+  app.innerHTML=`<h1>Call quality assurance</h1><p class="lead">Drop in your call recordings. Assure transcribes them, Claude marks each one against the scorecard and writes the coaching insights, then you review, override anything you disagree with, and download the PDF or Excel.</p>
   ${health.claude_key===false?`<div class="warn bad">The server has no Claude API key set (ANTHROPIC_API_KEY), so assessments will fail.</div>`:""}
   ${health.mode==="cowork"?`<div class="note">Cowork mode: calls are transcribed here, then Claude (scheduled task in Cowork) analyses them, usually within 15 minutes.</div>`:""}
   <div class="grid"><section class="card"><h3>Call details</h3>

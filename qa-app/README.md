@@ -1,4 +1,4 @@
-# Innovate QA Guru
+# Innovate Assure
 
 Upload one or many call recordings (or paste a transcript) and get it marked against the Cartrack or Netstar
 scorecard, with insights, coaching points and a branded PDF.
@@ -21,7 +21,7 @@ be judged from words, so those items come back as *Review* for a human to decide
 1. Install Python 3.11+ (python.org, tick "Add to PATH") and ffmpeg (`winget install Gyan.FFmpeg`).
 2. Double-click `windows\install.bat` (one time). It opens `.env`: set `APP_PASSWORD`, keep `ANALYSIS_MODE=cowork`.
 3. Double-click `windows\start.bat`. The team opens `http://<this-pc-name>:8501` (allow port 8501 in Windows Firewall).
-4. Optional: right-click `windows\start_at_logon.ps1` > Run with PowerShell to start QA Guru at every logon.
+4. Optional: right-click `windows\start_at_logon.ps1` > Run with PowerShell to start Assure at every logon.
 5. Connect the `data` folder to Claude Cowork and add the scheduled task from `cowork/README.md`.
 (These Windows scripts have not been run on a real Windows PC yet; if one fails, send me the message.)
 
