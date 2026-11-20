@@ -1,4 +1,4 @@
-# Innovate QA Assessment app
+# Innovate QA Guru
 
 Upload one or many call recordings (or paste a transcript) and get it marked against the Cartrack or Netstar
 scorecard, with insights, coaching points and a branded PDF.
@@ -17,7 +17,15 @@ recording -> speech-to-text (faster-whisper, runs on this server)
 Claude then does the marking and insights from that transcript. Tone, pace and interruptions can't
 be judged from words, so those items come back as *Review* for a human to decide.
 
-## Run it on your own laptop/PC (same as the Cowork setup)
+## Quick start on Windows (the way your current tool runs)
+1. Install Python 3.11+ (python.org, tick "Add to PATH") and ffmpeg (`winget install Gyan.FFmpeg`).
+2. Double-click `windows\install.bat` (one time). It opens `.env`: set `APP_PASSWORD`, keep `ANALYSIS_MODE=cowork`.
+3. Double-click `windows\start.bat`. The team opens `http://<this-pc-name>:8501` (allow port 8501 in Windows Firewall).
+4. Optional: right-click `windows\start_at_logon.ps1` > Run with PowerShell to start QA Guru at every logon.
+5. Connect the `data` folder to Claude Cowork and add the scheduled task from `cowork/README.md`.
+(These Windows scripts have not been run on a real Windows PC yet; if one fails, send me the message.)
+
+## Run it with Docker on your own laptop/PC
 Your Cowork setup transcribes on the laptop with faster-whisper large-v3-turbo, so audio never leaves the machine.
 This app can do the same: `docker compose up -d --build` on a PC with about 4 GB free RAM (8 cores is comfortable),
 then open http://localhost:8000. Only the masked transcript text goes to Claude.

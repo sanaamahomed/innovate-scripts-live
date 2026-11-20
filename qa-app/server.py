@@ -1,4 +1,4 @@
-"""Innovate QA Assessment app.
+"""Innovate QA Guru: call QA scoring app.
 
 Upload a call recording (or paste a transcript) -> speech-to-text -> Claude marks it against the
 scorecard and writes insights -> review/override -> download a branded PDF.
@@ -24,6 +24,7 @@ from fastapi.responses import FileResponse, Response
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.staticfiles import StaticFiles
 
+import envload  # noqa: F401  (loads qa-app/.env before the other modules read settings)
 import engine
 import parsing
 import pdf_report
@@ -60,7 +61,7 @@ async def lifespan(_):
     yield
 
 
-app = FastAPI(title="Innovate QA Assessment", lifespan=lifespan)
+app = FastAPI(title="Innovate QA Guru", lifespan=lifespan)
 
 
 def auth(creds: HTTPBasicCredentials = Depends(basic)):

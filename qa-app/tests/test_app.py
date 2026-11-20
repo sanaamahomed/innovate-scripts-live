@@ -291,3 +291,17 @@ def test_batch_upload_and_excel(client):
 def test_quick_scan():
     f = engine.quick_scan("ns", [{"spk": "agent", "text": "Howzit bro", "t": 0}])
     assert any("recording" in x for x in f) and any("slang" in x for x in f) and any("short" in x.lower() for x in f)
+
+
+def test_env_file_loader(tmp_path, monkeypatch):
+    import envload
+    f = tmp_path / ".env"
+    f.write_text('# c\nAPP_X=1\nQUOTED="two words"\nEMPTY=\nKEEP=fromfile\n', encoding="utf-8-sig")
+    monkeypatch.setenv("KEEP", "fromenv")
+    for k in ("APP_X", "QUOTED", "EMPTY"):
+        monkeypatch.delenv(k, raising=False)
+    envload.load_env(f)
+    assert os.environ["APP_X"] == "1" and os.environ["QUOTED"] == "two words"
+    assert "EMPTY" not in os.environ and os.environ["KEEP"] == "fromenv"
+    for k in ("APP_X", "QUOTED"):
+        monkeypatch.delenv(k)
