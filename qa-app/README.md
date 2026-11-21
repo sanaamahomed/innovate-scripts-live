@@ -17,7 +17,10 @@ recording -> speech-to-text (faster-whisper, runs on this server)
 Claude then does the marking and insights from that transcript. Tone, pace and interruptions can't
 be judged from words, so those items come back as *Review* for a human to decide.
 
-## Quick start on Windows (the way your current tool runs)
+## Easiest start on Windows
+Extract the zip, double-click **`START_HERE.bat`**, answer the two questions. It installs everything needed, starts Assure and opens the page. (First run may ask you to close the window and double-click it once more after Python/ffmpeg install.) Not yet run on a real Windows PC.
+
+## Quick start on Windows, step by step (the way your current tool runs)
 1. Install Python 3.11+ (python.org, tick "Add to PATH") and ffmpeg (`winget install Gyan.FFmpeg`).
 2. Double-click `windows\install.bat` (one time). It opens `.env`: set `APP_PASSWORD`, keep `ANALYSIS_MODE=cowork`.
 3. Double-click `windows\start.bat`. The team opens `http://<this-pc-name>:8501` (allow port 8501 in Windows Firewall).
